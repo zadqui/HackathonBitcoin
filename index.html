@@ -63,9 +63,9 @@
           <span class="pixel" style="font-size:8px;color:var(--btc);">CURSO INTERACTIVO GRATUITO</span>
         </div>
         <div>
-          <div class="pixel hero-title" style="font-size:48px;color:var(--btc);text-shadow:5px 5px 0 #000;line-height:1.3;">APRENDE</div>
-          <div class="pixel hero-title" style="font-size:48px;color:#fff;text-shadow:5px 5px 0 #000;line-height:1.3;">BITCOIN</div>
-          <div class="pixel" style="font-size:20px;color:var(--gold);text-shadow:3px 3px 0 #000;margin-top:4px;">CON DON MEMO</div>
+          <div class="pixel hero-title" id="tw1" style="font-size:48px;color:var(--btc);text-shadow:5px 5px 0 #000;line-height:1.3;"></div>
+          <div class="pixel hero-title" id="tw2" style="font-size:48px;color:#fff;text-shadow:5px 5px 0 #000;line-height:1.3;"></div>
+          <div class="pixel" id="tw3" style="font-size:20px;color:var(--gold);text-shadow:3px 3px 0 #000;margin-top:4px;"></div>
         </div>
         <div class="quote-box" style="padding:16px 20px;">
           <p style="font-size:22px;line-height:1.5;color:#ddd;">
@@ -108,7 +108,10 @@
           <div style="font-size:13px;color:#555;margin-top:12px;">Actualizado cada 30s · CoinGecko API</div>
         </div>
         <div style="text-align:center;padding:16px;">
-          <img id="memoImg" src="assets/img/don_memo.png" alt="Don Memo" style="width:160px;height:150px;display:block;margin:0 auto;image-rendering:pixelated;">
+          <div id="memoScene" style="position:relative;width:160px;height:200px;margin:0 auto;">
+            <canvas id="doorCanvas" width="160" height="200" style="position:absolute;top:0;left:0;image-rendering:pixelated;"></canvas>
+            <img id="memoImg" src="assets/img/don_memo.png" alt="Don Memo" style="position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:160px;height:150px;image-rendering:pixelated;opacity:0;">
+          </div>
           <div style="font-size:18px;color:#888;margin-top:8px;">"Siéntate, mijo. Tengo algo<br>que contarte..."</div>
         </div>
       </div>
@@ -213,7 +216,7 @@
       <p style="font-size:22px;color:#888;margin-top:16px;">3 problemas reales que Bitcoin resuelve en México</p>
     </div>
     <div class="three-col">
-      <div class="reveal card" style="padding:28px;display:flex;flex-direction:column;gap:16px;">
+      <div class="reveal card porque-card" style="padding:28px;display:flex;flex-direction:column;gap:16px;">
         <div style="font-size:40px;text-align:center;">📉</div>
         <div class="pixel" style="font-size:11px;color:var(--btc);text-align:center;">EL PESO SE DERRITE</div>
         <div class="pixel" style="font-size:9px;color:#ddd;line-height:1.8;">La inflación te roba en silencio</div>
@@ -224,7 +227,7 @@
           <div style="font-size:13px;color:#555;margin-top:4px;">Fuente: Banxico INPC</div>
         </div>
       </div>
-      <div class="reveal card" style="padding:28px;display:flex;flex-direction:column;gap:16px;">
+      <div class="reveal card porque-card" style="padding:28px;display:flex;flex-direction:column;gap:16px;">
         <div style="font-size:40px;text-align:center;">✈️</div>
         <div class="pixel" style="font-size:11px;color:var(--btc);text-align:center;">LAS REMESAS SE LAS ROBAN</div>
         <div class="pixel" style="font-size:9px;color:#ddd;line-height:1.8;">Los intermediarios se quedan con tu esfuerzo</div>
@@ -238,7 +241,7 @@
           </div>
         </div>
       </div>
-      <div class="reveal card" style="padding:28px;display:flex;flex-direction:column;gap:16px;">
+      <div class="reveal card porque-card" style="padding:28px;display:flex;flex-direction:column;gap:16px;">
         <div style="font-size:40px;text-align:center;">🏦</div>
         <div class="pixel" style="font-size:11px;color:var(--btc);text-align:center;">EL BANCO DECIDE POR TI</div>
         <div class="pixel" style="font-size:9px;color:#ddd;line-height:1.8;">Tú no controlas tu dinero</div>

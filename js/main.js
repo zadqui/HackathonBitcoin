@@ -52,41 +52,186 @@ function animateCounter(el){
   },20);
 }
 
-// ── DON MEMO PIXEL ART ──
-function drawMemo(){
-  const canvas=document.getElementById('memoCanvas');
-  if(!canvas) return;
-  const ctx=canvas.getContext('2d');
-  const s=4;
-  ctx.clearRect(0,0,120,150);
-  const sk='#C68642',shirt='#7B8D42',pants='#4A3728',hat='#8B6914';
-  ctx.fillStyle=hat;
-  ctx.fillRect(3*s,6*s,24*s,2*s); ctx.fillRect(7*s,2*s,16*s,5*s);
-  ctx.fillStyle=sk;
-  for(let x=5;x<25;x++) ctx.fillRect(x*s,8*s,s,s);
-  for(let x=4;x<26;x++) for(let y=9;y<13;y++) ctx.fillRect(x*s,y*s,s,s);
-  for(let x=5;x<25;x++) ctx.fillRect(x*s,12*s,s,s);
-  ctx.fillStyle='#2C1810';
-  ctx.fillRect(8*s,10*s,2*s,s); ctx.fillRect(20*s,10*s,2*s,s);
-  ctx.fillStyle='#aaa';
-  for(let x=10;x<20;x++) ctx.fillRect(x*s,12*s,s,s*.6);
-  ctx.fillStyle=shirt;
-  for(let x=5;x<25;x++) ctx.fillRect(x*s,13*s,s,s);
-  for(let x=3;x<27;x++) for(let y=14;y<18;y++) ctx.fillRect(x*s,y*s,s,s);
-  ctx.fillStyle='#9aad52';
-  ctx.fillRect(13*s,13*s,2*s,5*s); ctx.fillRect(16*s,13*s,2*s,5*s);
-  ctx.fillStyle=sk;
-  ctx.fillRect(s,14*s,3*s,5*s); ctx.fillRect(26*s,14*s,3*s,5*s);
-  ctx.fillStyle=shirt;
-  ctx.fillRect(s,14*s,3*s,2*s); ctx.fillRect(26*s,14*s,3*s,2*s);
-  ctx.fillStyle=pants;
-  for(let x=4;x<26;x++) for(let y=18;y<21;y++) ctx.fillRect(x*s,y*s,s,s);
-  ctx.fillStyle='#1a1a1a';
-  ctx.fillRect(2*s,21*s,6*s,s); ctx.fillRect(22*s,21*s,6*s,s);
-  ctx.fillStyle='#8B6914';
-  ctx.fillRect(26*s,10*s,s,12*s); ctx.fillRect(24*s,10*s,4*s,s);
+// ── TYPEWRITER HERO ──
+function typewriter(el, text, delay, cb) {
+  el.textContent = '';
+  let i = 0;
+  const iv = setInterval(() => {
+    el.textContent += text[i];
+    i++;
+    if (i >= text.length) { clearInterval(iv); if (cb) cb(); }
+  }, delay);
 }
-drawMemo();
+window.addEventListener('load', () => {
+  const tw1 = document.getElementById('tw1');
+  const tw2 = document.getElementById('tw2');
+  const tw3 = document.getElementById('tw3');
+  if (!tw1) return;
+  setTimeout(() => {
+    typewriter(tw1, 'APRENDE', 50, () => {
+      setTimeout(() => {
+        typewriter(tw2, 'BITCOIN', 50, () => {
+          setTimeout(() => typewriter(tw3, 'CON DON MEMO', 45), 100);
+        });
+      }, 150);
+    });
+  }, 600);
+});
+
+// ── PUERTA MEXICANA PIXEL ART ──
+function drawDoor(ctx, openPct) {
+  // openPct: 0 = cerrada, 1 = abierta
+  const W = 160, H = 200;
+  ctx.clearRect(0, 0, W, H);
+
+  const s = 4; // tamaño pixel
+
+  // Marco de la puerta — naranja quemado estilo barro
+  const frameColor = '#8B4513';
+  const frameLight = '#A0522D';
+  ctx.fillStyle = frameColor;
+  // Lados del marco
+  ctx.fillRect(0, 0, 3*s, H);           // izq
+  ctx.fillRect(W-3*s, 0, 3*s, H);       // der
+  ctx.fillRect(0, 0, W, 3*s);           // top
+  ctx.fillRect(0, H-2*s, W, 2*s);       // base
+  // Detalle arco superior (pixel art)
+  ctx.fillStyle = frameLight;
+  for(let x = 3; x < W/s-3; x++) {
+    ctx.fillRect(x*s, 2*s, s, s);
+  }
+
+  // Pared — color adobe mexicano
+  ctx.fillStyle = '#C4833A';
+  ctx.fillRect(3*s, 3*s, W-6*s, H-5*s);
+
+  // Azulejos decorativos en el marco (estilo talavera)
+  const tileColors = ['#1B6CA8','#E8C547','#C0392B','#27AE60'];
+  for(let i = 0; i < 4; i++) {
+    ctx.fillStyle = tileColors[i];
+    ctx.fillRect(s*0.5, (4+i*4)*s, 2*s, 2*s);   // izq
+    ctx.fillRect(W-2.5*s, (4+i*4)*s, 2*s, 2*s); // der
+  }
+
+  // Hoja de la puerta — madera oscura
+  const doorW = W - 8*s;
+  const doorH = H - 6*s;
+  const doorX = 4*s;
+  const doorY = 3*s;
+  const skew = openPct * doorW * 0.75; // perspectiva al abrir
+
+  ctx.fillStyle = '#5D3A1A';
+  // Dibuja la puerta con perspectiva simple (reducir ancho)
+  const visibleW = doorW * (1 - openPct * 0.85);
+  if (visibleW > 2) {
+    ctx.fillRect(doorX, doorY, visibleW, doorH);
+
+    // Tablones de madera
+    ctx.fillStyle = '#6B4226';
+    for(let y = 1; y < 6; y++) {
+      ctx.fillRect(doorX + s, doorY + y*(doorH/6), visibleW - 2*s, s);
+    }
+
+    // Panel superior decorativo
+    ctx.fillStyle = '#4A2C0A';
+    ctx.fillRect(doorX + 2*s, doorY + 2*s, visibleW - 4*s, doorH*0.35);
+
+    // Panel inferior
+    ctx.fillRect(doorX + 2*s, doorY + doorH*0.45, visibleW - 4*s, doorH*0.45);
+
+    // Cruz decorativa estilo colonial
+    if (visibleW > 20) {
+      ctx.fillStyle = '#8B6914';
+      const cx = doorX + visibleW * 0.5;
+      ctx.fillRect(cx - s*0.5, doorY + 2*s, s, doorH*0.35);
+      ctx.fillRect(doorX + 2*s, doorY + doorH*0.18, visibleW - 4*s, s);
+    }
+
+    // Aldaba (manija)
+    if (visibleW > 30 && openPct < 0.5) {
+      ctx.fillStyle = '#D4A017';
+      ctx.fillRect(doorX + visibleW - 4*s, doorY + doorH*0.42, 2*s, 4*s);
+      ctx.fillRect(doorX + visibleW - 5*s, doorY + doorH*0.42, s, s);
+      ctx.fillRect(doorX + visibleW - 5*s, doorY + doorH*0.42 + 3*s, s, s);
+    }
+
+    // Borde de luz en la puerta
+    ctx.fillStyle = '#7B4F2E';
+    ctx.fillRect(doorX, doorY, s, doorH);
+  }
+
+  // Oscuridad interior cuando se abre
+  if (openPct > 0.1) {
+    ctx.fillStyle = `rgba(0,0,0,${openPct * 0.85})`;
+    ctx.fillRect(doorX, doorY, doorW, doorH);
+  }
+}
+
+// ── SECUENCIA PUERTA + DON MEMO ──
+window.addEventListener('load', () => {
+  const canvas = document.getElementById('doorCanvas');
+  const memo   = document.getElementById('memoImg');
+  if (!canvas || !memo) return;
+  const ctx = canvas.getContext('2d');
+
+  let openPct = 0;
+  let phase = 'opening'; // opening → waiting → closing → done
+
+  // Dibuja puerta cerrada al inicio
+  drawDoor(ctx, 0);
+
+  setTimeout(() => {
+    // Fase 1: abrir puerta
+    const openInterval = setInterval(() => {
+      openPct = Math.min(openPct + 0.04, 1);
+      drawDoor(ctx, openPct);
+      if (openPct >= 1) {
+        clearInterval(openInterval);
+        // Fase 2: Don Memo aparece
+        setTimeout(() => {
+          memo.style.transition = 'opacity 0.4s ease, transform 0.5s ease';
+          memo.style.opacity = '1';
+          memo.style.transform = 'translateX(-50%)';
+
+          // Fase 3: cerrar puerta
+          setTimeout(() => {
+            const closeInterval = setInterval(() => {
+              openPct = Math.max(openPct - 0.05, 0);
+              drawDoor(ctx, openPct);
+              if (openPct <= 0) {
+                clearInterval(closeInterval);
+                // Fase 4: desvanecer canvas y activar idle
+                canvas.style.transition = 'opacity 0.5s ease';
+                canvas.style.opacity = '0';
+                setTimeout(() => {
+                  canvas.style.display = 'none';
+                  memo.style.transition = '';
+                  memo.classList.add('memo-idle');
+                }, 500);
+              }
+            }, 20);
+          }, 600);
+        }, 300);
+      }
+    }, 20);
+  }, 500);
+});
+
+// ── CARD FLASH al entrar al viewport ──
+const cardFlashObs = new IntersectionObserver((entries) => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => {
+        e.target.classList.add('card-flash');
+        e.target.addEventListener('animationend', () => {
+          e.target.classList.remove('card-flash');
+        }, { once: true });
+      }, i * 150);
+      cardFlashObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.3 });
+document.querySelectorAll('.porque-card').forEach(el => cardFlashObs.observe(el));
 
 // ── TOAST ──
 function showToast(msg){
