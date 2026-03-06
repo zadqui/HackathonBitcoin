@@ -1,172 +1,525 @@
 <!DOCTYPE html>
-
-<html class="dark" lang="es"><head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Don Memo y los Sats - Landing Page</title>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Press+Start+2P&amp;family=VT323&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<script id="tailwind-config">
-        tailwind.config = {
-            darkMode: "class",
-            theme: {
-                extend: {
-                    colors: {
-                        "primary": "#f7951d",
-                        "background-light": "#f8f7f5",
-                        "background-dark": "#1A1A2E",
-                    },
-                    fontFamily: {
-                        "display": ["Space Grotesk", "sans-serif"],
-                        "pixel": ["'Press Start 2P'", "cursive"],
-                        "retro": ["VT323", "monospace"]
-                    },
-                    borderRadius: {
-                        "DEFAULT": "0px", 
-                        "lg": "2px", 
-                        "xl": "4px", 
-                        "full": "9999px"
-                    },
-                },
-            },
-        }
-    </script>
-<style>
-        .pixel-shadow {
-            box-shadow: 4px 4px 0px 0px rgba(0,0,0,0.5);
-        }
-        .pixel-shadow-orange {
-            box-shadow: 4px 4px 0px 0px #b36b15;
-        }
-        .scanline {
-            background: linear-gradient(
-                to bottom,
-                rgba(18, 16, 16, 0) 50%,
-                rgba(0, 0, 0, 0.1) 50%
-            );
-            background-size: 100% 4px;
-            pointer-events: none;
-        }
-        .floating-sats {
-            position: absolute;
-            animation: float 6s ease-in-out infinite;
-        }
-        @keyframes float {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-20px) rotate(10deg); }
-        }
-    </style>
+<html lang="es" class="dark">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Don Memo y los Sats — Aprende Bitcoin en México</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="css/styles.css"/>
 </head>
-<body class="bg-background-dark font-display text-slate-100 overflow-x-hidden">
-<!-- Scanline Overlay -->
-<div class="fixed inset-0 z-50 scanline opacity-30 pointer-events-none"></div>
-<!-- TopNavBar -->
-<nav class="fixed top-0 w-full z-40 bg-background-dark border-b-4 border-primary px-6 py-3">
-<div class="max-w-[1280px] mx-auto flex items-center justify-between">
-<!-- Logo Section -->
-<div class="flex items-center gap-3">
-<div class="bg-primary p-1 pixel-shadow">
-<span class="material-symbols-outlined text-background-dark text-2xl font-bold">bolt</span>
+<body>
+
+<div id="scrollProgress"></div>
+<div id="particles"></div>
+<div id="toast"><span class="pixel" style="font-size:8px;color:var(--btc);" id="toastMsg">⚡ precio actualizado</span></div>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#porque" class="pixel" style="font-size:9px;color:#aaa;text-decoration:none;" onclick="closeMobileMenu()">¿POR QUÉ?</a>
+  <a href="#curso" class="pixel" style="font-size:9px;color:#aaa;text-decoration:none;" onclick="closeMobileMenu()">EL CURSO</a>
+  <a href="#calculadora" class="pixel" style="font-size:9px;color:#aaa;text-decoration:none;" onclick="closeMobileMenu()">CALCULADORA</a>
+  <a href="#memo" class="pixel" style="font-size:9px;color:#aaa;text-decoration:none;" onclick="closeMobileMenu()">DON MEMO</a>
+  <a href="don_memo_v2.html" class="btn-primary" style="font-size:9px;padding:10px 16px;text-align:center;">⚡ COMENZAR</a>
 </div>
-<h2 class="font-pixel text-xs md:text-sm tracking-tighter text-slate-100">DON MEMO Y LOS SATS</h2>
-</div>
-<!-- Navigation Links -->
-<div class="hidden lg:flex items-center gap-8">
-<a class="font-pixel text-[10px] text-slate-300 hover:text-primary transition-colors" href="#">INICIO</a>
-<a class="font-pixel text-[10px] text-slate-300 hover:text-primary transition-colors" href="#">EL CURSO</a>
-<a class="font-pixel text-[10px] text-slate-300 hover:text-primary transition-colors" href="#">¿POR QUÉ BITCOIN?</a>
-<a class="font-pixel text-[10px] text-slate-300 hover:text-primary transition-colors" href="#">CALCULADORA</a>
-</div>
-<!-- Right Actions -->
-<div class="flex items-center gap-4">
-<div class="hidden sm:flex items-center bg-background-dark border-2 border-primary px-3 py-1 pixel-shadow-orange">
-<span class="font-pixel text-[10px] text-primary">BTC: $65,420</span>
-</div>
-<button class="bg-primary hover:bg-orange-600 text-background-dark font-pixel text-[10px] px-4 py-2 pixel-shadow transition-transform active:translate-y-1">
-                    ⚡ COMENZAR
-                </button>
-</div>
-</div>
+
+<!-- ══════════ NAVBAR ══════════ -->
+<nav>
+  <div style="max-width:1280px;margin:0 auto;padding:12px 24px;display:flex;align-items:center;justify-content:space-between;">
+    <div style="display:flex;align-items:center;gap:12px;">
+      <div style="background:var(--btc);padding:6px 8px;box-shadow:3px 3px 0 #000;">
+        <span style="font-family:'Press Start 2P',monospace;font-size:14px;color:#000;">⚡</span>
+      </div>
+      <span class="pixel" style="font-size:9px;color:#fff;">DON MEMO Y LOS SATS</span>
+    </div>
+    <div class="nav-links" style="display:flex;gap:32px;">
+      <a href="#porque" class="pixel" style="font-size:9px;color:#aaa;text-decoration:none;" onmouseover="this.style.color='#F7931A'" onmouseout="this.style.color='#aaa'">¿POR QUÉ?</a>
+      <a href="#curso" class="pixel" style="font-size:9px;color:#aaa;text-decoration:none;" onmouseover="this.style.color='#F7931A'" onmouseout="this.style.color='#aaa'">EL CURSO</a>
+      <a href="#calculadora" class="pixel" style="font-size:9px;color:#aaa;text-decoration:none;" onmouseover="this.style.color='#F7931A'" onmouseout="this.style.color='#aaa'">CALCULADORA</a>
+      <a href="#memo" class="pixel" style="font-size:9px;color:#aaa;text-decoration:none;" onmouseover="this.style.color='#F7931A'" onmouseout="this.style.color='#aaa'">DON MEMO</a>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <div class="nav-price" style="border:2px solid var(--btc);padding:5px 10px;background:rgba(247,147,26,0.1);">
+        <span class="pixel ticker-pulse" style="font-size:9px;color:var(--btc);" id="navPrice">BTC: cargando...</span>
+      </div>
+      <a href="don_memo_v2.html" class="btn-primary" style="font-size:9px;padding:10px 16px;">⚡ COMENZAR</a>
+      <button id="menuToggle" onclick="toggleMobileMenu()" style="background:none;border:2px solid #444;padding:6px 10px;cursor:pointer;color:#fff;font-size:18px;line-height:1;">☰</button>
+    </div>
+  </div>
 </nav>
-<!-- Hero Section -->
-<section class="relative h-screen min-h-[700px] w-full flex items-center justify-center overflow-hidden">
-<!-- Background Image with Gradient -->
-<div class="absolute inset-0 bg-cover bg-center" data-alt="16-bit pixel art Mexican park at sunset with warm orange sky" style="background-image: linear-gradient(to bottom, rgba(26, 26, 46, 0.4), rgba(26, 26, 46, 0.95)), url('https://lh3.googleusercontent.com/aida-public/AB6AXuAys_-OQf4_LOcCIM8EkXePCIQC_9hW7mcQEAKfxourprktYlq4EsaLQXkZIChBmmKN5GXPbwqRuo1-6vgAoOD0-410YVX-pyKVrAZr3-vG_Lisf9iccnhFlgQKr51u6HJuK8U4f-TGDwdMC7gvgzq5yQvAkofrHzzfc1iBLPA-HYLZBEqOodlDi_H95ywwe0V-a0rmLORIv9c_868UT8XmQ8iB7m_5pcvYv3UEVuDcKjme-4oM3vShtbYcgVDcr4Xo0ppYaCAIaQwk');">
-</div>
-<!-- Floating Pixel Particles -->
-<div class="absolute top-1/4 left-1/4 floating-sats text-primary font-pixel opacity-40 text-2xl">₿</div>
-<div class="absolute top-1/3 right-1/4 floating-sats text-primary font-pixel opacity-30 text-xl" style="animation-delay: 2s;">⚡</div>
-<div class="absolute bottom-1/4 left-1/3 floating-sats text-primary font-pixel opacity-20 text-3xl" style="animation-delay: 4s;">₿</div>
-<!-- Hero Content -->
-<div class="relative z-10 container mx-auto px-6 text-center lg:text-left flex flex-col items-center lg:items-start gap-6">
-<span class="bg-primary/20 text-primary font-pixel text-[10px] px-3 py-1 border border-primary/40 inline-block">
-                BIENVENIDO AL CURSO INTERACTIVO
-            </span>
-<div class="flex flex-col gap-2">
-<h1 class="font-pixel text-4xl md:text-6xl lg:text-7xl text-primary leading-tight uppercase drop-shadow-lg">
-                    APRENDE BITCOIN
-                </h1>
-<h1 class="font-pixel text-4xl md:text-6xl lg:text-7xl text-slate-100 leading-tight uppercase drop-shadow-lg">
-                    CON DON MEMO
-                </h1>
-</div>
-<p class="font-retro text-2xl md:text-3xl text-slate-300 max-w-2xl leading-relaxed">
-                "¿Nunca has escuchado de Bitcoin? Perfecto. Don Memo te va a explicar todo. Sin tecnicismos. Sin bancos. Solo la verdad."
-            </p>
-<div class="flex flex-wrap items-center justify-center lg:justify-start gap-6 mt-4">
-<button class="bg-primary hover:bg-orange-500 text-background-dark font-pixel text-sm px-8 py-5 pixel-shadow transition-all hover:-translate-y-1 active:translate-y-0 group">
-                    ⚡ EMPEZAR EL CURSO
-                </button>
-<button class="bg-transparent hover:bg-white/5 text-slate-100 border-4 border-slate-100 font-pixel text-sm px-8 py-4 pixel-shadow transition-all hover:-translate-y-1 active:translate-y-0">
-                    ▶ VER CÓMO FUNCIONA
-                </button>
-</div>
-</div>
-<!-- Scroll Indicator -->
-<div class="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 animate-bounce">
-<span class="font-pixel text-[8px] text-slate-500">SCROLL START</span>
-<span class="material-symbols-outlined text-slate-500">keyboard_double_arrow_down</span>
-</div>
+
+<!-- ══════════ HERO ══════════ -->
+<section class="hero-bg section-pad" style="min-height:100vh;display:flex;align-items:center;justify-content:center;padding-top:80px;position:relative;overflow:hidden;">
+
+  <div style="position:absolute;top:15%;left:8%;font-size:8px;color:rgba(255,255,255,0.3);animation:particleFloat 8s ease-in-out infinite;" class="pixel">₿</div>
+  <div style="position:absolute;top:25%;right:12%;font-size:12px;color:rgba(247,147,26,0.4);animation:particleFloat 6s ease-in-out infinite;animation-delay:2s;" class="pixel">⚡</div>
+  <div style="position:absolute;top:60%;left:5%;font-size:10px;color:rgba(247,147,26,0.2);animation:particleFloat 10s ease-in-out infinite;animation-delay:4s;" class="pixel">₿</div>
+
+  <div style="max-width:1100px;margin:0 auto;padding:0 24px;width:100%;">
+    <div class="hero-grid">
+      <!-- LEFT -->
+      <div style="display:flex;flex-direction:column;gap:20px;">
+        <div style="display:inline-block;background:rgba(247,147,26,0.15);border:1px solid rgba(247,147,26,0.4);padding:6px 14px;width:fit-content;">
+          <span class="pixel" style="font-size:8px;color:var(--btc);">CURSO INTERACTIVO GRATUITO</span>
+        </div>
+        <div>
+          <div class="pixel hero-title" style="font-size:48px;color:var(--btc);text-shadow:5px 5px 0 #000;line-height:1.3;">APRENDE</div>
+          <div class="pixel hero-title" style="font-size:48px;color:#fff;text-shadow:5px 5px 0 #000;line-height:1.3;">BITCOIN</div>
+          <div class="pixel" style="font-size:20px;color:var(--gold);text-shadow:3px 3px 0 #000;margin-top:4px;">CON DON MEMO</div>
+        </div>
+        <div class="quote-box" style="padding:16px 20px;">
+          <p style="font-size:22px;line-height:1.5;color:#ddd;">
+            "¿Nunca has escuchado de Bitcoin? Perfecto.<br>
+            Don Memo te va a explicar todo.<br>
+            Sin tecnicismos. Sin bancos. <span style="color:var(--btc);">Solo la verdad.</span>"
+          </p>
+        </div>
+        <div class="hero-ctas" style="display:flex;gap:16px;flex-wrap:wrap;margin-top:8px;">
+          <a href="don_memo_v2.html" class="btn-primary" style="font-size:9px;padding:14px 24px;">⚡ EMPEZAR EL CURSO</a>
+          <a href="#curso" class="btn-outline" style="font-size:9px;padding:12px 20px;">▶ VER CÓMO FUNCIONA</a>
+        </div>
+        <div style="display:flex;gap:24px;margin-top:8px;flex-wrap:wrap;">
+          <div><div class="pixel" style="font-size:16px;color:var(--btc);">GRATIS</div><div style="font-size:16px;color:#888;">sin costo</div></div>
+          <div style="width:2px;background:#333;"></div>
+          <div><div class="pixel" style="font-size:16px;color:var(--btc);">~15 MIN</div><div style="font-size:16px;color:#888;">para completar</div></div>
+          <div style="width:2px;background:#333;"></div>
+          <div><div class="pixel" style="font-size:16px;color:var(--btc);">3 FINALES</div><div style="font-size:16px;color:#888;">tú decides</div></div>
+        </div>
+      </div>
+
+      <!-- RIGHT -->
+      <div class="hero-right" style="display:flex;flex-direction:column;gap:16px;align-items:center;">
+        <div style="background:rgba(13,13,26,0.9);border:3px solid var(--btc);padding:24px;width:100%;box-shadow:6px 6px 0 #000;text-align:center;">
+          <div class="pixel" style="font-size:9px;color:#888;margin-bottom:8px;">⚡ PRECIO BITCOIN EN VIVO</div>
+          <div id="priceOffline" style="display:none;font-size:13px;color:#C0392B;margin-bottom:6px;">⚠ sin conexión</div>
+          <div class="pixel" style="font-size:28px;color:var(--btc);text-shadow:3px 3px 0 #000;" id="heroPriceMXN">$---,---</div>
+          <div style="font-size:18px;color:#888;margin-top:4px;" id="heroPriceUSD">$--,--- USD</div>
+          <div style="display:flex;justify-content:center;gap:20px;margin-top:12px;">
+            <div>
+              <div style="font-size:14px;color:#888;">Cambio 24h</div>
+              <div class="pixel" style="font-size:12px;" id="heroChange">--</div>
+            </div>
+            <div style="width:1px;background:#333;"></div>
+            <div>
+              <div style="font-size:14px;color:#888;">1 SAT =</div>
+              <div class="pixel" style="font-size:12px;color:var(--gold);" id="heroSat">$----- MXN</div>
+            </div>
+          </div>
+          <div style="font-size:13px;color:#555;margin-top:12px;">Actualizado cada 30s · CoinGecko API</div>
+        </div>
+        <div style="text-align:center;padding:16px;">
+          <img id="memoImg" src="assets/img/don_memo.png" alt="Don Memo" style="width:160px;height:150px;display:block;margin:0 auto;image-rendering:pixelated;">
+          <div style="font-size:18px;color:#888;margin-top:8px;">"Siéntate, mijo. Tengo algo<br>que contarte..."</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bounce" style="position:absolute;bottom:32px;left:50%;text-align:center;">
+    <div class="pixel" style="font-size:7px;color:#555;margin-bottom:4px;">SCROLL</div>
+    <div style="font-size:24px;color:#555;">▼</div>
+  </div>
 </section>
-<!-- Stats / Features Quick Bar -->
-<div class="bg-[#121225] border-y-4 border-primary/30 py-8">
-<div class="max-w-[1280px] mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 px-6">
-<div class="flex flex-col items-center gap-2 p-6 bg-background-dark border-2 border-primary/20 pixel-shadow">
-<span class="material-symbols-outlined text-primary text-4xl">lightbulb</span>
-<h3 class="font-pixel text-xs text-slate-100 mt-2">SIN TECNICISMOS</h3>
-<p class="font-retro text-xl text-slate-400 text-center">Explicaciones claras para todos.</p>
+
+<!-- ══════════ STATS BAR ══════════ -->
+<div style="background:#121225;border-top:4px solid rgba(247,147,26,0.3);border-bottom:4px solid rgba(247,147,26,0.3);padding:32px 0;">
+  <div style="max-width:1280px;margin:0 auto;padding:0 24px;">
+    <div class="stats-grid">
+      <div class="reveal card" style="padding:20px;text-align:center;">
+        <div class="pixel" style="font-size:9px;color:var(--btc);margin-bottom:6px;">📉</div>
+        <div class="stat-num" style="font-size:18px;" data-target="45" id="stat1">0</div>
+        <div class="pixel" style="font-size:7px;color:var(--btc);">%</div>
+        <div style="font-size:17px;color:#888;margin-top:4px;">Valor perdido del peso en 10 años</div>
+      </div>
+      <div class="reveal card" style="padding:20px;text-align:center;">
+        <div class="pixel" style="font-size:9px;color:var(--btc);margin-bottom:6px;">💸</div>
+        <div class="stat-num" style="font-size:18px;" data-target="67" id="stat2">0</div>
+        <div class="pixel" style="font-size:7px;color:var(--btc);">MIL MDD</div>
+        <div style="font-size:17px;color:#888;margin-top:4px;">En remesas anuales a México</div>
+      </div>
+      <div class="reveal card" style="padding:20px;text-align:center;">
+        <div class="pixel" style="font-size:9px;color:var(--btc);margin-bottom:6px;">⚡</div>
+        <div class="stat-num" style="font-size:18px;" data-target="15" id="stat3">0</div>
+        <div class="pixel" style="font-size:7px;color:var(--btc);">AÑOS</div>
+        <div style="font-size:17px;color:#888;margin-top:4px;">Bitcoin sin ser hackeado</div>
+      </div>
+      <div class="reveal card" style="padding:20px;text-align:center;">
+        <div class="pixel" style="font-size:9px;color:var(--btc);margin-bottom:6px;">🏪</div>
+        <div class="stat-num" style="font-size:18px;" data-target="500" id="stat4">0</div>
+        <div class="pixel" style="font-size:7px;color:var(--btc);">+</div>
+        <div style="font-size:17px;color:#888;margin-top:4px;">Negocios aceptan BTC en México</div>
+      </div>
+    </div>
+  </div>
 </div>
-<div class="flex flex-col items-center gap-2 p-6 bg-background-dark border-2 border-primary/20 pixel-shadow">
-<span class="material-symbols-outlined text-primary text-4xl">sports_esports</span>
-<h3 class="font-pixel text-xs text-slate-100 mt-2">INTERACTIVO</h3>
-<p class="font-retro text-xl text-slate-400 text-center">Aprende jugando en 16 bits.</p>
-</div>
-<div class="flex flex-col items-center gap-2 p-6 bg-background-dark border-2 border-primary/20 pixel-shadow">
-<span class="material-symbols-outlined text-primary text-4xl">location_on</span>
-<h3 class="font-pixel text-xs text-slate-100 mt-2">100% MEXICANO</h3>
-<p class="font-retro text-xl text-slate-400 text-center">Contexto real de nuestra economía.</p>
-</div>
-</div>
-</div>
-<!-- Footer -->
-<footer class="bg-background-dark px-10 py-16 text-center border-t-4 border-slate-800">
-<div class="max-w-[960px] mx-auto flex flex-col gap-8">
-<div class="flex flex-wrap justify-center gap-8 font-pixel text-[10px] text-slate-500 uppercase">
-<a class="hover:text-primary" href="#">Términos</a>
-<a class="hover:text-primary" href="#">Privacidad</a>
-<a class="hover:text-primary" href="#">Contacto</a>
-</div>
-<div class="flex justify-center gap-6">
-<a class="w-12 h-12 flex items-center justify-center bg-slate-800 hover:bg-primary hover:text-background-dark transition-colors pixel-shadow" href="#">
-<svg class="w-6 h-6 fill-current" viewbox="0 0 24 24"><path d="M22.46 6c-.77.35-1.6.58-2.46.69.88-.53 1.56-1.37 1.88-2.38-.83.5-1.75.85-2.72 1.05C18.37 4.5 17.26 4 16 4c-2.35 0-4.27 1.92-4.27 4.29 0 .34.04.67.11.98C8.28 9.09 5.11 7.38 3 4.79c-.37.63-.58 1.37-.58 2.15 0 1.48.75 2.78 1.89 3.54-.7 0-1.35-.22-1.93-.53v.05c0 2.06 1.47 3.78 3.42 4.17-.36.1-.73.15-1.12.15-.27 0-.54-.03-.8-.08.54 1.69 2.11 2.92 3.97 2.95-1.46 1.14-3.3 1.82-5.3 1.82-.35 0-.69-.02-1.03-.06 1.88 1.2 4.11 1.91 6.51 1.91 7.82 0 12.09-6.48 12.09-12.09 0-.19 0-.37-.01-.56.84-.6 1.56-1.36 2.14-2.23z"></path></svg>
-</a>
-<a class="w-12 h-12 flex items-center justify-center bg-slate-800 hover:bg-primary hover:text-background-dark transition-colors pixel-shadow" href="#">
-<span class="material-symbols-outlined">code</span>
-</a>
-</div>
-<p class="font-retro text-xl text-slate-500">© 2024 Don Memo y los Sats. Hecho con 🧡 para México.</p>
-</div>
+
+<!-- ══════════ ENCUESTA ══════════ -->
+<section class="section-pad" style="padding:80px 24px;background:#121225;border-top:4px solid rgba(247,147,26,0.2);border-bottom:4px solid rgba(247,147,26,0.2);">
+  <div style="max-width:700px;margin:0 auto;">
+    <div class="reveal" style="text-align:center;margin-bottom:48px;">
+      <div class="section-title" style="font-size:16px;">ANTES DE EMPEZAR...</div>
+      <p style="font-size:22px;color:#888;margin-top:16px;">Una encuesta rápida. Sin respuestas incorrectas.</p>
+    </div>
+    <div class="reveal card" style="padding:32px;">
+      <div id="pollContent">
+        <div id="q1" class="poll-q">
+          <div class="pixel" style="font-size:9px;color:#888;margin-bottom:6px;">PREGUNTA 1 DE 3</div>
+          <div class="pixel" style="font-size:11px;color:#fff;margin-bottom:20px;">¿Sabes qué es Bitcoin?</div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <button class="poll-btn" onclick="answerPoll(1,'a')">✅ Sí, perfectamente</button>
+            <button class="poll-btn" onclick="answerPoll(1,'b')">🤔 Más o menos</button>
+            <button class="poll-btn" onclick="answerPoll(1,'c')">❓ Nunca escuché de eso</button>
+          </div>
+        </div>
+        <div id="q2" class="poll-q" style="display:none;">
+          <div class="pixel" style="font-size:9px;color:#888;margin-bottom:6px;">PREGUNTA 2 DE 3</div>
+          <div class="pixel" style="font-size:11px;color:#fff;margin-bottom:20px;">¿Tienes cuenta bancaria?</div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <button class="poll-btn" onclick="answerPoll(2,'a')">🏦 Sí, tengo</button>
+            <button class="poll-btn" onclick="answerPoll(2,'b')">❌ No tengo</button>
+            <button class="poll-btn" onclick="answerPoll(2,'c')">🤷 No me interesa tener</button>
+          </div>
+        </div>
+        <div id="q3" class="poll-q" style="display:none;">
+          <div class="pixel" style="font-size:9px;color:#888;margin-bottom:6px;">PREGUNTA 3 DE 3</div>
+          <div class="pixel" style="font-size:11px;color:#fff;margin-bottom:20px;">¿Alguna vez mandaste o recibiste remesas?</div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <button class="poll-btn" onclick="answerPoll(3,'a')">✈️ Sí, yo mismo</button>
+            <button class="poll-btn" onclick="answerPoll(3,'b')">👨‍👩‍👧 Mi familia lo hace</button>
+            <button class="poll-btn" onclick="answerPoll(3,'c')">🙅 No, nunca</button>
+          </div>
+        </div>
+        <div id="pollResult" style="display:none;text-align:center;">
+          <div style="font-size:40px;margin-bottom:16px;" id="resultEmoji">🎯</div>
+          <div class="pixel" style="font-size:11px;color:var(--btc);margin-bottom:12px;" id="resultTitle">PERFECTO.</div>
+          <div style="font-size:22px;color:#ddd;line-height:1.6;margin-bottom:24px;" id="resultMsg">Don Memo tiene algo justo para ti.</div>
+          <a href="don_memo_v2.html" class="btn-primary" style="font-size:10px;padding:16px 32px;">⚡ EMPEZAR MI HISTORIA</a>
+        </div>
+      </div>
+      <div style="display:flex;justify-content:center;gap:8px;margin-top:24px;" id="pollDots">
+        <div style="width:10px;height:10px;background:var(--btc);transition:background 0.3s;"></div>
+        <div style="width:10px;height:10px;background:#333;transition:background 0.3s;"></div>
+        <div style="width:10px;height:10px;background:#333;transition:background 0.3s;"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ ¿POR QUÉ? ══════════ -->
+<section id="porque" class="section-pad" style="padding:80px 24px;">
+  <div style="max-width:1100px;margin:0 auto;">
+    <div class="reveal" style="text-align:center;margin-bottom:60px;">
+      <div class="section-title" style="font-size:18px;">¿POR QUÉ DEBERÍA IMPORTARTE?</div>
+      <p style="font-size:22px;color:#888;margin-top:16px;">3 problemas reales que Bitcoin resuelve en México</p>
+    </div>
+    <div class="three-col">
+      <div class="reveal card" style="padding:28px;display:flex;flex-direction:column;gap:16px;">
+        <div style="font-size:40px;text-align:center;">📉</div>
+        <div class="pixel" style="font-size:11px;color:var(--btc);text-align:center;">EL PESO SE DERRITE</div>
+        <div class="pixel" style="font-size:9px;color:#ddd;line-height:1.8;">La inflación te roba en silencio</div>
+        <div style="font-size:18px;color:#aaa;line-height:1.5;">En los últimos 10 años, $100 pesos perdieron casi la mitad de su valor. Sin que nadie te avisara. Sin que nadie te pidiera permiso.</div>
+        <div style="background:rgba(247,147,26,0.08);border:1px solid rgba(247,147,26,0.2);padding:12px;margin-top:auto;">
+          <div style="font-size:15px;color:#888;">$100 pesos en 2014 equivalen hoy a...</div>
+          <div class="pixel" style="font-size:16px;color:var(--red);margin-top:4px;">$47 pesos</div>
+          <div style="font-size:13px;color:#555;margin-top:4px;">Fuente: Banxico INPC</div>
+        </div>
+      </div>
+      <div class="reveal card" style="padding:28px;display:flex;flex-direction:column;gap:16px;">
+        <div style="font-size:40px;text-align:center;">✈️</div>
+        <div class="pixel" style="font-size:11px;color:var(--btc);text-align:center;">LAS REMESAS SE LAS ROBAN</div>
+        <div class="pixel" style="font-size:9px;color:#ddd;line-height:1.8;">Los intermediarios se quedan con tu esfuerzo</div>
+        <div style="font-size:18px;color:#aaa;line-height:1.5;">México recibe $67 mil millones al año de migrantes. Hasta el 10% se lo quedan los intermediarios. Eso es el dinero de tu familia.</div>
+        <div style="background:rgba(247,147,26,0.08);border:1px solid rgba(247,147,26,0.2);padding:12px;margin-top:auto;">
+          <div style="font-size:15px;color:#888;">De cada $1,000 que mandas...</div>
+          <div style="display:flex;gap:12px;margin-top:8px;">
+            <div><div style="font-size:13px;color:#555;">Banco</div><div class="pixel" style="font-size:13px;color:var(--red);">$870</div><div style="font-size:12px;color:#555;">llega</div></div>
+            <div style="width:1px;background:#333;"></div>
+            <div><div style="font-size:13px;color:#555;">Lightning ⚡</div><div class="pixel" style="font-size:13px;color:var(--green);">$999</div><div style="font-size:12px;color:#555;">llega</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="reveal card" style="padding:28px;display:flex;flex-direction:column;gap:16px;">
+        <div style="font-size:40px;text-align:center;">🏦</div>
+        <div class="pixel" style="font-size:11px;color:var(--btc);text-align:center;">EL BANCO DECIDE POR TI</div>
+        <div class="pixel" style="font-size:9px;color:#ddd;line-height:1.8;">Tú no controlas tu dinero</div>
+        <div style="font-size:18px;color:#aaa;line-height:1.5;">El banco puede congelar tu cuenta, cobrar comisiones, cerrar los domingos. 63 millones de mexicanos no tienen cuenta bancaria.</div>
+        <div style="background:rgba(22,160,133,0.08);border:1px solid rgba(22,160,133,0.2);padding:12px;margin-top:auto;">
+          <div class="pixel" style="font-size:11px;color:var(--green);">BITCOIN:</div>
+          <div style="font-size:17px;color:#ddd;margin-top:4px;">✓ Abierto 24/7/365<br>✓ Sin papeles<br>✓ Sin permiso</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ EL CURSO ══════════ -->
+<section id="curso" class="section-pad" style="padding:80px 24px;background:#121225;border-top:4px solid rgba(247,147,26,0.2);border-bottom:4px solid rgba(247,147,26,0.2);">
+  <div style="max-width:1100px;margin:0 auto;">
+    <div class="reveal" style="text-align:center;margin-bottom:60px;">
+      <div class="section-title" style="font-size:18px;">¿QUÉ VAS A APRENDER?</div>
+      <p style="font-size:22px;color:#888;margin-top:16px;">Conocerás a Don Memo. Vivirás su historia.<br>Y sin darte cuenta... entenderás Bitcoin.</p>
+    </div>
+    <div class="two-col">
+      <div class="reveal">
+        <div style="border:4px solid var(--btc);box-shadow:8px 8px 0 #000;position:relative;overflow:hidden;background:#0d1a2e;">
+          <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAys_-OQf4_LOcCIM8EkXePCIQC_9hW7mcQEAKfxourprktYlq4EsaLQXkZIChBmmKN5GXPbwqRuo1-6vgAoOD0-410YVX-pyKVrAZr3-vG_Lisf9iccnhFlgQKr51u6HJuK8U4f-TGDwdMC7gvgzq5yQvAkofrHzzfc1iBLPA-HYLZBEqOodlDi_H95ywwe0V-a0rmLORIv9c_868UT8XmQ8iB7m_5pcvYv3UEVuDcKjme-4oM3vShtbYcgVDcr4Xo0ppYaCAIaQwk" alt="Don Memo game" style="width:100%;display:block;image-rendering:pixelated;">
+          <div style="position:absolute;inset:0;background:rgba(0,0,0,0.4);display:flex;align-items:center;justify-content:center;cursor:pointer;" onclick="window.location='don_memo_v2.html'">
+            <div style="background:var(--btc);width:72px;height:72px;display:flex;align-items:center;justify-content:center;box-shadow:6px 6px 0 #000;transition:all 0.1s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+              <span class="pixel" style="font-size:24px;color:#000;">▶</span>
+            </div>
+          </div>
+          <div style="position:absolute;bottom:0;left:0;right:0;background:rgba(4,4,14,0.96);border-top:3px solid var(--btc);padding:10px 14px;">
+            <div class="pixel" style="font-size:7px;color:var(--btc);">DON MEMO</div>
+            <div style="font-size:18px;color:#fff;margin-top:4px;">"Siéntate mijo, tenemos mucho que platicar..."<span class="blink" style="color:var(--btc);margin-left:4px;">█</span></div>
+          </div>
+        </div>
+        <div style="text-align:center;margin-top:12px;">
+          <a href="don_memo_v2.html" class="btn-primary" style="font-size:9px;padding:12px 24px;">⚡ JUGAR AHORA — ES GRATIS</a>
+        </div>
+      </div>
+      <div class="reveal" style="display:flex;flex-direction:column;gap:8px;">
+        <div class="chapter-card active" style="padding:16px 20px;">
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div class="pixel" style="font-size:16px;">📖</div>
+            <div>
+              <div class="pixel" style="font-size:8px;color:var(--btc);">CAPÍTULO 1</div>
+              <div class="pixel" style="font-size:9px;color:#fff;margin-top:4px;">¿Qué es la inflación?</div>
+              <div style="font-size:16px;color:#888;margin-top:4px;">Don Memo te explica por qué tu dinero vale menos cada año.</div>
+            </div>
+            <div style="margin-left:auto;color:var(--green);font-size:18px;">✓</div>
+          </div>
+        </div>
+        <div class="chapter-card" style="padding:16px 20px;">
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div class="pixel" style="font-size:16px;">🌎</div>
+            <div>
+              <div class="pixel" style="font-size:8px;color:#888;">CAPÍTULO 2</div>
+              <div class="pixel" style="font-size:9px;color:#ddd;margin-top:4px;">La historia de Chicago</div>
+              <div style="font-size:16px;color:#888;margin-top:4px;">20 años de remesas. $62,400 pesos perdidos en comisiones.</div>
+            </div>
+            <div style="margin-left:auto;color:#555;font-size:18px;">🔒</div>
+          </div>
+        </div>
+        <div class="chapter-card" style="padding:16px 20px;">
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div class="pixel" style="font-size:16px;">⚡</div>
+            <div>
+              <div class="pixel" style="font-size:8px;color:#888;">CAPÍTULO 3</div>
+              <div class="pixel" style="font-size:9px;color:#ddd;margin-top:4px;">Qué es Bitcoin</div>
+              <div style="font-size:16px;color:#888;margin-top:4px;">Los 5 dedos de Don Memo. Sin tecnicismos.</div>
+            </div>
+            <div style="margin-left:auto;color:#555;font-size:18px;">🔒</div>
+          </div>
+        </div>
+        <div class="chapter-card" style="padding:16px 20px;">
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div class="pixel" style="font-size:16px;">🗺️</div>
+            <div>
+              <div class="pixel" style="font-size:8px;color:#888;">CAPÍTULO 4</div>
+              <div class="pixel" style="font-size:9px;color:#ddd;margin-top:4px;">Bitcoin en México hoy</div>
+              <div style="font-size:16px;color:#888;margin-top:4px;">Dónde usarlo. Cómo comprarlo. Desde $50 pesos.</div>
+            </div>
+            <div style="margin-left:auto;color:#555;font-size:18px;">🔒</div>
+          </div>
+        </div>
+        <div class="chapter-card" style="padding:16px 20px;">
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div class="pixel" style="font-size:16px;">🏆</div>
+            <div>
+              <div class="pixel" style="font-size:8px;color:#888;">CAPÍTULO 5</div>
+              <div class="pixel" style="font-size:9px;color:#ddd;margin-top:4px;">Tu decisión</div>
+              <div style="font-size:16px;color:#888;margin-top:4px;">3 finales distintos según tus elecciones en el juego.</div>
+            </div>
+            <div style="margin-left:auto;color:#555;font-size:18px;">🔒</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ CALCULADORA ══════════ -->
+<section id="calculadora" class="section-pad" style="padding:80px 24px;">
+  <div style="max-width:1100px;margin:0 auto;">
+    <div class="reveal" style="text-align:center;margin-bottom:60px;">
+      <div class="section-title" style="font-size:18px;">⚡ CALCULADORA BITCOIN EN VIVO</div>
+      <p style="font-size:22px;color:#888;margin-top:16px;">Datos reales. Actualizados ahora mismo.</p>
+    </div>
+    <div class="two-col" style="gap:32px;">
+      <!-- Widget 1 -->
+      <div class="reveal card" style="padding:28px;">
+        <div class="pixel" style="font-size:10px;color:var(--btc);margin-bottom:20px;">📈 ¿QUÉ HUBIERA PASADO?</div>
+        <div style="margin-bottom:16px;">
+          <label style="font-size:16px;color:#888;display:block;margin-bottom:6px;">¿Cuánto tenías? (pesos)</label>
+          <input type="number" class="calc-input" id="investAmount" value="1500" placeholder="1500" oninput="calcInvest()">
+        </div>
+        <div style="margin-bottom:20px;">
+          <label style="font-size:16px;color:#888;display:block;margin-bottom:6px;">¿En qué año? <span class="pixel" style="color:var(--btc);" id="yearLabel">2020</span></label>
+          <input type="range" min="2015" max="2023" value="2020" id="yearSlider" oninput="document.getElementById('yearLabel').textContent=this.value;calcInvest()">
+        </div>
+        <div style="background:rgba(13,13,26,0.8);border:2px solid rgba(247,147,26,0.2);padding:16px;">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+            <div>
+              <div style="font-size:15px;color:#888;">En Bitcoin hoy:</div>
+              <div class="pixel" style="font-size:13px;color:var(--btc);margin-top:4px;" id="btcResult">calculando...</div>
+            </div>
+            <div>
+              <div style="font-size:15px;color:#888;">En pesos (inflación):</div>
+              <div class="pixel" style="font-size:13px;color:var(--red);margin-top:4px;" id="pesosResult">calculando...</div>
+            </div>
+          </div>
+          <div style="margin-top:12px;">
+            <div style="font-size:13px;color:#555;margin-bottom:4px;">Bitcoin vs Peso</div>
+            <div style="background:#222;height:8px;position:relative;">
+              <div id="btcBar" style="position:absolute;left:0;top:0;bottom:0;background:var(--btc);width:0%;transition:width 0.5s;"></div>
+            </div>
+          </div>
+          <div style="margin-top:12px;text-align:center;border-top:1px solid #333;padding-top:10px;">
+            <div style="font-size:14px;color:#888;">Tu dinero se multiplicó</div>
+            <div class="pixel" style="font-size:14px;color:var(--gold);margin-top:4px;" id="multiplier">x---</div>
+          </div>
+        </div>
+        <div style="font-size:13px;color:#555;margin-top:8px;">* Basado en precios históricos de mercado</div>
+      </div>
+      <!-- Widget 2 -->
+      <div class="reveal card" style="padding:28px;">
+        <div class="pixel" style="font-size:10px;color:var(--btc);margin-bottom:20px;">💱 CONVERSOR EN VIVO</div>
+        <div style="margin-bottom:16px;">
+          <label style="font-size:16px;color:#888;display:block;margin-bottom:6px;">Ingresa monto en pesos</label>
+          <input type="number" class="calc-input" id="convertAmount" value="100" placeholder="100" oninput="calcConvert()">
+        </div>
+        <div style="background:rgba(13,13,26,0.8);border:2px solid rgba(247,147,26,0.2);padding:20px;text-align:center;">
+          <div style="font-size:16px;color:#888;margin-bottom:8px;">Eso equivale a:</div>
+          <div class="pixel" style="font-size:14px;color:var(--btc);margin-bottom:4px;" id="btcAmount">--- BTC</div>
+          <div style="width:100%;height:2px;background:#333;margin:12px 0;"></div>
+          <div style="font-size:22px;color:var(--gold);" id="satAmount">--- sats ⚡</div>
+          <div style="font-size:16px;color:#888;margin-top:8px;" id="satMsg">Con $50 pesos tienes X,XXX sats</div>
+        </div>
+        <div style="margin-top:16px;background:rgba(22,160,133,0.08);border:1px solid rgba(22,160,133,0.2);padding:12px;">
+          <div class="pixel" style="font-size:8px;color:var(--green);">💡 ¿SABÍAS QUE?</div>
+          <div style="font-size:16px;color:#ddd;margin-top:6px;">No necesitas comprar 1 Bitcoin completo. Puedes empezar con lo que tengas.</div>
+        </div>
+        <div style="font-size:13px;color:#555;margin-top:8px;display:flex;align-items:center;gap:6px;">
+          <div style="width:6px;height:6px;background:var(--green);border-radius:50%;animation:tickerP 1s ease-in-out infinite;"></div>
+          Precio actualizado: <span id="lastUpdate">--</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ DON MEMO ══════════ -->
+<section id="memo" class="section-pad" style="padding:80px 24px;background:#121225;border-top:4px solid rgba(247,147,26,0.2);">
+  <div style="max-width:1100px;margin:0 auto;">
+    <div class="two-col" style="gap:60px;align-items:center;">
+      <div class="reveal" style="display:flex;flex-direction:column;gap:20px;">
+        <div class="section-title" style="font-size:16px;">CONOCE A DON MEMO</div>
+        <div style="font-size:22px;color:#888;line-height:1.6;">68 años. Ex-lavaplatos en Chicago.<br>Abuelo. Bitcoiner tardío.<br><span style="color:var(--btc);">Tiene mucho que contarte.</span></div>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <div style="display:flex;align-items:center;gap:12px;padding:12px;border-left:3px solid var(--btc);"><span style="font-size:20px;">🌮</span><span style="font-size:18px;color:#ddd;">Nació en Oaxaca, México</span></div>
+          <div style="display:flex;align-items:center;gap:12px;padding:12px;border-left:3px solid rgba(247,147,26,0.4);"><span style="font-size:20px;">✈️</span><span style="font-size:18px;color:#ddd;">20 años trabajando en Chicago</span></div>
+          <div style="display:flex;align-items:center;gap:12px;padding:12px;border-left:3px solid rgba(247,147,26,0.2);"><span style="font-size:20px;">💸</span><span style="font-size:18px;color:#ddd;">Perdió $62,400 pesos en comisiones</span></div>
+          <div style="display:flex;align-items:center;gap:12px;padding:12px;border-left:3px solid rgba(247,147,26,0.4);"><span style="font-size:20px;">⚡</span><span style="font-size:18px;color:#ddd;">Aprendió Bitcoin a los 58 años</span></div>
+        </div>
+        <div class="quote-box" style="padding:20px 24px;">
+          <div style="font-size:26px;color:var(--btc);margin-bottom:8px;">"</div>
+          <div style="font-size:22px;color:#ddd;line-height:1.5;">Mijo, si yo lo hubiera sabido antes... otro gallo cantaría.</div>
+          <div style="font-size:16px;color:#888;margin-top:8px;">— Don Memo, en la banca del parque</div>
+        </div>
+        <a href="don_memo_v2.html" class="btn-primary" style="font-size:9px;padding:14px 24px;align-self:flex-start;">⚡ ESCUCHAR SU HISTORIA</a>
+      </div>
+      <div class="reveal" style="animation-delay:0.2s;">
+        <div style="position:relative;padding-left:32px;margin-bottom:32px;">
+          <div style="position:absolute;left:8px;top:0;bottom:0;width:2px;background:#333;"></div>
+          <div style="position:relative;margin-bottom:24px;">
+            <div style="position:absolute;left:-28px;top:4px;width:16px;height:16px;background:var(--btc);box-shadow:0 0 10px rgba(247,147,26,0.5);"></div>
+            <div class="pixel" style="font-size:8px;color:var(--btc);">1978</div>
+            <div style="font-size:18px;color:#ddd;">Nace en Oaxaca</div>
+          </div>
+          <div style="position:relative;margin-bottom:24px;">
+            <div style="position:absolute;left:-28px;top:4px;width:16px;height:16px;background:var(--btc);"></div>
+            <div class="pixel" style="font-size:8px;color:var(--btc);">2001</div>
+            <div style="font-size:18px;color:#ddd;">Se va a Chicago</div>
+            <div style="font-size:15px;color:#888;">Empieza a mandar remesas</div>
+          </div>
+          <div style="position:relative;margin-bottom:24px;">
+            <div style="position:absolute;left:-28px;top:4px;width:16px;height:16px;background:var(--btc);"></div>
+            <div class="pixel" style="font-size:8px;color:var(--btc);">2018</div>
+            <div style="font-size:18px;color:#ddd;">Regresa a México</div>
+            <div style="font-size:15px;color:#888;">Sus ahorros ya no alcanzan igual</div>
+          </div>
+          <div style="position:relative;margin-bottom:24px;">
+            <div style="position:absolute;left:-28px;top:4px;width:16px;height:16px;background:var(--btc);box-shadow:0 0 10px rgba(247,147,26,0.6);"></div>
+            <div class="pixel" style="font-size:8px;color:var(--btc);">2020</div>
+            <div style="font-size:18px;color:#ddd;">Aprende Bitcoin</div>
+            <div style="font-size:15px;color:#888;">Su sobrino le explica todo</div>
+          </div>
+          <div style="position:relative;">
+            <div style="position:absolute;left:-28px;top:4px;width:16px;height:16px;background:var(--gold);box-shadow:0 0 15px rgba(212,160,23,0.7);animation:tickerP 1s ease-in-out infinite;"></div>
+            <div class="pixel" style="font-size:8px;color:var(--gold);">HOY</div>
+            <div style="font-size:18px;color:#ddd;">En la banca del parque</div>
+            <div style="font-size:15px;color:var(--btc);">Esperándote a ti</div>
+          </div>
+        </div>
+        <div>
+          <div class="pixel" style="font-size:9px;color:#888;margin-bottom:12px;">WALLETS QUE DON MEMO RECOMIENDA:</div>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;">
+            <div class="wallet-card" style="padding:12px;text-align:center;"><div style="font-size:20px;margin-bottom:6px;">🟣</div><div class="pixel" style="font-size:8px;color:var(--btc);">PHOENIX</div><div style="font-size:14px;color:#888;margin-top:4px;">Lightning · Auto</div></div>
+            <div class="wallet-card" style="padding:12px;text-align:center;"><div style="font-size:20px;margin-bottom:6px;">🔵</div><div class="pixel" style="font-size:8px;color:var(--btc);">BLINK</div><div style="font-size:14px;color:#888;margin-top:4px;">Simple · MX</div></div>
+            <div class="wallet-card" style="padding:12px;text-align:center;"><div style="font-size:20px;margin-bottom:6px;">🟢</div><div class="pixel" style="font-size:8px;color:var(--btc);">MUUN</div><div style="font-size:14px;color:#888;margin-top:4px;">Segura · Fácil</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ FOOTER ══════════ -->
+<footer style="background:#0D0D1A;border-top:4px solid #222;padding:60px 24px 32px;">
+  <div style="max-width:1100px;margin:0 auto;">
+    <div class="three-col" style="gap:48px;margin-bottom:48px;">
+      <div>
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
+          <div style="background:var(--btc);padding:6px 8px;box-shadow:3px 3px 0 #000;"><span class="pixel" style="color:#000;font-size:12px;">⚡</span></div>
+          <span class="pixel" style="font-size:9px;color:#fff;">DON MEMO Y LOS SATS</span>
+        </div>
+        <div style="font-size:18px;color:#888;line-height:1.6;">Aprende Bitcoin con una historia real.<br>Hecho para México.</div>
+        <div style="display:flex;gap:12px;margin-top:16px;">
+          <div style="width:36px;height:36px;background:#1a1a2e;border:2px solid #333;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px;">𝕏</div>
+          <div style="width:36px;height:36px;background:#1a1a2e;border:2px solid #333;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px;">⚡</div>
+          <div style="width:36px;height:36px;background:#1a1a2e;border:2px solid #333;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px;">&lt;/&gt;</div>
+        </div>
+      </div>
+      <div>
+        <div class="pixel" style="font-size:9px;color:var(--btc);margin-bottom:16px;">NAVEGACIÓN</div>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <a href="#porque" style="font-size:18px;color:#888;text-decoration:none;" onmouseover="this.style.color='#F7931A'" onmouseout="this.style.color='#888'">¿Por qué Bitcoin?</a>
+          <a href="#curso" style="font-size:18px;color:#888;text-decoration:none;" onmouseover="this.style.color='#F7931A'" onmouseout="this.style.color='#888'">El Curso</a>
+          <a href="#calculadora" style="font-size:18px;color:#888;text-decoration:none;" onmouseover="this.style.color='#F7931A'" onmouseout="this.style.color='#888'">Calculadora</a>
+          <a href="#memo" style="font-size:18px;color:#888;text-decoration:none;" onmouseover="this.style.color='#F7931A'" onmouseout="this.style.color='#888'">Conoce a Don Memo</a>
+          <a href="don_memo_v2.html" style="font-size:18px;color:var(--btc);text-decoration:none;">⚡ Jugar ahora</a>
+        </div>
+      </div>
+      <div>
+        <div class="pixel" style="font-size:9px;color:var(--btc);margin-bottom:16px;">APIs EN TIEMPO REAL</div>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <div style="font-size:17px;color:#888;">📊 CoinGecko — Precio BTC</div>
+          <div style="font-size:17px;color:#888;">🏦 Banxico — Inflación MX</div>
+          <div style="font-size:17px;color:#888;">🗺️ BTCMap — Negocios BTC</div>
+        </div>
+        <div style="margin-top:20px;padding:12px;border:1px solid rgba(247,147,26,0.2);background:rgba(247,147,26,0.05);">
+          <div class="pixel" style="font-size:7px;color:#888;">PROYECTO CREADO PARA</div>
+          <div class="pixel" style="font-size:8px;color:var(--btc);margin-top:4px;">HACKATHON BITCOIN MÉXICO 2025</div>
+        </div>
+      </div>
+    </div>
+    <div style="border-top:2px solid #1a1a2e;padding-top:24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+      <div style="font-size:17px;color:#555;">Bitcoin es de todos. La educación también.</div>
+      <div style="font-size:17px;color:#555;">Hecho con ⚡ y 🌮 en México</div>
+    </div>
+  </div>
 </footer>
-</body></html>
+
+<script src="js/main.js"></script>
+</body>
+</html>
