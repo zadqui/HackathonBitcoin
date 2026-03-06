@@ -285,6 +285,42 @@ input[type=range]::-webkit-slider-thumb {
 }
 #toast.show { transform: translateY(0); opacity: 1; }
 
+/* ── PUERTA MEXICANA ── */
+@keyframes doorOpen {
+  0%   { transform: perspective(400px) rotateY(0deg); }
+  100% { transform: perspective(400px) rotateY(-75deg); }
+}
+@keyframes doorClose {
+  0%   { transform: perspective(400px) rotateY(-75deg); }
+  100% { transform: perspective(400px) rotateY(0deg); }
+}
+@keyframes doorFadeOut {
+  0%   { opacity: 1; }
+  100% { opacity: 0; }
+}
+@keyframes memoEnter {
+  0%   { opacity: 0; transform: translateX(-50%) translateX(-20px); }
+  100% { opacity: 1; transform: translateX(-50%) translateX(0px); }
+}
+.memo-idle {
+  animation: memoIdle 2s ease-in-out infinite;
+  transform: translateX(-50%);
+}
+@keyframes memoIdle {
+  0%,100% { transform: translateX(-50%) translateY(0px); }
+  50%     { transform: translateX(-50%) translateY(-6px); }
+}
+
+/* ── CARD FLASH (¿por qué?) ── */
+@keyframes cardFlash {
+  0%   { border-color: rgba(247,147,26,0.25); box-shadow: none; }
+  30%  { border-color: var(--btc); box-shadow: 0 0 18px rgba(247,147,26,0.5), 4px 4px 0 #000; }
+  60%  { border-color: rgba(247,147,26,0.25); box-shadow: none; }
+  80%  { border-color: var(--btc); box-shadow: 0 0 10px rgba(247,147,26,0.3); }
+  100% { border-color: rgba(247,147,26,0.25); box-shadow: none; }
+}
+.card-flash { animation: cardFlash 0.8s ease forwards; }
+
 /* MOBILE FIXES */
 @media (max-width: 600px) {
   .hero-ctas { flex-direction: column !important; }
