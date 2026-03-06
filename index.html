@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Don Memo y los Sats - Landing Page</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Press+Start+2P&amp;family=VT323&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#f7951d",
+                        "background-light": "#f8f7f5",
+                        "background-dark": "#1A1A2E",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"],
+                        "pixel": ["'Press Start 2P'", "cursive"],
+                        "retro": ["VT323", "monospace"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0px", 
+                        "lg": "2px", 
+                        "xl": "4px", 
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        .pixel-shadow {
+            box-shadow: 4px 4px 0px 0px rgba(0,0,0,0.5);
+        }
+        .pixel-shadow-orange {
+            box-shadow: 4px 4px 0px 0px #b36b15;
+        }
+        .scanline {
+            background: linear-gradient(
+                to bottom,
+                rgba(18, 16, 16, 0) 50%,
+                rgba(0, 0, 0, 0.1) 50%
+            );
+            background-size: 100% 4px;
+            pointer-events: none;
+        }
+        .floating-sats {
+            position: absolute;
+            animation: float 6s ease-in-out infinite;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(10deg); }
+        }
+    </style>
+</head>
+<body class="bg-background-dark font-display text-slate-100 overflow-x-hidden">
+<!-- Scanline Overlay -->
+<div class="fixed inset-0 z-50 scanline opacity-30 pointer-events-none"></div>
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-40 bg-background-dark border-b-4 border-primary px-6 py-3">
+<div class="max-w-[1280px] mx-auto flex items-center justify-between">
+<!-- Logo Section -->
+<div class="flex items-center gap-3">
+<div class="bg-primary p-1 pixel-shadow">
+<span class="material-symbols-outlined text-background-dark text-2xl font-bold">bolt</span>
+</div>
+<h2 class="font-pixel text-xs md:text-sm tracking-tighter text-slate-100">DON MEMO Y LOS SATS</h2>
+</div>
+<!-- Navigation Links -->
+<div class="hidden lg:flex items-center gap-8">
+<a class="font-pixel text-[10px] text-slate-300 hover:text-primary transition-colors" href="#">INICIO</a>
+<a class="font-pixel text-[10px] text-slate-300 hover:text-primary transition-colors" href="#">EL CURSO</a>
+<a class="font-pixel text-[10px] text-slate-300 hover:text-primary transition-colors" href="#">¿POR QUÉ BITCOIN?</a>
+<a class="font-pixel text-[10px] text-slate-300 hover:text-primary transition-colors" href="#">CALCULADORA</a>
+</div>
+<!-- Right Actions -->
+<div class="flex items-center gap-4">
+<div class="hidden sm:flex items-center bg-background-dark border-2 border-primary px-3 py-1 pixel-shadow-orange">
+<span class="font-pixel text-[10px] text-primary">BTC: $65,420</span>
+</div>
+<button class="bg-primary hover:bg-orange-600 text-background-dark font-pixel text-[10px] px-4 py-2 pixel-shadow transition-transform active:translate-y-1">
+                    ⚡ COMENZAR
+                </button>
+</div>
+</div>
+</nav>
+<!-- Hero Section -->
+<section class="relative h-screen min-h-[700px] w-full flex items-center justify-center overflow-hidden">
+<!-- Background Image with Gradient -->
+<div class="absolute inset-0 bg-cover bg-center" data-alt="16-bit pixel art Mexican park at sunset with warm orange sky" style="background-image: linear-gradient(to bottom, rgba(26, 26, 46, 0.4), rgba(26, 26, 46, 0.95)), url('https://lh3.googleusercontent.com/aida-public/AB6AXuAys_-OQf4_LOcCIM8EkXePCIQC_9hW7mcQEAKfxourprktYlq4EsaLQXkZIChBmmKN5GXPbwqRuo1-6vgAoOD0-410YVX-pyKVrAZr3-vG_Lisf9iccnhFlgQKr51u6HJuK8U4f-TGDwdMC7gvgzq5yQvAkofrHzzfc1iBLPA-HYLZBEqOodlDi_H95ywwe0V-a0rmLORIv9c_868UT8XmQ8iB7m_5pcvYv3UEVuDcKjme-4oM3vShtbYcgVDcr4Xo0ppYaCAIaQwk');">
+</div>
+<!-- Floating Pixel Particles -->
+<div class="absolute top-1/4 left-1/4 floating-sats text-primary font-pixel opacity-40 text-2xl">₿</div>
+<div class="absolute top-1/3 right-1/4 floating-sats text-primary font-pixel opacity-30 text-xl" style="animation-delay: 2s;">⚡</div>
+<div class="absolute bottom-1/4 left-1/3 floating-sats text-primary font-pixel opacity-20 text-3xl" style="animation-delay: 4s;">₿</div>
+<!-- Hero Content -->
+<div class="relative z-10 container mx-auto px-6 text-center lg:text-left flex flex-col items-center lg:items-start gap-6">
+<span class="bg-primary/20 text-primary font-pixel text-[10px] px-3 py-1 border border-primary/40 inline-block">
+                BIENVENIDO AL CURSO INTERACTIVO
+            </span>
+<div class="flex flex-col gap-2">
+<h1 class="font-pixel text-4xl md:text-6xl lg:text-7xl text-primary leading-tight uppercase drop-shadow-lg">
+                    APRENDE BITCOIN
+                </h1>
+<h1 class="font-pixel text-4xl md:text-6xl lg:text-7xl text-slate-100 leading-tight uppercase drop-shadow-lg">
+                    CON DON MEMO
+                </h1>
+</div>
+<p class="font-retro text-2xl md:text-3xl text-slate-300 max-w-2xl leading-relaxed">
+                "¿Nunca has escuchado de Bitcoin? Perfecto. Don Memo te va a explicar todo. Sin tecnicismos. Sin bancos. Solo la verdad."
+            </p>
+<div class="flex flex-wrap items-center justify-center lg:justify-start gap-6 mt-4">
+<button class="bg-primary hover:bg-orange-500 text-background-dark font-pixel text-sm px-8 py-5 pixel-shadow transition-all hover:-translate-y-1 active:translate-y-0 group">
+                    ⚡ EMPEZAR EL CURSO
+                </button>
+<button class="bg-transparent hover:bg-white/5 text-slate-100 border-4 border-slate-100 font-pixel text-sm px-8 py-4 pixel-shadow transition-all hover:-translate-y-1 active:translate-y-0">
+                    ▶ VER CÓMO FUNCIONA
+                </button>
+</div>
+</div>
+<!-- Scroll Indicator -->
+<div class="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 animate-bounce">
+<span class="font-pixel text-[8px] text-slate-500">SCROLL START</span>
+<span class="material-symbols-outlined text-slate-500">keyboard_double_arrow_down</span>
+</div>
+</section>
+<!-- Stats / Features Quick Bar -->
+<div class="bg-[#121225] border-y-4 border-primary/30 py-8">
+<div class="max-w-[1280px] mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 px-6">
+<div class="flex flex-col items-center gap-2 p-6 bg-background-dark border-2 border-primary/20 pixel-shadow">
+<span class="material-symbols-outlined text-primary text-4xl">lightbulb</span>
+<h3 class="font-pixel text-xs text-slate-100 mt-2">SIN TECNICISMOS</h3>
+<p class="font-retro text-xl text-slate-400 text-center">Explicaciones claras para todos.</p>
+</div>
+<div class="flex flex-col items-center gap-2 p-6 bg-background-dark border-2 border-primary/20 pixel-shadow">
+<span class="material-symbols-outlined text-primary text-4xl">sports_esports</span>
+<h3 class="font-pixel text-xs text-slate-100 mt-2">INTERACTIVO</h3>
+<p class="font-retro text-xl text-slate-400 text-center">Aprende jugando en 16 bits.</p>
+</div>
+<div class="flex flex-col items-center gap-2 p-6 bg-background-dark border-2 border-primary/20 pixel-shadow">
+<span class="material-symbols-outlined text-primary text-4xl">location_on</span>
+<h3 class="font-pixel text-xs text-slate-100 mt-2">100% MEXICANO</h3>
+<p class="font-retro text-xl text-slate-400 text-center">Contexto real de nuestra economía.</p>
+</div>
+</div>
+</div>
+<!-- Footer -->
+<footer class="bg-background-dark px-10 py-16 text-center border-t-4 border-slate-800">
+<div class="max-w-[960px] mx-auto flex flex-col gap-8">
+<div class="flex flex-wrap justify-center gap-8 font-pixel text-[10px] text-slate-500 uppercase">
+<a class="hover:text-primary" href="#">Términos</a>
+<a class="hover:text-primary" href="#">Privacidad</a>
+<a class="hover:text-primary" href="#">Contacto</a>
+</div>
+<div class="flex justify-center gap-6">
+<a class="w-12 h-12 flex items-center justify-center bg-slate-800 hover:bg-primary hover:text-background-dark transition-colors pixel-shadow" href="#">
+<svg class="w-6 h-6 fill-current" viewbox="0 0 24 24"><path d="M22.46 6c-.77.35-1.6.58-2.46.69.88-.53 1.56-1.37 1.88-2.38-.83.5-1.75.85-2.72 1.05C18.37 4.5 17.26 4 16 4c-2.35 0-4.27 1.92-4.27 4.29 0 .34.04.67.11.98C8.28 9.09 5.11 7.38 3 4.79c-.37.63-.58 1.37-.58 2.15 0 1.48.75 2.78 1.89 3.54-.7 0-1.35-.22-1.93-.53v.05c0 2.06 1.47 3.78 3.42 4.17-.36.1-.73.15-1.12.15-.27 0-.54-.03-.8-.08.54 1.69 2.11 2.92 3.97 2.95-1.46 1.14-3.3 1.82-5.3 1.82-.35 0-.69-.02-1.03-.06 1.88 1.2 4.11 1.91 6.51 1.91 7.82 0 12.09-6.48 12.09-12.09 0-.19 0-.37-.01-.56.84-.6 1.56-1.36 2.14-2.23z"></path></svg>
+</a>
+<a class="w-12 h-12 flex items-center justify-center bg-slate-800 hover:bg-primary hover:text-background-dark transition-colors pixel-shadow" href="#">
+<span class="material-symbols-outlined">code</span>
+</a>
+</div>
+<p class="font-retro text-xl text-slate-500">© 2024 Don Memo y los Sats. Hecho con 🧡 para México.</p>
+</div>
+</footer>
+</body></html>
