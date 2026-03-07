@@ -185,7 +185,7 @@ html.light nav { box-shadow: 0 2px 10px var(--glow-r); }
   display: none;
   position: fixed;
   top: 0; left: 0; right: 0;
-  background: var(--nav-bg);
+  background: var(--darker);
   border-bottom: 3px solid var(--accent2);
   padding: 20px 24px;
   flex-direction: column;
@@ -533,8 +533,8 @@ html.light footer a:hover { color: var(--accent) !important; }
   }
 }
 
-/* ── LOGO CLARO — compensar padding interno ── */
+/* ── LOGO CLARO — mismo tamaño que oscuro ── */
 html.light #navLogo {
-  height: 64px !important;
-  width: 64px !important;
+  height: 56px !important;
+  width: 56px !important;
 }
