@@ -7,7 +7,12 @@ window.addEventListener('load', () => {
 });
 
 // ── MOBILE MENU ──
-function toggleMobileMenu() { document.getElementById('mobileMenu').classList.toggle('open'); }
+function toggleMobileMenu() {
+  const menu = document.getElementById('mobileMenu');
+  const nav = document.querySelector('nav');
+  if (nav) menu.style.top = nav.offsetHeight + 'px';
+  menu.classList.toggle('open');
+}
 function closeMobileMenu() { document.getElementById('mobileMenu').classList.remove('open'); }
 
 // ── PARTICLES ──

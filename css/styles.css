@@ -184,7 +184,7 @@ html.light nav { box-shadow: 0 2px 10px var(--glow-r); }
 .mobile-menu {
   display: none;
   position: fixed;
-  top: 76px; left: 0; right: 0;
+  top: 0; left: 0; right: 0;
   background: var(--nav-bg);
   border-bottom: 3px solid var(--accent2);
   padding: 20px 24px;
