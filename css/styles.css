@@ -184,7 +184,7 @@ html.light nav { box-shadow: 0 2px 10px var(--glow-r); }
 .mobile-menu {
   display: none;
   position: fixed;
-  top: 60px; left: 0; right: 0;
+  top: 76px; left: 0; right: 0;
   background: var(--nav-bg);
   border-bottom: 3px solid var(--accent2);
   padding: 20px 24px;
@@ -531,4 +531,10 @@ html.light footer a:hover { color: var(--accent) !important; }
   html.light .pixel {
     text-shadow: none !important;
   }
+}
+
+/* ── LOGO CLARO — compensar padding interno ── */
+html.light #navLogo {
+  height: 64px !important;
+  width: 64px !important;
 }
