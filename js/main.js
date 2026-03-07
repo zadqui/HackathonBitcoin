@@ -1,3 +1,11 @@
+// ── SCROLL RESET ON LOAD ──
+if ('scrollRestoration' in history) {
+  history.scrollRestoration = 'manual';
+}
+window.addEventListener('load', () => {
+  window.scrollTo(0, 0);
+});
+
 // ── MOBILE MENU ──
 function toggleMobileMenu() { document.getElementById('mobileMenu').classList.toggle('open'); }
 function closeMobileMenu() { document.getElementById('mobileMenu').classList.remove('open'); }
@@ -243,21 +251,35 @@ function showToast(msg){
 
 // ── BTC PRICE ──
 let btcPriceMXN=null, prevPrice=null, retryCount=0;
+let usdMxnRate=17.5; // fallback
+
+async function fetchUSDMXN(){
+  try{
+    const res=await fetch('https://api.frankfurter.app/latest?from=USD&to=MXN');
+    const data=await res.json();
+    usdMxnRate=data.rates.MXN;
+  } catch(e){ /* usa fallback */ }
+}
 
 async function fetchBTC(){
   try{
-    const res=await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=mxn,usd&include_24hr_change=true');
-    if(!res.ok) throw new Error('HTTP '+res.status);
-    const data=await res.json();
+    const [btcRes, chRes]=await Promise.all([
+      fetch('https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT'),
+      fetch('https://api.binance.com/api/v3/ticker/24hr?symbol=BTCUSDT')
+    ]);
+    if(!btcRes.ok) throw new Error('HTTP '+btcRes.status);
+    const btcData=await btcRes.json();
+    const chData=await chRes.json();
+
+    const usd=parseFloat(btcData.price);
+    const change=parseFloat(chData.priceChangePercent);
     prevPrice=btcPriceMXN;
-    btcPriceMXN=data.bitcoin.mxn;
-    const usd=data.bitcoin.usd;
-    const change=data.bitcoin.mxn_24h_change;
+    btcPriceMXN=Math.round(usd*usdMxnRate);
 
     document.getElementById('priceOffline').style.display='none';
     document.getElementById('navPrice').textContent='BTC: $'+btcPriceMXN.toLocaleString('es-MX',{maximumFractionDigits:0})+' MXN';
     document.getElementById('heroPriceMXN').textContent='$'+btcPriceMXN.toLocaleString('es-MX',{maximumFractionDigits:0})+' MXN';
-    document.getElementById('heroPriceUSD').textContent='$'+usd.toLocaleString('en-US',{maximumFractionDigits:0})+' USD';
+    document.getElementById('heroPriceUSD').textContent='$'+Math.round(usd).toLocaleString('en-US',{maximumFractionDigits:0})+' USD';
     const chEl=document.getElementById('heroChange');
     chEl.textContent=(change>=0?'▲':'▼')+Math.abs(change).toFixed(2)+'%';
     chEl.style.color=change>=0?'#16A085':'#C0392B';
@@ -277,8 +299,10 @@ async function fetchBTC(){
     if(retryCount<5) setTimeout(fetchBTC, Math.min(5000*retryCount, 30000));
   }
 }
-fetchBTC();
+
+fetchUSDMXN().then(fetchBTC);
 setInterval(fetchBTC,30000);
+setInterval(fetchUSDMXN,300000);
 
 // ── CALCULADORA: precios históricos corregidos (MXN aprox peak del año) ──
 const historicBTC={
@@ -372,3 +396,72 @@ function answerPoll(q,answer){
     }
   },400);
 }
+
+// ── THEME TOGGLE ──
+function toggleTheme() {
+  const html = document.documentElement;
+  const isLight = html.classList.toggle('light');
+  localStorage.setItem('theme', isLight ? 'light' : 'dark');
+
+  // Desktop button
+  const desktop = document.getElementById('themeToggle');
+  if (desktop) desktop.textContent = isLight ? '🌑 MODO' : '🌙 MODO';
+
+  // Mobile — ícono grande + label separado
+  const mobileIcon  = document.getElementById('themeIconMobile');
+  const mobileLabel = document.getElementById('themeLabelMobile');
+  if (mobileIcon)  mobileIcon.textContent  = isLight ? '☀️' : '🌙';
+  if (mobileLabel) mobileLabel.textContent = isLight ? 'MODO CLARO' : 'MODO OSCURO';
+
+  // Logos — claro/oscuro
+  updateLogos(isLight);
+}
+
+function updateLogos(isLight) {
+  const navSrc = isLight ? 'assets/img/logoclaro.png' : 'assets/img/logodark.png';
+  const navLogo = document.getElementById('navLogo');
+  if (navLogo) navLogo.src = navSrc;
+  // Footer siempre logodark sin importar el tema
+  const footerLogo = document.getElementById('footerLogo');
+  if (footerLogo) footerLogo.src = 'assets/img/logodark.png';
+  // Favicon
+  const favicon = document.getElementById('favicon');
+  if (favicon) favicon.href = navSrc;
+}
+
+// ── RESTORE SAVED THEME O DETECTAR SISTEMA ──
+(function() {
+  const saved = localStorage.getItem('theme');
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const isLight = saved ? saved === 'light' : !prefersDark;
+
+  if (isLight) {
+    document.documentElement.classList.add('light');
+  }
+
+  window.addEventListener('DOMContentLoaded', () => {
+    const el = document.getElementById('themeToggle');
+    if (el) el.textContent = isLight ? '🌑 MODO' : '🌙 MODO';
+    const mi = document.getElementById('themeIconMobile');
+    const ml = document.getElementById('themeLabelMobile');
+    if (mi) mi.textContent = isLight ? '☀️' : '🌙';
+    if (ml) ml.textContent = isLight ? 'MODO CLARO' : 'MODO OSCURO';
+    updateLogos(isLight);
+  });
+
+  // Escuchar cambios del sistema en tiempo real (si no hay preferencia guardada)
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+    if (!localStorage.getItem('theme')) {
+      const nowLight = !e.matches;
+      const html = document.documentElement;
+      nowLight ? html.classList.add('light') : html.classList.remove('light');
+      const el = document.getElementById('themeToggle');
+      if (el) el.textContent = nowLight ? '🌑 MODO' : '🌙 MODO';
+      const mi = document.getElementById('themeIconMobile');
+      const ml = document.getElementById('themeLabelMobile');
+      if (mi) mi.textContent = nowLight ? '☀️' : '🌙';
+      if (ml) ml.textContent = nowLight ? 'MODO CLARO' : 'MODO OSCURO';
+      updateLogos(nowLight);
+    }
+  });
+})();
