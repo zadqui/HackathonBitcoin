@@ -322,7 +322,7 @@ const EXAM_DATA={
 // ══════════════════════════════════════
 // COURSE STATE
 // ══════════════════════════════════════
-const ST={idx:0,done:false,choices:null,notes:JSON.parse(localStorage.getItem('dmn')||'[]'),examDone:{},seen:new Set(),pendingEx:null,pendingTrivia:null};
+const ST={idx:0,done:false,choices:null,notes:JSON.parse(localStorage.getItem('curso_dmn')||'[]'),examDone:{},seen:new Set(),pendingEx:null,pendingTrivia:null};
 let twI=null;
 
 // ══════════════════════════════════════
@@ -348,8 +348,12 @@ window.onload=()=>{
   buildGlossary();buildBadges();renderNotes();
   fetchUSDMXN().then(fetchBTC);setInterval(fetchBTC,15000);setInterval(fetchUSDMXN,300000);
   drawMemo();
-  const tutDone = localStorage.getItem('tut_done');
-  const saved   = localStorage.getItem('rpgname');
+  const tutDone = localStorage.getItem('curso_tut_done');
+  const saved   = localStorage.getItem('curso_rpgname');
+  // Restaurar progreso guardado
+  const savedIdx = parseInt(localStorage.getItem('curso_idx')||'0');
+  const savedExam = JSON.parse(localStorage.getItem('curso_examDone')||'{}');
+  if(savedExam) Object.assign(ST.examDone, savedExam);
   if(!tutDone){
     // Primera vez: tutorial primero, ocultar pantalla de intro
     document.getElementById('rpgScreen').style.display='none';
@@ -358,10 +362,11 @@ window.onload=()=>{
     document.getElementById('tutorialScreen').style.display='none';
     document.getElementById('rpgScreen').style.display='flex';
   } else {
-    // Ya visitó antes: directo al curso
+    // Ya visitó antes: restaurar posición
     document.getElementById('tutorialScreen').style.display='none';
     document.getElementById('rpgScreen').style.display='none';
-    showD(DIALOGS[0]); updProg();
+    ST.idx = (savedIdx > 0 && savedIdx < DIALOGS.length) ? savedIdx : 0;
+    showD(DIALOGS[ST.idx]); updProg();
   }
 };
 
@@ -396,7 +401,7 @@ function showD(d){
   ST.done=false;
   document.getElementById('cbox').style.display='none';
   document.getElementById('dhint').style.display='none';
-  const nm=localStorage.getItem('rpgname')||'Mijo';
+  const nm=localStorage.getItem('curso_rpgname')||'Mijo';
   const spEl=document.getElementById('spk');
   spEl.textContent=d.sp==='TÚ'||d.sp==='MATEO'?'MATEO':d.sp==='DIEGO'?'DIEGO':d.sp;
   // ── Imagen de escena ──
@@ -431,6 +436,9 @@ function showD(d){
     }
   },10);
   ST.seen.add(ST.idx);
+  // Guardar progreso
+  localStorage.setItem('curso_idx', ST.idx);
+  localStorage.setItem('curso_examDone', JSON.stringify(ST.examDone));
   playSceneAudio(d.ch);
   const skipEl=document.getElementById('skipBadge');
   if(skipEl)skipEl.classList.toggle('vis',ST.seen.has(ST.idx+1)&&!DIALOGS[ST.idx]?.choices);
@@ -470,7 +478,7 @@ function adv(){
   const d=DIALOGS[ST.idx];
   if(!ST.done){
     if(d){
-      const nm=localStorage.getItem('rpgname')||'Mijo';
+      const nm=localStorage.getItem('curso_rpgname')||'Mijo';
       document.getElementById('dtxt').innerHTML=d.txt.replace(/{n}/g,nm)+(d.choices?'':'<span class="cur"></span>');
       clearInterval(twI);ST.done=true;ST.choices=d.choices||null;
       if(!d.choices)document.getElementById('dhint').style.display='block';
@@ -568,13 +576,13 @@ function updCC(){document.getElementById('cc').textContent=document.getElementBy
 function saveNote(){
   const v=document.getElementById('nta').value.trim();if(!v)return;
   ST.notes.unshift({txt:v,t:new Date().toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'}),id:Date.now()});
-  localStorage.setItem('dmn',JSON.stringify(ST.notes));
+  localStorage.setItem('curso_dmn',JSON.stringify(ST.notes));
   document.getElementById('nta').value='';document.getElementById('cc').textContent='0';
   renderNotes();
   const btn=document.getElementById('saveBtn');btn.textContent='✓ GUARDADA';btn.classList.add('saved');
   setTimeout(()=>{btn.textContent='💾 GUARDAR';btn.classList.remove('saved');},1500);
 }
-function delNote(id){ST.notes=ST.notes.filter(n=>n.id!==id);localStorage.setItem('dmn',JSON.stringify(ST.notes));renderNotes();}
+function delNote(id){ST.notes=ST.notes.filter(n=>n.id!==id);localStorage.setItem('curso_dmn',JSON.stringify(ST.notes));renderNotes();}
 function renderNotes(){
   const list=document.getElementById('ntList');
   if(!ST.notes.length){list.innerHTML='<div style="font-size:15px;color:var(--text-dim);text-align:center;margin-top:8px;">Sin notas aún</div>';return;}
@@ -621,13 +629,15 @@ async function fetchUSDMXN(){
 
 async function fetchBTC(){
   try{
-    const [priceRes,changeRes]=await Promise.all([
+    const [priceRes,changeRes,fxRes]=await Promise.all([
       fetch('https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT'),
-      fetch('https://api.binance.com/api/v3/ticker/24hr?symbol=BTCUSDT')
+      fetch('https://api.binance.com/api/v3/ticker/24hr?symbol=BTCUSDT'),
+      fetch('https://api.frankfurter.app/latest?from=USD&to=MXN')
     ]);
     if(!priceRes.ok) throw new Error('HTTP '+priceRes.status);
     const priceData=await priceRes.json();
     const changeData=await changeRes.json();
+    if(fxRes.ok){const fxData=await fxRes.json();_usdMxn=fxData.rates.MXN;}
     const usd=parseFloat(priceData.price);
     const ch=parseFloat(changeData.priceChangePercent);
     const p=Math.round(usd*_usdMxn);
@@ -869,9 +879,9 @@ document.addEventListener('keydown',e=>{
 // ══════════════════════════════════════
 function closeTutorial(){
   document.getElementById('tutorialScreen').style.display='none';
-  localStorage.setItem('tut_done','1');
+  localStorage.setItem('curso_tut_done','1');
   // Si ya tiene nombre, arrancar curso; si no, mostrar RPG
-  const saved = localStorage.getItem('rpgname');
+  const saved = localStorage.getItem('curso_rpgname');
   // Siempre mostrar pantalla UINIK STUDIOS después del tutorial
   document.getElementById('rpgScreen').style.display='flex';
 }
@@ -880,13 +890,16 @@ function closeTutorial(){
 // RPG INTRO SCREEN
 // ══════════════════════════════════════
 function beginCourse(){
-  localStorage.setItem('rpgname','MATEO');
+  localStorage.setItem('curso_rpgname','MATEO');
   // Desbloquear audio tras gesto del usuario
   const a=document.getElementById('bgAudio');
   if(a&&a.paused){a.volume=_vol;a.src=AUDIO_SCENES[0]||'';a.play().catch(()=>{});}
   _currentScene=0;
+  // Restaurar posición guardada
+  const savedIdx = parseInt(localStorage.getItem('curso_idx')||'0');
+  ST.idx = (savedIdx > 0 && savedIdx < DIALOGS.length) ? savedIdx : 0;
   const scr=document.getElementById('rpgScreen');
-  if(scr){scr.style.animation='rpgFadeOut .5s forwards';setTimeout(()=>{scr.style.display='none';showD(DIALOGS[0]);updProg();},500);}
+  if(scr){scr.style.animation='rpgFadeOut .5s forwards';setTimeout(()=>{scr.style.display='none';showD(DIALOGS[ST.idx]);updProg();},500);}
 }
 
 // ══════════════════════════════════════
@@ -917,7 +930,7 @@ function openEx(type,nextIdx){
   _exNextIdx=nextIdx;_exType=type;
   const ov=document.getElementById('exOverlay');ov.classList.add('on');
   const body=document.getElementById('exBody');
-  const nm=localStorage.getItem('rpgname')||'Mijo';
+  const nm=localStorage.getItem('curso_rpgname')||'Mijo';
   if(type==='inflacion'){
     document.getElementById('exTitle').textContent='CALCULADORA DE INFLACIÓN';
     body.innerHTML=`
@@ -1259,7 +1272,7 @@ function checkGraduation(d){
     setTimeout(()=>{
       document.getElementById('gradScreen').style.display='block';
       // Pre-rellenar nombre si ya lo tiene
-      const n=localStorage.getItem('rpgname')||'';
+      const n=localStorage.getItem('curso_rpgname')||'';
       if(n){
         document.getElementById('certName').value=n;
         document.getElementById('certNamePreview')?document.getElementById('certNamePreview').textContent=n:null;
