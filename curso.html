@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Don Memo y los Sats — El Curso</title>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet"/>
+<script>
+// ── THEME: detectar sistema antes de renderizar (evita flash) ──
+(function(){
+  const saved=localStorage.getItem('uinik-theme');
+  const prefersDark=window.matchMedia('(prefers-color-scheme:dark)').matches;
+  const isLight=saved?saved==='light':!prefersDark;
+  if(isLight) document.documentElement.classList.add('light');
+})();
+</script>
+<link rel="stylesheet" href="curso/css/curso.css"/>
+</head>
+<body>
+
+<!-- ══ NAVBAR ══ -->
+<nav id="nav">
+  <!-- Logo + título -->
+  <a href="index.html" style="display:flex;align-items:center;gap:8px;text-decoration:none;flex-shrink:0;">
+    <span style="font-size:13px;color:var(--text-dim);">◀</span>
+    <span class="px" style="font-size:clamp(6px,1.2vw,8px);color:var(--text);">DON MEMO Y LOS SATS</span>
+  </a>
+
+  <!-- Módulo actual (centro) -->
+  <div class="px" id="navModLabel" style="font-size:clamp(5px,1vw,7px);color:var(--btc);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:220px;">INTRO — EL DINERO</div>
+
+  <!-- Derecha: precio + tema + inicio -->
+  <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;">
+    <!-- Precio BTC -->
+    <div style="border:2px solid var(--btc);padding:0 10px;height:30px;display:flex;align-items:center;gap:5px;background:rgba(247,147,26,0.08);">
+      <span style="font-size:10px;color:var(--btc);">₿</span>
+      <span class="px" style="font-size:clamp(6px,1vw,8px);color:var(--btc);" id="navP">---,---</span>
+    </div>
+    <!-- Toggle tema -->
+    <button id="themeToggle" onclick="toggleTheme()"
+      style="font-family:'Press Start 2P',monospace;font-size:7px;background:var(--btc);border:2px solid var(--btc);color:#000;height:30px;padding:0 10px;cursor:pointer;transition:all 0.2s;box-shadow:3px 3px 0 #000;"
+      onmouseover="this.style.transform='translate(1px,1px)';this.style.boxShadow='2px 2px 0 #000'"
+      onmouseout="this.style.transform='';this.style.boxShadow='3px 3px 0 #000'">🌙</button>
+    <!-- Inicio -->
+    <a href="index.html" class="px"
+      style="font-size:7px;background:var(--accent2);color:var(--text);text-decoration:none;height:30px;padding:0 10px;display:inline-flex;align-items:center;gap:4px;box-shadow:3px 3px 0 #000;transition:all 0.1s;"
+      onmouseover="this.style.background='var(--accent)';this.style.transform='translate(1px,1px)';this.style.boxShadow='2px 2px 0 #000'"
+      onmouseout="this.style.background='var(--accent2)';this.style.transform='';this.style.boxShadow='3px 3px 0 #000'">
+      ⌂ INICIO
+    </a>
+  </div>
+</nav>
+
+<!-- ══ MAIN ══ -->
+
+
+<!-- ══ TUTORIAL — PRIMERA VEZ ══ -->
+<div id="tutorialScreen" style="position:fixed;inset:0;z-index:9998;background:var(--darker);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(4px);">
+
+  <!-- Título -->
+  <div style="text-align:center;margin-bottom:16px;">
+    <div style="font-family:'Press Start 2P',monospace;font-size:clamp(7px,1.5vw,11px);color:var(--btc);margin-bottom:4px;">BIENVENIDO A</div>
+    <div style="font-family:'Press Start 2P',monospace;font-size:clamp(9px,2vw,15px);color:var(--text);">DON MEMO Y LOS SATS</div>
+  </div>
+
+  <!-- Carrusel -->
+  <div style="width:100%;max-width:520px;position:relative;">
+
+    <!-- Paso 1: Panel izquierdo -->
+    <div class="tut-slide" id="tslide-0" style="display:block;">
+      <div style="background:var(--darker);border:3px solid var(--border);border-top:3px solid var(--btc);padding:24px 20px;min-height:260px;">
+        <div style="text-align:center;margin-bottom:12px;">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="36" height="36" fill="#F7931A"><path d="M5 2h11v1h2v1h1v16h-1v1h-2v1H5v-1H3V3h1V2h1zm1 2v15h9v-1h1V5h-1V4H6zm7 2H8v2h5V6zm0 4H8v2h5v-2zm-3 4H8v2h2v-2z"/></svg>
+          <div style="font-family:'Press Start 2P',monospace;font-size:8px;color:var(--btc);margin-top:6px;">PANEL IZQUIERDO</div>
+        </div>
+        <div style="font-family:'VT323',monospace;font-size:clamp(17px,4vw,21px);color:var(--text-muted);line-height:1.8;">
+          <div style="margin-bottom:6px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="#F7931A" style="vertical-align:middle;margin-right:6px;"><path d="M3 5h2v2H3V5zm4 0h14v2H7V5zm-4 6h2v2H3v-2zm4 0h14v2H7v-2zm-4 6h2v2H3v-2zm4 0h14v2H7v-2z"/></svg><b style="color:var(--text)">DATOS</b> — tarjetas con info real de Bitcoin</div>
+          <div style="margin-bottom:6px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="#F7931A" style="vertical-align:middle;margin-right:6px;"><path d="M9 3h8v1h1v7h-1v1h-3v5h-1v1H8v-1H7v-1H6v-2h1v-1h1v-1h3V5h-1V4H9V3zm2 2v6h-3v1H7v2h1v1h3v-1h1V5h-1zm4-1h-2v1h2V4z"/></svg><b style="color:var(--text)">NOTAS</b> — escribe lo que aprendas</div>
+          <div style="margin-bottom:6px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="#F7931A" style="vertical-align:middle;margin-right:6px;"><path d="M4 2h11v1h1v1h1v16h-1v1h-1v1H4v-1H3V3h1V2zm1 1v16h9v-1h1V4h-1V3H5zm8 2H7v1h6V5zm0 3H7v1h6V8zm-3 3H7v1h3v-1z"/></svg><b style="color:var(--text)">GLOSARIO</b> — 18 términos clave</div>
+          <div><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="#F7931A" style="vertical-align:middle;margin-right:6px;"><path d="M7 3h10v1h1v1h1v4h-1v1h-1v1h-1v1h-1v1h-2v1h-1v1H8v-1H7v-1H6v-1H5V9H4V5h1V4h1V3h1zm0 2H5v3h1v1h1v1h2v1h2v-1h2v-1h1V8h1V5H7zm2 10h6v1H9v-1zm-1 2h8v1H8v-1z"/></svg><b style="color:var(--text)">LOGROS</b> — desbloquéalos al avanzar</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Paso 2: El juego -->
+    <div class="tut-slide" id="tslide-1" style="display:none;">
+      <div style="background:var(--darker);border:3px solid var(--border);border-top:3px solid var(--green);padding:24px 20px;min-height:260px;">
+        <div style="text-align:center;margin-bottom:12px;">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="36" height="36" fill="#16A085"><path d="M3 8h18v1h1v6h-1v1H3v-1H2V9h1V8zm3 2v1H5v2h1v1h2v-1h1v-1h1v1h1v1h4v-1h1v-1h1v1h1v1h2v-1h1v-2h-1v-1h-1V9h-2v1h-1v1H9v-1H8V9H6v1H5zm1 1h2v2H7v-2zm10 0h2v2h-2v-2z"/></svg>
+          <div style="font-family:'Press Start 2P',monospace;font-size:8px;color:var(--green);margin-top:6px;">EL JUEGO</div>
+        </div>
+        <div style="font-family:'VT323',monospace;font-size:clamp(17px,4vw,21px);color:var(--text-muted);line-height:1.8;margin-bottom:14px;">
+          <div style="margin-bottom:6px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="#16A085" style="vertical-align:middle;margin-right:6px;"><path d="M6 3h10v1h1v1h1v14h-1v1H6v-1H5V5h1V4V3zm1 2v14h10V5H7zm2 2h6v2H9V7zm0 4h6v2H9v-2zm0 4h3v2H9v-2z"/></svg>Diálogos con <b style="color:var(--text)">Don Memo</b></div>
+          <div style="margin-bottom:6px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="#16A085" style="vertical-align:middle;margin-right:6px;"><path d="M4 4h2v6H4V4zm0 8h2v8H4v-8zm4-4h2v12H8V8zm0-4h2v2H8V4zm4 8h2v6h-2v-6zm0-8h2v6h-2V4zm4 4h2v10h-2V8zm0-4h2v2h-2V4z"/></svg><b style="color:var(--text)">Elige</b> respuestas con los botones</div>
+          <div style="margin-bottom:6px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="#16A085" style="vertical-align:middle;margin-right:6px;"><path d="M8 1h8v1h1v1h1v2h-1v1H7V5H6V3h1V2h1V1zm-1 6h10v1l1 1v5l-1 1v1H7v-1l-1-1V9l1-1V7zm1 2v6h8V9H8zm2 1h4v1h1v2h-1v1h-4v-1H9v-2h1v-1zm-1 8h6v1h1v3H6v-3h1v-1z"/></svg><b style="color:var(--text)">Ejercicios</b> interactivos en cada módulo</div>
+          <div><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="#16A085" style="vertical-align:middle;margin-right:6px;"><path d="M12 2l1 3h3l-2 2 1 3-3-2-3 2 1-3-2-2h3z"/></svg><b style="color:var(--text)">Trivia + Examen</b> al final de cada módulo</div>
+        </div>
+        <!-- Controles -->
+        <div style="font-family:'Press Start 2P',monospace;font-size:6px;color:var(--text-dim);margin-bottom:8px;">CONTROLES:</div>
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+          <svg width="30" height="25" viewBox="0 0 32 27" xmlns="http://www.w3.org/2000/svg"><rect x="1" y="1" width="30" height="24" fill="var(--dark)"/><rect x="0" y="0" width="32" height="25" fill="none" stroke="#444" stroke-width="1"/><rect x="1" y="25" width="30" height="2" fill="#111"/><text x="16" y="17" text-anchor="middle" font-family="'Press Start 2P',monospace" font-size="9px" fill="#F7931A">SPC</text></svg>
+          <svg width="30" height="25" viewBox="0 0 32 27" xmlns="http://www.w3.org/2000/svg"><rect x="1" y="1" width="30" height="24" fill="var(--dark)"/><rect x="0" y="0" width="32" height="25" fill="none" stroke="#444" stroke-width="1"/><rect x="1" y="25" width="30" height="2" fill="#111"/><text x="16" y="17" text-anchor="middle" font-family="'Press Start 2P',monospace" font-size="10px" fill="#F7931A">↵</text></svg>
+          <span style="font-family:'VT323',monospace;font-size:15px;color:var(--text-muted);">avanzar</span>
+          <svg width="26" height="22" viewBox="0 0 28 24" xmlns="http://www.w3.org/2000/svg"><rect x="1" y="1" width="26" height="21" fill="var(--dark)"/><rect x="0" y="0" width="28" height="22" fill="none" stroke="#444" stroke-width="1"/><rect x="1" y="22" width="26" height="2" fill="#111"/><text x="14" y="16" text-anchor="middle" font-size="13px" fill="#F7931A">←</text></svg>
+          <svg width="26" height="22" viewBox="0 0 28 24" xmlns="http://www.w3.org/2000/svg"><rect x="1" y="1" width="26" height="21" fill="var(--dark)"/><rect x="0" y="0" width="28" height="22" fill="none" stroke="#444" stroke-width="1"/><rect x="1" y="22" width="26" height="2" fill="#111"/><text x="14" y="16" text-anchor="middle" font-size="13px" fill="#F7931A">→</text></svg>
+          <span style="font-family:'VT323',monospace;font-size:15px;color:var(--text-muted);">navegar</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Paso 3: Panel derecho + audio -->
+    <div class="tut-slide" id="tslide-2" style="display:none;">
+      <div style="background:var(--darker);border:3px solid var(--border);border-top:3px solid var(--gold);padding:24px 20px;min-height:260px;">
+        <div style="text-align:center;margin-bottom:12px;">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="36" height="36" fill="#D4A017"><path d="M4 3h16v1h1v16h-1v1H4v-1H3V4h1V3zm2 2v14h12V5H6zm2 2h8v2H8V7zm0 4h8v2H8v-2zm0 4h5v2H8v-2z"/></svg>
+          <div style="font-family:'Press Start 2P',monospace;font-size:8px;color:var(--gold);margin-top:6px;">PANEL DERECHO</div>
+        </div>
+        <div style="font-family:'VT323',monospace;font-size:clamp(17px,4vw,21px);color:var(--text-muted);line-height:1.8;margin-bottom:14px;">
+          <div style="margin-bottom:6px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="#D4A017" style="vertical-align:middle;margin-right:6px;"><path d="M4 3h16v1h1v16h-1v1H4v-1H3V4h1V3zm2 2v14h12V5H6zm2 2h8v2H8V7zm0 4h8v2H8v-2zm0 4h5v2H8v-2z"/></svg><b style="color:var(--text)">6 CAPÍTULOS</b> — haz clic para saltar</div>
+          <div style="margin-bottom:6px;"><span style="color:var(--green);margin-right:6px;">▶</span><span style="color:var(--green)">Verde</span> = completado</div>
+          <div style="margin-bottom:14px;"><span style="color:var(--text-dim);margin-right:6px;">▶</span><span style="color:var(--text-dim)">Gris</span> = por desbloquear</div>
+        </div>
+        <div style="border-top:1px solid var(--border);padding-top:12px;display:flex;align-items:flex-start;gap:12px;">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="28" height="28" fill="#F7931A" style="flex-shrink:0;margin-top:2px;"><path d="M9 3h9v1h1v6h-1v1h-3v1h-1v5h-1v1H8v-1H7v-1H6v-2h1v-1h1v-1h3V5H9V4V3zm2 2v6H8v1H7v2h1v1h3v-1h1V5h-1zm4 0h-2v1h2V5z"/></svg>
+          <div style="font-family:'VT323',monospace;font-size:clamp(16px,3.5vw,20px);color:var(--text-muted);line-height:1.7;">
+            <b style="color:var(--text)">AUDIO</b> — botón arriba derecha<br>
+            Volumen · Silenciar<br>
+            Música cambia por escena
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Paso 4: Vista móvil -->
+    <div class="tut-slide" id="tslide-3" style="display:none;">
+      <div style="background:var(--darker);border:3px solid var(--border);border-top:3px solid #8A6FD4;padding:24px 20px;min-height:260px;">
+        <div style="text-align:center;margin-bottom:14px;">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="36" height="36" fill="#8A6FD4"><path d="M7 2h10v1h1v18h-1v1H7v-1H6V3h1V2zm1 2v16h8V4H8zm3 13h2v2h-2v-2z"/></svg>
+          <div style="font-family:'Press Start 2P',monospace;font-size:8px;color:#8A6FD4;margin-top:6px;">EN MÓVIL</div>
+        </div>
+
+        <!-- Diagrama móvil pixel art -->
+        <div style="display:flex;gap:16px;align-items:flex-start;justify-content:center;margin-bottom:14px;">
+
+          <!-- Teléfono pixel art con layout -->
+          <div style="border:3px solid #8A6FD4;border-radius:6px;padding:6px;width:90px;background:var(--darkest);flex-shrink:0;">
+            <!-- Barra superior = ticker -->
+            <div style="background:#F7931A;height:8px;margin-bottom:4px;display:flex;align-items:center;justify-content:center;">
+              <div style="font-family:'Press Start 2P',monospace;font-size:4px;color:#000;">BTC</div>
+            </div>
+            <!-- Imagen de escena -->
+            <div style="background:#16A085;height:42px;margin-bottom:4px;display:flex;align-items:center;justify-content:center;">
+              <div style="font-family:'Press Start 2P',monospace;font-size:4px;color:var(--text);text-align:center;line-height:1.6;">ESCENA<br>PIXEL</div>
+            </div>
+            <!-- Caja de diálogo -->
+            <div style="border:2px solid #F7931A;padding:3px;margin-bottom:4px;">
+              <div style="font-family:'Press Start 2P',monospace;font-size:3px;color:#F7931A;margin-bottom:2px;">DON MEMO</div>
+              <div style="background:var(--dark);height:14px;"></div>
+            </div>
+            <!-- Botones de navegación -->
+            <div style="display:flex;gap:2px;">
+              <div style="flex:1;background:var(--dark);border:1px solid var(--border);height:10px;display:flex;align-items:center;justify-content:center;">
+                <div style="font-family:'Press Start 2P',monospace;font-size:3px;color:var(--text-dim);">◀</div>
+              </div>
+              <div style="flex:1;background:var(--dark);border:1px solid var(--border);height:10px;display:flex;align-items:center;justify-content:center;">
+                <div style="font-family:'Press Start 2P',monospace;font-size:3px;color:#F7931A;">▶</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Descripción -->
+          <div style="font-family:'VT323',monospace;font-size:clamp(15px,3.5vw,19px);color:var(--text-muted);line-height:1.9;flex:1;">
+            <div style="margin-bottom:5px;"><span style="color:#8A6FD4;">📱</span> Los paneles laterales <b style="color:var(--text)">se ocultan</b> en pantallas pequeñas</div>
+            <div style="margin-bottom:5px;"><span style="color:#F7931A;">👆</span> <b style="color:var(--text)">Toca</b> la pantalla o los botones para avanzar</div>
+            <div style="margin-bottom:5px;"><span style="color:#16A085;">↔</span> Desliza <b style="color:var(--text)">horizontal</b> para ver paneles</div>
+            <div><span style="color:var(--gold);">🔊</span> El botón <b style="color:var(--text)">VOL</b> aparece arriba a la derecha</div>
+          </div>
+        </div>
+
+        <div style="border-top:1px solid var(--border);padding-top:10px;text-align:center;">
+          <div style="font-family:'VT323',monospace;font-size:clamp(14px,3vw,17px);color:var(--text-dim);">
+            Recomendado: orientación <b style="color:var(--text-muted)">vertical</b> · pantalla completa
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Puntos de progreso -->
+  <div style="display:flex;gap:10px;margin-top:14px;align-items:center;" id="tutDots">
+    <div class="tut-dot active" id="tdot-0" onclick="goTutSlide(0)" style="width:10px;height:10px;background:var(--btc);cursor:pointer;"></div>
+    <div class="tut-dot" id="tdot-1" onclick="goTutSlide(1)" style="width:10px;height:10px;background:var(--surface);cursor:pointer;"></div>
+    <div class="tut-dot" id="tdot-2" onclick="goTutSlide(2)" style="width:10px;height:10px;background:var(--surface);cursor:pointer;"></div>
+    <div class="tut-dot" id="tdot-3" onclick="goTutSlide(3)" style="width:10px;height:10px;background:var(--surface);cursor:pointer;"></div>
+  </div>
+
+  <!-- Navegación -->
+  <div style="display:flex;gap:12px;margin-top:14px;align-items:center;width:100%;max-width:520px;justify-content:space-between;">
+    <button id="tutPrevBtn" onclick="tutNav(-1)"
+      style="font-family:'Press Start 2P',monospace;font-size:7px;background:var(--dark);color:var(--text-dim);border:2px solid var(--border);padding:10px 16px;cursor:pointer;visibility:hidden;">
+      ◀ ANTERIOR
+    </button>
+    <button id="tutNextBtn" onclick="tutNav(1)"
+      style="font-family:'Press Start 2P',monospace;font-size:7px;background:var(--btc);color:#000;border:none;padding:10px 16px;cursor:pointer;box-shadow:3px 3px 0 #000;">
+      SIGUIENTE ▶
+    </button>
+  </div>
+
+</div>
+
+<!-- ══ PANTALLA RPG — CREAR PERSONAJE ══ -->
+<div id="rpgScreen" style="position:fixed;inset:0;z-index:9999;background:var(--darker);display:flex;align-items:center;justify-content:center;flex-direction:column;cursor:pointer;" onclick="beginCourse()">
+  <!-- scanlines -->
+  <div style="position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.15) 2px,rgba(0,0,0,0.15) 4px);z-index:1;"></div>
+  <!-- estrellas pixel -->
+  <div style="position:absolute;inset:0;z-index:0;overflow:hidden;" id="starField"></div>
+  <div style="position:relative;z-index:2;width:min(480px,92vw);text-align:center;animation:introFloat 3s ease-in-out infinite;">
+
+    <!-- UINIK STUDIOS PRESENTA -->
+    <div style="font-family:'Press Start 2P',monospace;font-size:clamp(7px,1.8vw,10px);color:var(--text-dim);letter-spacing:2px;margin-bottom:28px;">
+      UINIK STUDIOS PRESENTA
+    </div>
+
+    <!-- Título principal -->
+    <div style="margin-bottom:20px;">
+      <div style="font-family:'Press Start 2P',monospace;font-size:clamp(14px,4vw,26px);color:var(--btc);text-shadow:0 0 30px rgba(247,147,26,.7),4px 4px 0 #8B4500;line-height:1.5;margin-bottom:8px;">
+        DON MEMO
+      </div>
+      <div style="font-family:'Press Start 2P',monospace;font-size:clamp(8px,2.5vw,14px);color:var(--gold);text-shadow:2px 2px 0 #000;letter-spacing:1px;">
+        Y LOS SATS
+      </div>
+    </div>
+
+    <!-- Línea decorativa pixel -->
+    <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin:18px 0;">
+      <div style="height:2px;flex:1;background:linear-gradient(to right,transparent,#F7931A);"></div>
+      <div style="font-family:'Press Start 2P',monospace;font-size:10px;color:var(--btc);">₿</div>
+      <div style="height:2px;flex:1;background:linear-gradient(to left,transparent,#F7931A);"></div>
+    </div>
+
+    <!-- Subtítulo -->
+    <div style="font-family:'VT323',monospace;font-size:clamp(16px,4vw,22px);color:var(--text-dim);line-height:1.6;margin-bottom:32px;">
+      Un curso de Bitcoin para jóvenes de México<br>
+      <span style="color:var(--text-dim);font-size:.85em;">Mérida, Yucatán · 2025</span>
+    </div>
+
+    <!-- PRESS START -->
+    <div style="font-family:'Press Start 2P',monospace;font-size:clamp(7px,2vw,10px);color:var(--text);animation:introBlink 1.2s step-end infinite;letter-spacing:1px;">
+      ▶ PRESIONA PARA COMENZAR
+    </div>
+
+  </div>
+</div>
+
+<div id="main">
+
+  <!-- LEFT PANEL -->
+  <aside class="panel" id="pl">
+    <div class="ph"><span class="px" style="font-size:8px;">📓 NOTAS DEL CURSO</span></div>
+    <div class="tabs">
+      <div class="tab on" id="t0" onclick="swTab(0)"><span class="ti">📊</span>DATOS</div>
+      <div class="tab" id="t1" onclick="swTab(1)"><span class="ti">📝</span>NOTAS</div>
+      <div class="tab" id="t2" onclick="swTab(2)"><span class="ti">📖</span>GLOSARIO</div>
+      <div class="tab" id="t3" onclick="swTab(3)"><span class="ti">🏆</span>LOGROS</div>
+    </div>
+    <div class="tc on" id="tc0">
+      <div class="empty" id="dcEmpty"><div class="ei">💡</div><p>Escucha a<br>Don Memo...<br><br>Los datos<br>aparecerán aquí</p></div>
+      <div class="cards-list" id="dcList" style="display:none;"></div>
+    </div>
+    <div class="tc" id="tc1">
+      <div class="notes-wrap">
+        <textarea class="ntarea" id="nta" placeholder="Escribe lo que quieras recordar..." maxlength="200" oninput="updCC()"></textarea>
+        <div class="nt-meta">
+          <span class="nt-cc"><span id="cc">0</span>/200</span>
+          <button class="btn-save" id="saveBtn" onclick="saveNote()">💾 GUARDAR</button>
+        </div>
+        <div class="nt-divider">── NOTAS GUARDADAS ──</div>
+        <div class="nt-list" id="ntList"><div style="font-size:15px;color:var(--text-dim);text-align:center;margin-top:8px;">Sin notas aún</div></div>
+      </div>
+    </div>
+    <div class="tc" id="tc2">
+      <div class="glo-wrap">
+        <div class="glo-search-wrap"><input class="glo-search" type="text" placeholder="🔍 Buscar término..." id="gloSearch" oninput="filterGlo()"></div>
+        <div class="glo-count" id="gloCount">18 términos</div>
+        <div class="glo-list" id="gloList"></div>
+      </div>
+    </div>
+    <div class="tc" id="tc3">
+      <div class="log-wrap">
+        <div class="log-grid" id="logGrid"></div>
+        <div class="log-prog-text" id="logTxt">0 de 6 logros</div>
+        <div class="log-prog-bar"><div class="log-prog-fill" id="logBar" style="width:0%"></div></div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- CENTER -->
+  <section id="center">
+    <div class="prog-row">
+      <span class="prog-ch">MÓD <span id="cpN">0</span>/5</span>
+      <div class="prog-bar-wrap"><div class="prog-fill" id="pFill" style="width:0%"></div></div>
+      <span class="prog-pct" id="pPct">0%</span>
+      <span class="prog-time" id="pTime">⏱ ~90 MIN</span>
+    </div>
+    <div id="gframe">
+      <div id="gbg"></div>
+      <div id="gticker">
+        <div class="tdot"></div>
+        <span class="px" style="font-size:7px;color:var(--btc);">BTC/MXN</span>
+        <span class="px" style="font-size:8px;color:var(--gold);" id="tP">---,---</span>
+        <span style="font-size:13px;" id="tC"></span>
+        <span style="font-size:13px;color:var(--text-dim);" id="tS"></span>
+      </div>
+
+      <!-- ══ AUDIO ══ -->
+      <button id="audioBtn" onclick="toggleAudioPanel()">VOL</button>
+      <div id="audioPanel">
+        <div class="au-lbl" style="margin-bottom:10px;color:var(--btc);">AUDIO</div>
+        <div class="au-row">
+          <span class="au-lbl">VOLUMEN</span>
+          <input class="au-slider" id="volSlider" type="range" min="0" max="100" value="70"
+            oninput="setVolume(this.value)"/>
+          <span id="volVal" style="font-family:'Press Start 2P',monospace;font-size:6px;color:var(--text-dim);">70</span>
+        </div>
+        <button class="au-mute" id="muteBtn" onclick="toggleMute()">SILENCIAR</button>
+        <div class="au-scene">
+          PISTAS POR ESCENA:<br>
+          <span id="auCurrent">Sin pista activa</span><br>
+          <!-- Slots para conectar tu audio -->
+          <!-- Escena 0 (Intro): audio_intro.mp3 -->
+          <!-- Escena 1 (Módulo 1): audio_mod1.mp3 -->
+          <!-- Escena 2 (Módulo 2): audio_mod2.mp3 -->
+          <!-- Escena 3 (Módulo 3): audio_mod3.mp3 -->
+          <!-- Escena 4 (Módulo 4): audio_mod4.mp3 -->
+          <!-- Escena 5 (Conclusión): audio_final.mp3 -->
+        </div>
+      </div>
+      <!-- Audio elements — conecta tus archivos aquí -->
+      <audio id="bgAudio" loop></audio>
+      <!-- skip badge -->
+      <div class="skip-badge" id="skipBadge" onclick="skipSeen()">⏭ SALTAR VISTO</div>
+
+      <!-- ══ EJERCICIO OVERLAY ══ -->
+      <div id="exOverlay">
+        <div class="ex-wrap">
+          <div class="ex-head">
+            <span>⚡</span>
+            <span id="exTitle">EJERCICIO INTERACTIVO</span>
+          </div>
+          <div class="ex-body" id="exBody"></div>
+        </div>
+      </div>
+
+      <!-- trivia moved to body-level -->
+
+      <div id="cbox">
+        <div class="copt" id="c0" onclick="pick(0)"></div>
+        <div class="copt" id="c1" onclick="pick(1)"></div>
+        <div class="copt" id="c2" onclick="pick(2)"></div>
+      </div>
+      <div id="dlg" onclick="adv()">
+        <div id="spk">DON MEMO</div>
+        <div id="dtxt"></div>
+        <div id="dhint">▼ toca para continuar</div>
+      </div>
+    </div>
+    <div class="nav-ctrl">
+      <button class="nb" onclick="goStart()">◀◀</button>
+      <button class="nb" onclick="goBack()">◀ ATRÁS</button>
+      <div class="dots" id="dotRow"></div>
+      <button class="nb primary" onclick="adv()">SIGUIENTE ▶</button>
+    </div>
+  </section>
+
+  <!-- RIGHT PANEL -->
+  <aside class="panel" id="pr">
+    <div class="ph"><span class="px" style="font-size:8px;">📸 LA HISTORIA</span></div>
+    <div class="pol-scroll">
+      <div class="pol current" id="pol0" onclick="jmpCh(0)">
+        <div class="pol-img"><div class="pol-scene-css" style="background:url('curso/img/1.png') center/cover no-repeat;"></div></div>
+        <div class="pol-badge cur">EN CURSO ▶</div>
+        <div class="pol-caption" style="color:var(--btc);">El Parque<br>Intro</div>
+      </div>
+      <div class="pol locked" id="pol1">
+        <div class="pol-img"><div class="pol-scene-css" style="background:url('curso/img/9.png') center/cover no-repeat;"></div></div>
+        <div class="pol-caption">¿Por qué Bitcoin?<br>Mód. 1</div>
+      </div>
+      <div class="pol locked" id="pol2">
+        <div class="pol-img"><div class="pol-scene-css" style="background:url('curso/img/24.png') center/cover no-repeat;"></div></div>
+        <div class="pol-caption">Lo especial<br>Mód. 2</div>
+      </div>
+      <div class="pol locked" id="pol3">
+        <div class="pol-img"><div class="pol-scene-css" style="background:url('curso/img/36.png') center/cover no-repeat;"></div></div>
+        <div class="pol-caption">Cómo funciona<br>Mód. 3</div>
+      </div>
+      <div class="pol locked" id="pol4">
+        <div class="pol-img"><div class="pol-scene-css" style="background:url('curso/img/47.png') center/cover no-repeat;"></div></div>
+        <div class="pol-caption">Bitcoin en MX<br>Mód. 4</div>
+      </div>
+      <div class="pol locked" id="pol5">
+        <div class="pol-img"><div class="pol-scene-css" style="background:url('curso/img/58.png') center/cover no-repeat;"></div></div>
+        <div class="pol-caption">Tu Decisión<br>Final</div>
+      </div>
+    </div>
+    <div class="pr-summary">
+      <div class="pr-txt" id="prTxt">0 de 6 módulos completados</div>
+      <div class="pr-bar"><div class="pr-fill" id="prFill" style="width:0%"></div></div>
+      <div class="pr-donut">
+        <svg width="50" height="50" viewBox="0 0 36 36">
+          <circle cx="18" cy="18" r="15" fill="none" stroke="#111" stroke-width="4"/>
+          <circle cx="18" cy="18" r="15" fill="none" stroke="var(--btc)" stroke-width="4"
+            stroke-dasharray="94.2" stroke-dashoffset="94.2" id="donutC"
+            style="transform:rotate(-90deg);transform-origin:18px 18px;transition:stroke-dashoffset .5s;"/>
+        </svg>
+        <div>
+          <div class="px" style="font-size:12px;color:var(--btc);" id="donutPct">0%</div>
+          <div style="font-size:13px;color:var(--text-dim);" id="donutSub">0/61 diálogos</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+</div>
+
+<!-- MOBILE FAB -->
+<div id="mob-fab-l" onclick="openDrawer()">📓</div>
+
+<!-- MOBILE TABS -->
+<div id="mob-tabs">
+  <div class="mob-tab on" id="mt0" onclick="mobTab(0)"><span class="mti">🎮</span>JUEGO</div>
+  <div class="mob-tab" id="mt1" onclick="mobTab(1)"><span class="mti">📓</span>NOTAS</div>
+  <div class="mob-tab" id="mt2" onclick="mobTab(2)"><span class="mti">📸</span>HISTORIA</div>
+  <div class="mob-tab" id="mt3" onclick="mobTab(3)"><span class="mti">📖</span>GLOSARIO</div>
+  <div class="mob-tab" id="mt4" onclick="mobTab(4)"><span class="mti">🏅</span>LOGROS</div>
+</div>
+
+<!-- DRAWER -->
+<div id="drawer">
+  <div class="drawer-handle"></div>
+  <div id="drawerContent" style="flex:1;overflow:hidden;display:flex;flex-direction:column;"></div>
+</div>
+
+<!-- ══════════════════════════════════════
+     EXAM MODAL
+══════════════════════════════════════ -->
+<div id="examBackdrop">
+  <div id="examModal">
+
+    <!-- GAME OVER overlay -->
+    <div id="gameOver">
+      <div style="font-size:48px;">💀</div>
+      <div class="px" style="font-size:18px;color:var(--red);">GAME OVER</div>
+      <div style="font-size:20px;color:var(--text-muted);line-height:1.5;max-width:340px;">
+        Se te acabaron las vidas, mijo.<br>Don Memo tiene paciencia infinita.
+      </div>
+      <div style="display:flex;gap:12px;margin-top:8px;">
+        <button class="btn-rp" onclick="restartExam()">▶ INTENTAR DE NUEVO</button>
+        <button class="btn-rs" onclick="closeExam()">↩ REPASAR</button>
+      </div>
+    </div>
+
+    <!-- HEADER -->
+    <div id="examHeader">
+      <div class="exam-title-col">
+        <span class="px" style="font-size:9px;color:var(--btc);">⚡ MINI EXAMEN</span>
+        <span style="font-size:18px;color:var(--text-muted);letter-spacing:2px;" id="examChLabel">INTRODUCCIÓN</span>
+      </div>
+      <div class="exam-lives">
+        <span class="heart" id="h0">❤️</span>
+        <span class="heart" id="h1">❤️</span>
+        <span class="heart" id="h2">❤️</span>
+      </div>
+      <button class="btn-skip" onclick="closeExam()">[SALTAR →]</button>
+    </div>
+
+    <!-- PROGRESS BAR -->
+    <div id="examProg"><div id="examProgFill" style="width:0%"></div></div>
+
+    <!-- QUESTION BODY -->
+    <div id="examBody">
+      <div class="exam-hint">
+        <canvas id="hintCanvas" width="40" height="50"></canvas>
+        <div class="hint-txt" id="hintTxt">"Recuerda lo que te dije, mijo..."</div>
+      </div>
+      <div class="q-badge" id="qBadge">[P.1]</div>
+      <div id="qText"></div>
+      <div id="answersWrap"></div>
+    </div>
+
+    <!-- FEEDBACK -->
+    <div id="examFeedback">
+      <div class="fb-left">
+        <div class="fb-title" id="fbTitle"></div>
+        <div class="fb-exp" id="fbExp"></div>
+      </div>
+      <div class="fb-right">
+        <div id="fbReward"></div>
+        <button class="btn-cont" id="btnCont" onclick="nextQ()">CONTINUAR</button>
+      </div>
+    </div>
+
+    <!-- RESULTS -->
+    <div id="examResults">
+      <div class="res-score">
+        <div class="px" style="font-size:9px;color:var(--text-dim);margin-bottom:6px;">RESULTADO FINAL</div>
+        <div id="resBig"></div>
+        <div class="res-icons" id="resIcons"></div>
+      </div>
+      <div class="res-stats">
+        <div class="res-stat"><div class="res-stat-lbl">TIEMPO</div><div class="res-stat-val" id="resTime">--</div></div>
+        <div class="res-stat"><div class="res-stat-lbl">RACHA MÁX</div><div class="res-stat-val" id="resStreak">--</div></div>
+        <div class="res-stat"><div class="res-stat-lbl">INTENTOS</div><div class="res-stat-val" id="resAttempts">1</div></div>
+      </div>
+      <div class="res-msg" id="resMsg"></div>
+      <div class="res-badge-wrap" id="resBadgeWrap"></div>
+      <div class="res-actions" id="resActions"></div>
+      <div class="res-rev-toggle">
+        <button class="btn-rev" onclick="togReview()">▼ VER TODAS LAS RESPUESTAS</button>
+      </div>
+      <div class="res-review" id="resReview"></div>
+    </div>
+
+  </div><!-- /examModal -->
+</div><!-- /examBackdrop -->
+
+<!-- ══ TRIVIA OVERLAY — fixed body level ══ -->
+<div id="triviaOverlay" style="display:none;position:fixed;inset:0;z-index:10000;background:var(--darker);overflow-y:auto;"></div>
+
+
+<!-- ══ PANTALLA DE GRADUACIÓN ══ -->
+<div id="gradScreen" style="display:none;position:fixed;inset:0;z-index:10001;background:var(--darkest);overflow-y:auto;">
+  <!-- scanlines -->
+  <div style="position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.12) 2px,rgba(0,0,0,.12) 4px);z-index:0;"></div>
+  <div style="position:relative;z-index:1;max-width:600px;margin:0 auto;padding:32px 20px;text-align:center;">
+
+    <!-- Trofeo pixel art -->
+    <div style="margin-bottom:20px;">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="64" height="64" fill="#F7931A">
+        <path d="M7 3h10v1h1v1h1v4h-1v1h-1v1h-1v1h-1v1h-2v1h-1v1H8v-1H7v-1H6v-1H5V9H4V5h1V4h1V3h1zm0 2H5v3h1v1h1v1h2v1h2v-1h2v-1h1V8h1V5H7zm2 10h6v1H9v-1zm-1 2h8v1H8v-1z"/>
+      </svg>
+    </div>
+
+    <div style="font-family:'Press Start 2P',monospace;font-size:clamp(8px,2vw,12px);color:var(--btc);margin-bottom:8px;">¡FELICIDADES!</div>
+    <div style="font-family:'Press Start 2P',monospace;font-size:clamp(6px,1.5vw,9px);color:var(--text);line-height:1.8;margin-bottom:24px;">HAS COMPLETADO<br>DON MEMO Y LOS SATS</div>
+
+    <!-- Mensaje de Don Memo -->
+    <div style="background:var(--darker);border:3px solid #F7931A;padding:18px 20px;margin-bottom:24px;text-align:left;">
+      <div style="font-family:'Press Start 2P',monospace;font-size:7px;color:#F7931A;margin-bottom:10px;">🟠 DON MEMO</div>
+      <div style="font-family:'VT323',monospace;font-size:clamp(17px,4vw,22px);color:var(--text);line-height:1.6;">
+        Gracias a Don Memo hemos reforzado conocimiento sobre Bitcoin. Ahora tú tienes la opción de saber si seguir continuando.
+      </div>
+    </div>
+
+    <!-- Formulario certificado -->
+    <div style="background:var(--darker);border:3px solid var(--border);padding:20px;margin-bottom:20px;">
+      <div style="font-family:'Press Start 2P',monospace;font-size:8px;color:var(--gold);margin-bottom:14px;">📜 TU CERTIFICADO</div>
+      <div style="font-family:'VT323',monospace;font-size:17px;color:var(--text-muted);margin-bottom:12px;line-height:1.6;">
+        Escribe tu nombre para generar tu certificado de conclusión.
+      </div>
+      <input id="certName" type="text" placeholder="Tu nombre completo"
+        style="width:100%;box-sizing:border-box;font-family:'Press Start 2P',monospace;font-size:8px;background:var(--surface);border:3px solid #F7931A;color:var(--text);padding:12px 10px;margin-bottom:14px;outline:none;"
+        oninput="document.getElementById('certNamePreview').textContent=this.value||'Tu Nombre'"/>
+      <div style="font-family:'VT323',monospace;font-size:14px;color:var(--text-dim);line-height:1.7;margin-bottom:14px;">
+        Este certificado no está avalado por ninguna institución pública ni por los organizadores del hackathon. Es un reconocimiento personal de que completaste un curso con los conocimientos principales de Bitcoin.<br>
+        <span style="color:#F7931A;">att: Uinik Team</span>
+      </div>
+      <button onclick="downloadCert()"
+        style="font-family:'Press Start 2P',monospace;font-size:7px;background:#F7931A;color:#000;border:none;padding:12px 20px;cursor:pointer;box-shadow:3px 3px 0 #000;width:100%;margin-bottom:8px;">
+        ⬇ DESCARGAR CERTIFICADO
+      </button>
+    </div>
+
+    <!-- Módulo avanzado -->
+    <div style="background:var(--darker);border:3px solid #16A085;padding:20px;margin-bottom:20px;">
+      <div style="font-family:'Press Start 2P',monospace;font-size:8px;color:#16A085;margin-bottom:12px;">⚡ ¿QUIERES IR MÁS LEJOS?</div>
+      <div style="font-family:'VT323',monospace;font-size:clamp(16px,3.5vw,20px);color:var(--text-muted);line-height:1.6;margin-bottom:14px;">
+        Si gustas puedes realizar un curso más especializado y con más tecnicismos sobre Bitcoin — wallets, minería, transacciones y más. También podrás descargar tu certificado al finalizarlo.
+        <br><br>
+        <span style="color:var(--text-dim);font-size:14px;">El mismo aviso aplica: certificado no avalado por instituciones. att: Uinik Team</span>
+      </div>
+      <a href="" id="advancedCourseBtn"
+        style="display:block;font-family:'Press Start 2P',monospace;font-size:7px;background:#16A085;color:var(--text);border:none;padding:12px 20px;cursor:pointer;box-shadow:3px 3px 0 #000;text-decoration:none;text-align:center;">
+        IR AL CURSO AVANZADO ▶
+      </a>
+    </div>
+
+    <!-- Volver -->
+    <button onclick="document.getElementById('gradScreen').style.display='none'"
+      style="font-family:'Press Start 2P',monospace;font-size:6px;background:transparent;color:var(--text-dim);border:2px solid var(--border);padding:8px 16px;cursor:pointer;">
+      ← VOLVER AL CURSO
+    </button>
+
+  </div>
+</div>
+
+<!-- Canvas oculto para generar el certificado -->
+<canvas id="certCanvas" width="900" height="636" style="display:none;"></canvas>
+
+<script src="curso/js/curso.js"></script>
+</body>
+</html>
