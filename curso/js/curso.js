@@ -345,7 +345,7 @@ function initStars(){
 window.onload=()=>{
   initStars();
   applyThemeUI();
-  buildGlossary();buildBadges();renderNotes();
+  buildGlossary();updBadges(0);renderNotes();
   fetchUSDMXN().then(fetchBTC);setInterval(fetchBTC,15000);setInterval(fetchUSDMXN,300000);
   drawMemo();
   const tutDone = localStorage.getItem('curso_tut_done');
@@ -1448,13 +1448,13 @@ function toggleTheme(){
   const isLight=html.classList.toggle('light');
   localStorage.setItem('uinik-theme',isLight?'light':'dark');
   const btn=document.getElementById('themeToggle');
-  if(btn) btn.textContent=isLight?'🌑':'🌙';
+  if(btn) btn.textContent=isLight?'🌑 MODO':'🌙 MODO';
 }
 
 function applyThemeUI(){
   const isLight=document.documentElement.classList.contains('light');
   const btn=document.getElementById('themeToggle');
-  if(btn) btn.textContent=isLight?'🌑':'🌙';
+  if(btn) btn.textContent=isLight?'🌑 MODO':'🌙 MODO';
 }
 
 // Escuchar cambios del sistema en tiempo real (si no hay preferencia guardada)
