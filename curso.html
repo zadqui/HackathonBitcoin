@@ -1,6 +1,16 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+
+<script>
+// ── THEME: detectar sistema antes de renderizar (evita flash) ──
+(function(){
+  const saved=localStorage.getItem('uinik-theme');
+  const prefersDark=window.matchMedia('(prefers-color-scheme:dark)').matches;
+  const isLight=saved?saved==='light':!prefersDark;
+  if(isLight) document.documentElement.classList.add('light');
+})();
+</script>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Don Memo y los Sats — El Curso</title>
@@ -11,27 +21,95 @@
 ══════════════════════════════════════ */
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;border-radius:0!important;}
 :root{
-  --btc:#F7931A;--gold:#D4A017;--dark:#1A1A2E;--darker:#0D0D1A;
-  --darkest:#05050F;--green:#16A085;--red:#C0392B;--blue:#2980B9;--pw:264px;
+  /* ── BITCOIN (intocable) ── */
+  --btc:#F7931A;
+
+  /* ── TOBACCO/MAHOGANY PALETTE ── */
+  --accent:#B59E7D;
+  --accent2:#73534C;
+  --gold:#B59E7D;
+  --gold2:#CEC1A8;
+
+  /* ── FONDOS ── */
+  --darker:#1A0F0A;
+  --dark:#260F08;
+  --darkest:#05050F;
+  --surface:#2E1810;
+  --surface2:#3A2018;
+
+  /* ── TEXTO ── */
+  --text:#F1EADA;
+  --text-muted:#CEC1A8;
+  --text-dim:#AAA396;
+
+  /* ── BORDES ── */
+  --border:rgba(181,158,125,0.28);
+  --border2:rgba(206,193,168,0.35);
+
+  /* ── SEMÁNTICOS ── */
+  --green:#5D8679;
+  --red:#C0392B;
+  --blue:#2980B9;
+
+  /* ── GLOWS ── */
+  --glow-r:rgba(181,158,125,0.35);
+
+  /* ── LEGACY ── */
+  --pw:264px;
+  --crimson:#B59E7D;
+  --crimson2:#73534C;
+}
+
+/* ── LIGHT MODE ── */
+html.light{
+  --btc:#D4720A;
+  --accent:#584738;
+  --accent2:#3D2B1F;
+  --gold:#584738;
+  --gold2:#3D2B1F;
+  --darker:#F1EADA;
+  --dark:#E8DCC8;
+  --darkest:#D8CCB8;
+  --surface:#FBF5EC;
+  --surface2:#F0E6D2;
+  --text:#1A0C06;
+  --text-muted:#3D2B1F;
+  --text-dim:#73534C;
+  --border:rgba(61,43,31,0.22);
+  --border2:rgba(88,71,56,0.3);
+  --green:#2D6B50;
+  --red:#B03020;
+  --blue:#1A5276;
+  --glow-r:rgba(61,43,31,0.15);
+  --crimson:#584738;
+  --crimson2:#3D2B1F;
 }
 html,body{height:100%;overflow:hidden;}
-body{background:var(--darker);color:#e2e8f0;font-family:'VT323',monospace;display:flex;flex-direction:column;}
+body{background:var(--darker);color:var(--text);transition:background 0.35s ease,color 0.35s ease;font-family:'VT323',monospace;display:flex;flex-direction:column;}
 body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9998;
-  background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.07) 2px,rgba(0,0,0,0.07) 4px);}
+  background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.07) 2px,rgba(0,0,0,0.07) 4px);
+  opacity:1;transition:opacity 0.35s ease;}
+html.light body::after{opacity:0;}
 .px{font-family:'Press Start 2P',monospace;}
 ::-webkit-scrollbar{width:4px;height:4px;}
-::-webkit-scrollbar-track{background:#0D0D1A;}
+::-webkit-scrollbar-track{background:var(--darker);}
 ::-webkit-scrollbar-thumb{background:var(--btc);}
 
 /* ══════════════════════════════════════
    NAVBAR
 ══════════════════════════════════════ */
 #nav{
-  height:44px;min-height:44px;flex-shrink:0;background:var(--darkest);
-  border-bottom:4px solid #000;display:flex;align-items:center;
-  justify-content:space-between;padding:0 16px;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 16px;height:44px;
+  background:var(--dark);
+  border-bottom:3px solid var(--accent2);
+  box-shadow:0 2px 12px var(--glow-r);
+  flex-shrink:0;overflow:hidden;
+  backdrop-filter:blur(8px);
+  transition:background 0.35s ease,border-color 0.35s ease;
 }
-#nav a{color:#aaa;text-decoration:none;display:flex;align-items:center;gap:8px;}
+html.light #nav{box-shadow:0 2px 8px var(--glow-r);}
+#nav a{color:var(--text-muted);text-decoration:none;display:flex;align-items:center;gap:8px;}
 #nav a:hover{color:var(--btc);}
 
 /* ══════════════════════════════════════
@@ -47,21 +125,21 @@ body.exam-open #main,body.exam-open #nav{
 ══════════════════════════════════════ */
 .panel{width:var(--pw);min-width:var(--pw);background:var(--dark);
   display:flex;flex-direction:column;overflow:hidden;flex-shrink:0;}
-#pl{border-right:4px solid #000;}
-#pr{border-left:4px solid #000;}
-.ph{padding:10px 14px;border-bottom:4px solid #000;flex-shrink:0;}
+#pl{border-right:4px solid var(--accent2);}
+#pr{border-left:4px solid var(--accent2);}
+.ph{padding:10px 14px;border-bottom:4px solid var(--accent2);flex-shrink:0;}
 
 /* ══════════════════════════════════════
    TABS (left panel)
 ══════════════════════════════════════ */
 .tabs{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;flex-shrink:0;}
 .tab{padding:8px 2px;text-align:center;cursor:pointer;font-family:'Press Start 2P',monospace;
-  font-size:7px;border-bottom:4px solid #000;border-right:4px solid #000;
-  color:#555;background:var(--dark);transition:all .1s;
+  font-size:7px;border-bottom:4px solid var(--accent2);border-right:4px solid var(--accent2);
+  color:var(--text-dim);background:var(--dark);transition:all .1s;
   display:flex;flex-direction:column;align-items:center;gap:3px;}
 .tab:last-child{border-right:none;}
-.tab.on{color:var(--btc);border-bottom-color:var(--btc);background:#0f0f20;}
-.tab:hover:not(.on){color:#aaa;background:rgba(255,255,255,0.02);}
+.tab.on{color:var(--btc);border-bottom-color:var(--btc);background:var(--dark);}
+.tab:hover:not(.on){color:var(--text-muted);background:rgba(255,255,255,0.02);}
 .tab .ti{font-size:14px;}
 .tc{display:none;flex:1;flex-direction:column;overflow:hidden;}
 .tc.on{display:flex;}
@@ -77,25 +155,25 @@ body.exam-open #main,body.exam-open #nav{
 .dc.red{border-left-color:var(--red);}
 .dc.blue{border-left-color:var(--blue);}
 .dc.green{border-left-color:var(--green);}
-.dc-badge{display:inline-block;background:var(--red);color:#fff;
+.dc-badge{display:inline-block;background:var(--red);color:var(--text);
   font-family:'Press Start 2P',monospace;font-size:6px;padding:2px 5px;
-  border:2px solid #000;margin-bottom:6px;animation:blink 1.5s ease-in-out infinite;}
+  border:2px solid var(--accent2);margin-bottom:6px;animation:blink 1.5s ease-in-out infinite;}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.4}}
-.dc p{font-size:17px;color:#fff;line-height:1.4;}
-.dc .dc-meta{font-size:12px;color:#555;margin-top:4px;}
+.dc p{font-size:17px;color:var(--text);line-height:1.4;}
+.dc .dc-meta{font-size:12px;color:var(--text-dim);margin-top:4px;}
 .dc .dc-more{font-family:'Press Start 2P',monospace;font-size:7px;color:var(--btc);margin-top:6px;display:inline-block;}
 .dc-expand{display:none;margin-top:10px;border-top:1px solid rgba(255,255,255,0.08);padding-top:10px;}
 .dc-expand.on{display:block;}
-.dc-expand p{font-size:16px;color:#ccc;line-height:1.5;}
-.dc-expand .dc-src{font-size:12px;color:#555;margin-top:6px;}
+.dc-expand p{font-size:16px;color:var(--text-muted);line-height:1.5;}
+.dc-expand .dc-src{font-size:12px;color:var(--text-dim);margin-top:6px;}
 .pbar-wrap{margin-top:10px;display:flex;flex-direction:column;gap:5px;}
 .pbar-row{display:flex;align-items:center;gap:6px;}
 .pbar-lbl{font-family:'Press Start 2P',monospace;font-size:6px;width:52px;}
-.pbar-track{flex:1;height:10px;background:#111;border:1px solid #333;}
+.pbar-track{flex:1;height:10px;background:var(--surface);border:1px solid var(--border);}
 .pbar-fill{height:100%;transition:width .6s;}
 .pbar-val{font-family:'Press Start 2P',monospace;font-size:6px;width:28px;text-align:right;}
 .empty{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
-  gap:10px;padding:20px;text-align:center;color:#444;}
+  gap:10px;padding:20px;text-align:center;color:var(--text-dim);}
 .empty .ei{font-size:28px;opacity:.4;}
 .empty p{font-family:'Press Start 2P',monospace;font-size:7px;line-height:2;}
 
@@ -104,36 +182,36 @@ body.exam-open #main,body.exam-open #nav{
 ══════════════════════════════════════ */
 .notes-wrap{flex:1;display:flex;flex-direction:column;padding:10px;gap:8px;overflow:hidden;}
 .ntarea{font-family:'VT323',monospace;font-size:17px;background:var(--darker);
-  border:2px solid #333;color:#fff;padding:8px;resize:none;height:88px;outline:none;}
+  border:2px solid var(--border);color:var(--text);padding:8px;resize:none;height:88px;outline:none;}
 .ntarea:focus{border-color:var(--btc);}
-.ntarea::placeholder{color:#333;}
+.ntarea::placeholder{color:var(--text-dim);}
 .nt-meta{display:flex;justify-content:space-between;align-items:center;}
-.nt-cc{font-size:13px;color:#555;}
+.nt-cc{font-size:13px;color:var(--text-dim);}
 .btn-save{font-family:'Press Start 2P',monospace;font-size:7px;background:var(--btc);
-  color:#000;border:none;padding:6px 10px;cursor:pointer;box-shadow:2px 2px 0 #000;transition:all .1s;}
+  color:var(--darker);border:none;padding:6px 10px;cursor:pointer;box-shadow:2px 2px 0 var(--darkest);transition:all .1s;}
 .btn-save:hover{transform:translate(1px,1px);box-shadow:1px 1px 0 #000;}
 .btn-save.saved{background:var(--green);}
-.nt-divider{font-family:'Press Start 2P',monospace;font-size:7px;color:#444;text-align:center;}
+.nt-divider{font-family:'Press Start 2P',monospace;font-size:7px;color:var(--text-dim);text-align:center;}
 .nt-list{flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:6px;}
 .nt-item{background:var(--darker);border-left:2px solid var(--btc);
   padding:8px 28px 8px 10px;position:relative;animation:slideIn .3s ease;}
 @keyframes slideIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
-.nt-item p{font-size:16px;color:#ddd;line-height:1.4;}
-.nt-item .ntm{font-size:12px;color:#555;margin-top:3px;}
-.nt-del{position:absolute;top:6px;right:8px;background:none;border:none;color:#444;cursor:pointer;font-size:13px;}
+.nt-item p{font-size:16px;color:var(--text);line-height:1.4;}
+.nt-item .ntm{font-size:12px;color:var(--text-dim);margin-top:3px;}
+.nt-del{position:absolute;top:6px;right:8px;background:none;border:none;color:var(--text-dim);cursor:pointer;font-size:13px;}
 .nt-del:hover{color:var(--red);}
 
 /* ══════════════════════════════════════
    GLOSSARY TAB
 ══════════════════════════════════════ */
 .glo-wrap{flex:1;display:flex;flex-direction:column;overflow:hidden;}
-.glo-search-wrap{padding:8px 10px;border-bottom:2px solid #111;flex-shrink:0;}
+.glo-search-wrap{padding:8px 10px;border-bottom:2px solid var(--border);flex-shrink:0;}
 .glo-search{font-family:'Press Start 2P',monospace;font-size:8px;background:var(--darker);
-  border:2px solid #333;color:#fff;padding:7px 10px;width:100%;outline:none;}
+  border:2px solid var(--border);color:var(--text);padding:7px 10px;width:100%;outline:none;}
 .glo-search:focus{border-color:var(--btc);}
-.glo-count{font-size:12px;color:#555;padding:4px 10px;flex-shrink:0;}
-.glo-list{flex:1;overflow-y:auto;}
-.glo-item{border-bottom:2px solid #111;}
+.glo-count{font-size:12px;color:var(--text-dim);padding:4px 10px;flex-shrink:0;}
+.glo-list{flex:1;overflow-y:auto;min-height:0;}
+.glo-item{border-bottom:2px solid var(--border);}
 .glo-hdr{display:flex;align-items:center;justify-content:space-between;
   padding:10px 12px;cursor:pointer;transition:background .1s;}
 .glo-hdr:hover{background:rgba(255,255,255,0.03);}
@@ -142,31 +220,31 @@ body.exam-open #main,body.exam-open #nav{
 .glo-term{font-family:'Press Start 2P',monospace;font-size:8px;flex:1;}
 .glo-arrow{font-family:'Press Start 2P',monospace;font-size:8px;color:var(--btc);transition:transform .2s;}
 .glo-hdr.on .glo-arrow{transform:rotate(180deg);}
-.glo-body{display:none;padding:10px 12px 14px;background:rgba(0,0,0,0.2);}
+.glo-body{display:none;padding:10px 12px 14px;background:var(--surface);}
 .glo-body.on{display:block;}
-.glo-def{font-size:17px;color:#ddd;line-height:1.5;}
-.glo-eg{font-size:15px;color:#888;margin-top:6px;}
+.glo-def{font-size:17px;color:var(--text);line-height:1.5;}
+.glo-eg{font-size:15px;color:var(--text-muted);margin-top:6px;}
 .glo-eg::before{content:'🇲🇽 ';}
 .glo-tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px;}
 .glo-tag{font-family:'Press Start 2P',monospace;font-size:6px;border:1px solid var(--btc);
   color:var(--btc);padding:3px 6px;cursor:pointer;transition:all .1s;}
-.glo-tag:hover{background:var(--btc);color:#000;}
+.glo-tag:hover{background:var(--btc);color:var(--darker);}
 
 /* ══════════════════════════════════════
    BADGES TAB
 ══════════════════════════════════════ */
 .log-wrap{flex:1;overflow-y:auto;padding:10px;}
 .log-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
-.log-card{background:var(--darker);border:2px solid #333;padding:12px 8px;
+.log-card{background:var(--darker);border:2px solid var(--border);padding:12px 8px;
   text-align:center;display:flex;flex-direction:column;align-items:center;gap:6px;}
 .log-card.unlock{border-color:var(--btc);background:rgba(247,147,26,0.06);}
 .log-card.lock{filter:grayscale(1);opacity:.4;}
 .log-icon{font-size:24px;}
 .log-name{font-family:'Press Start 2P',monospace;font-size:6px;color:var(--btc);line-height:1.6;}
-.log-card.lock .log-name{color:#555;}
-.log-desc{font-size:13px;color:#888;line-height:1.4;}
-.log-prog-text{font-size:13px;color:#666;margin-top:10px;text-align:center;}
-.log-prog-bar{height:6px;background:#111;margin-top:6px;border:1px solid #333;}
+.log-card.lock .log-name{color:var(--text-dim);}
+.log-desc{font-size:13px;color:var(--text-muted);line-height:1.4;}
+.log-prog-text{font-size:13px;color:var(--text-dim);margin-top:10px;text-align:center;}
+.log-prog-bar{height:6px;background:var(--surface);margin-top:6px;border:1px solid var(--border);}
 .log-prog-fill{height:100%;background:var(--btc);}
 
 /* ══════════════════════════════════════
@@ -175,24 +253,24 @@ body.exam-open #main,body.exam-open #nav{
 #center{flex:1;display:flex;flex-direction:column;align-items:center;
   padding:12px;gap:8px;overflow:hidden;min-width:0;}
 .prog-row{width:100%;max-width:740px;flex-shrink:0;display:flex;align-items:center;gap:10px;}
-.prog-ch{font-family:'Press Start 2P',monospace;font-size:8px;color:#777;white-space:nowrap;}
-.prog-bar-wrap{flex:1;height:14px;background:#000;border:3px solid #000;
+.prog-ch{font-family:'Press Start 2P',monospace;font-size:8px;color:var(--text-muted);white-space:nowrap;}
+.prog-bar-wrap{flex:1;height:14px;background:var(--darkest);border:3px solid var(--accent2);
   box-shadow:0 0 0 1px rgba(255,255,255,0.06);}
 .prog-fill{height:100%;background:var(--btc);
   box-shadow:inset 0 3px 0 rgba(255,255,255,0.25);transition:width .5s;}
 .prog-pct{font-family:'Press Start 2P',monospace;font-size:8px;color:var(--btc);white-space:nowrap;}
-.prog-time{font-family:'Press Start 2P',monospace;font-size:7px;color:#555;white-space:nowrap;}
+.prog-time{font-family:'Press Start 2P',monospace;font-size:7px;color:var(--text-dim);white-space:nowrap;}
 
 /* Game frame */
-#gframe{width:100%;max-width:740px;flex:1;background:#000;border:4px solid #000;
-  box-shadow:6px 6px 0 #000;position:relative;overflow:hidden;min-height:0;}
+#gframe{width:100%;max-width:740px;flex:1;background:var(--darkest);border:4px solid var(--darkest);
+  box-shadow:6px 6px 0 var(--darkest);position:relative;overflow:hidden;min-height:0;}
 #gbg{position:absolute;inset:0;
   background:linear-gradient(rgba(0,0,0,0.15),rgba(0,0,0,0.15)),
   url('https://lh3.googleusercontent.com/aida-public/AB6AXuCiwiip-WumG8KLrwUDh-Lh8NHG2Tm-iO6OLVzIqR3fm2JRcIFvHQms4wCrhYRxIC1cgQLEM-l4PFFtDArLSog2jzRMg_qK5WH5qPSyCNKxEQu7xMuBzctvpg_K5LSoINDSumb3CevhelS48EnfILeFGOWc-iUFZkxFm0xREXC3ts_HMIKbSdjN4UF6zy60D-V8tnVOnYaA4Zgrw8vYwP7HAcCgwQsxTXy-n2HA27hjq-Z1Z_5LLD4IYJq3XTv2fkZ_kpWyhDj_ZBrh')
   center/cover no-repeat;}
 
 /* BTC ticker inside game */
-#gticker{position:absolute;top:0;left:0;right:0;background:rgba(0,0,0,0.92);
+#gticker{position:absolute;top:0;left:0;right:0;background:var(--dark);
   border-bottom:3px solid var(--btc);padding:4px 12px;
   display:flex;align-items:center;gap:8px;z-index:10;font-size:13px;}
 .tdot{width:5px;height:5px;background:var(--green);animation:pulse 1s ease-in-out infinite;}
@@ -202,22 +280,22 @@ body.exam-open #main,body.exam-open #nav{
 #cbox{position:absolute;bottom:112px;left:10px;right:10px;
   display:none;flex-direction:column;gap:5px;z-index:22;}
 .copt{font-family:'Press Start 2P',monospace;font-size:7px;
-  background:rgba(4,4,20,.97);border:2px solid #444;color:#888;
+  background:var(--surface);border:2px solid var(--border);color:var(--text-muted);
   padding:9px 12px;cursor:pointer;text-align:left;
   box-shadow:3px 3px 0 #000;transition:all .1s;}
 .copt:hover{border-color:var(--btc);color:var(--btc);background:rgba(247,147,26,.07);transform:translateX(4px);}
 
 /* Dialog box */
 #dlg{position:absolute;bottom:0;left:0;right:0;
-  background:rgba(4,4,20,.97);border-top:4px solid #fff;
-  box-shadow:0 0 0 4px #000;padding:14px 16px 10px;z-index:20;cursor:pointer;}
+  background:var(--dark);border-top:4px solid var(--accent);
+  box-shadow:0 0 0 4px var(--darkest);padding:14px 16px 10px;z-index:20;cursor:pointer;}
 #spk{position:absolute;top:-18px;left:14px;font-family:'Press Start 2P',monospace;
-  font-size:8px;background:#fff;color:#000;padding:4px 10px;border:3px solid #000;}
-#dtxt{font-size:21px;color:#fff;line-height:1.45;min-height:50px;}
+  font-size:8px;background:var(--accent);color:var(--darker);padding:4px 10px;border:3px solid var(--darker);}
+#dtxt{font-size:21px;color:var(--text);line-height:1.45;min-height:50px;}
 .cur{display:inline-block;width:10px;height:13px;background:var(--btc);
   margin-left:3px;animation:curblink .8s step-end infinite;vertical-align:middle;}
 @keyframes curblink{0%,100%{opacity:1}50%{opacity:0}}
-#dhint{position:absolute;bottom:8px;right:12px;font-size:12px;color:#444;
+#dhint{position:absolute;bottom:8px;right:12px;font-size:12px;color:var(--text-dim);
   animation:hint 2s ease-in-out infinite;}
 @keyframes hint{0%,100%{opacity:.4}50%{opacity:1}}
 
@@ -225,11 +303,11 @@ body.exam-open #main,body.exam-open #nav{
 .nav-ctrl{width:100%;max-width:740px;flex-shrink:0;
   display:flex;align-items:center;justify-content:center;gap:20px;}
 .nb{font-family:'Press Start 2P',monospace;font-size:8px;background:none;border:none;
-  cursor:pointer;color:#555;transition:color .15s;padding:4px;}
+  cursor:pointer;color:var(--text-dim);transition:color .15s;padding:4px;}
 .nb:hover{color:var(--btc);}
 .nb.primary{color:var(--btc);}
 .dots{display:flex;gap:6px;align-items:center;}
-.dot{width:9px;height:9px;background:#222;transition:background .2s;flex-shrink:0;}
+.dot{width:9px;height:9px;background:var(--surface);transition:background .2s;flex-shrink:0;}
 .dot.a{background:var(--btc);}
 .dot.d{background:var(--green);}
 
@@ -238,17 +316,17 @@ body.exam-open #main,body.exam-open #nav{
 ══════════════════════════════════════ */
 .pol-scroll{flex:1;overflow-y:auto;padding:16px 12px;
   display:flex;flex-direction:column;align-items:center;gap:16px;}
-.pol{width:168px;background:#f5f0e8;padding:8px 8px 24px;position:relative;
+.pol{width:168px;background:var(--surface);padding:8px 8px 24px;position:relative;
   transition:transform .25s,box-shadow .25s;flex-shrink:0;}
 .pol-img{width:100%;aspect-ratio:1/1;overflow:hidden;position:relative;
   display:flex;align-items:center;justify-content:center;}
 .pol-scene-css{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:36px;}
 .pol-caption{font-family:'Press Start 2P',monospace;font-size:7px;
-  text-align:center;margin-top:8px;color:#333;line-height:1.6;}
+  text-align:center;margin-top:8px;color:var(--text-dim);line-height:1.6;}
 .pol-badge{position:absolute;top:4px;right:4px;font-family:'Press Start 2P',monospace;
-  font-size:6px;padding:3px 6px;border:2px solid #000;}
-.pol-badge.cur{background:var(--btc);color:#000;animation:blink 1.5s ease-in-out infinite;}
-.pol-badge.done{background:var(--green);color:#fff;}
+  font-size:6px;padding:3px 6px;border:2px solid var(--accent2);}
+.pol-badge.cur{background:var(--btc);color:var(--darker);animation:blink 1.5s ease-in-out infinite;}
+.pol-badge.done{background:var(--green);color:var(--text);}
 .pol.locked{filter:grayscale(1);opacity:.45;cursor:not-allowed;}
 .pol.locked .pol-img::after{content:'🔒';position:absolute;inset:0;
   display:flex;align-items:center;justify-content:center;font-size:28px;background:rgba(0,0,0,0.5);}
@@ -261,27 +339,27 @@ body.exam-open #main,body.exam-open #nav{
 .pol:nth-child(4){transform:rotate(1.5deg);}
 .pol:nth-child(5){transform:rotate(-2.5deg);}
 .pol:nth-child(6){transform:rotate(1deg);}
-.pr-summary{border-top:4px solid #000;padding:10px 12px;flex-shrink:0;}
-.pr-txt{font-size:15px;color:#888;margin-bottom:6px;}
-.pr-bar{height:6px;background:#111;border:1px solid #333;}
+.pr-summary{border-top:4px solid var(--accent2);padding:10px 12px;flex-shrink:0;}
+.pr-txt{font-size:15px;color:var(--text-muted);margin-bottom:6px;}
+.pr-bar{height:6px;background:var(--surface);border:1px solid var(--border);}
 .pr-fill{height:100%;background:var(--btc);transition:width .5s;}
 .pr-donut{display:flex;align-items:center;gap:10px;margin-top:8px;}
 
 /* ══════════════════════════════════════
    MOBILE
 ══════════════════════════════════════ */
-#mob-tabs{display:none;height:52px;background:var(--darkest);border-top:4px solid #000;flex-shrink:0;}
+#mob-tabs{display:none;height:52px;background:var(--darkest);border-top:4px solid var(--accent2);flex-shrink:0;}
 .mob-tab{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
-  gap:2px;cursor:pointer;font-family:'Press Start 2P',monospace;font-size:6px;color:#555;}
+  gap:2px;cursor:pointer;font-family:'Press Start 2P',monospace;font-size:6px;color:var(--text-dim);}
 .mob-tab.on{color:var(--btc);}
 .mob-tab .mti{font-size:18px;}
 #drawer{display:none;position:fixed;bottom:52px;left:0;right:0;height:50vh;
   background:var(--dark);border-top:4px solid var(--btc);z-index:200;
   flex-direction:column;overflow:hidden;box-shadow:0 -6px 20px rgba(0,0,0,0.5);}
 #drawer.open{display:flex;}
-.drawer-handle{width:40px;height:4px;background:#555;margin:8px auto;flex-shrink:0;}
+.drawer-handle{width:40px;height:4px;background:var(--accent2);margin:8px auto;flex-shrink:0;}
 #mob-fab-l{display:none;position:fixed;bottom:70px;left:12px;width:44px;height:44px;
-  background:var(--btc);border:3px solid #000;align-items:center;justify-content:center;
+  background:var(--btc);border:3px solid var(--accent2);align-items:center;justify-content:center;
   cursor:pointer;box-shadow:3px 3px 0 #000;z-index:150;font-size:18px;}
 @media(max-width:1100px){#pl{display:none;}#mob-fab-l{display:flex;}}
 @media(max-width:768px){#pr{display:none;}#mob-tabs{display:flex;}#mob-fab-l{display:none!important;}#center{padding:6px;gap:6px;}}
@@ -292,7 +370,7 @@ body.exam-open #main,body.exam-open #nav{
 ══════════════════════════════════════ */
 #examBackdrop{
   display:none;position:fixed;inset:0;z-index:500;
-  background:rgba(5,5,15,0.9);
+  background:var(--darker);
   align-items:center;justify-content:center;
 }
 #examBackdrop.open{display:flex;}
@@ -320,7 +398,7 @@ body.exam-open #main,body.exam-open #nav{
 
 /* Modal header */
 #examHeader{
-  background:var(--darkest);border-bottom:4px solid #000;
+  background:var(--darkest);border-bottom:4px solid var(--accent2);
   padding:12px 18px;display:flex;align-items:center;
   justify-content:space-between;flex-shrink:0;
 }
@@ -328,12 +406,12 @@ body.exam-open #main,body.exam-open #nav{
 .exam-lives{display:flex;gap:6px;align-items:center;}
 .heart{font-size:17px;transition:all .4s;filter:drop-shadow(0 2px 0 rgba(0,0,0,0.8));}
 .heart.lost{filter:grayscale(1);opacity:.25;transform:scale(0.8);}
-.btn-skip{font-family:'Press Start 2P',monospace;font-size:7px;color:#444;
+.btn-skip{font-family:'Press Start 2P',monospace;font-size:7px;color:var(--text-dim);
   background:none;border:none;cursor:pointer;transition:color .15s;}
-.btn-skip:hover{color:#888;}
+.btn-skip:hover{color:var(--text-muted);}
 
 /* Progress bar */
-#examProg{height:8px;background:#000;border-bottom:2px solid #111;flex-shrink:0;}
+#examProg{height:8px;background:var(--darkest);border-bottom:2px solid var(--border);flex-shrink:0;}
 #examProgFill{height:100%;background:var(--btc);transition:width .4s;}
 
 /* Question zone */
@@ -344,36 +422,36 @@ body.exam-open #main,body.exam-open #nav{
   background:rgba(0,0,0,0.4);border-left:4px solid var(--btc);
   padding:10px 14px;margin-bottom:18px;}
 #hintCanvas{width:40px;height:50px;flex-shrink:0;image-rendering:pixelated;}
-.hint-txt{font-size:19px;color:#bbb;line-height:1.4;font-style:italic;}
+.hint-txt{font-size:19px;color:var(--text-muted);line-height:1.4;font-style:italic;}
 
 /* Question */
 .q-badge{display:inline-block;background:rgba(247,147,26,0.15);
   border:1px solid rgba(247,147,26,0.35);font-family:'Press Start 2P',monospace;
   font-size:7px;color:var(--btc);padding:3px 8px;margin-bottom:10px;}
-#qText{font-size:25px;color:#fff;line-height:1.4;margin-bottom:18px;}
+#qText{font-size:25px;color:var(--text);line-height:1.4;margin-bottom:18px;}
 #qText .hi{color:var(--btc);}
 
 /* Answer buttons */
 #answersWrap{display:flex;flex-direction:column;gap:8px;padding-bottom:16px;}
 .ans-btn{display:flex;align-items:center;justify-content:space-between;
-  padding:12px 14px;background:var(--darker);border:2px solid #2a2a3a;
+  padding:12px 14px;background:var(--darker);border:2px solid var(--border);
   cursor:pointer;transition:all .1s;text-align:left;width:100%;}
 .ans-btn:hover:not([disabled]){border-color:var(--btc);background:rgba(247,147,26,0.05);transform:translateX(3px);}
-.ans-btn:hover:not([disabled]) .ans-letter{background:var(--btc);color:#000;}
+.ans-btn:hover:not([disabled]) .ans-letter{background:var(--btc);color:var(--darker);}
 .ans-left{display:flex;align-items:center;gap:14px;}
-.ans-letter{width:30px;height:30px;background:#111;border:1px solid #333;
+.ans-letter{width:30px;height:30px;background:var(--surface);border:1px solid var(--border);
   font-family:'Press Start 2P',monospace;font-size:8px;color:var(--btc);
   display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .1s;}
-.ans-text{font-size:21px;color:#fff;}
+.ans-text{font-size:21px;color:var(--text);}
 .ans-icon{font-size:16px;flex-shrink:0;}
 
 /* Answer states */
 .ans-btn.correct{border-color:var(--green);background:rgba(22,160,133,0.12);}
-.ans-btn.correct .ans-letter{background:var(--green);color:#fff;border-color:var(--green);}
+.ans-btn.correct .ans-letter{background:var(--green);color:var(--text);border-color:var(--green);}
 .ans-btn.correct .ans-text{color:var(--green);}
 .ans-btn.correct .ans-icon::after{content:'✓';color:var(--green);}
 .ans-btn.wrong{border-color:var(--red);background:rgba(192,57,43,0.12);}
-.ans-btn.wrong .ans-letter{background:var(--red);color:#fff;border-color:var(--red);}
+.ans-btn.wrong .ans-letter{background:var(--red);color:var(--text);border-color:var(--red);}
 .ans-btn.wrong .ans-text{color:var(--red);}
 .ans-btn.wrong .ans-icon::after{content:'✗';color:var(--red);}
 .ans-btn.dim{opacity:.28;pointer-events:none;}
@@ -398,16 +476,16 @@ body.exam-open #main,body.exam-open #nav{
 .fb-title{font-family:'Press Start 2P',monospace;font-size:10px;margin-bottom:6px;}
 .fb-title.ok{color:var(--green);}
 .fb-title.bad{color:var(--red);}
-.fb-exp{font-size:18px;color:#ccc;line-height:1.4;}
+.fb-exp{font-size:18px;color:var(--text-muted);line-height:1.4;}
 .fb-right{display:flex;align-items:center;gap:10px;flex-shrink:0;}
 .fb-sats{background:rgba(212,160,23,0.15);border:2px solid rgba(212,160,23,0.5);
   padding:5px 12px;font-family:'Press Start 2P',monospace;font-size:9px;color:var(--gold);}
 .fb-life{background:rgba(192,57,43,0.15);border:2px solid rgba(192,57,43,0.5);
   padding:5px 12px;font-family:'Press Start 2P',monospace;font-size:9px;color:var(--red);}
 .btn-cont{font-family:'Press Start 2P',monospace;font-size:8px;background:var(--btc);
-  color:#000;border:none;padding:11px 18px;cursor:pointer;
+  color:var(--darker);border:none;padding:11px 18px;cursor:pointer;
   box-shadow:4px 4px 0 #000;transition:all .1s;white-space:nowrap;}
-.btn-cont:hover{transform:translate(2px,2px);box-shadow:2px 2px 0 #000;}
+.btn-cont:hover{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--darkest);}
 .btn-cont:active{transform:translate(4px,4px);box-shadow:none;}
 
 /* ══════════════════════════════════════
@@ -419,13 +497,13 @@ body.exam-open #main,body.exam-open #nav{
 .res-icons{display:flex;justify-content:center;gap:6px;margin:12px 0;}
 .res-icon{width:24px;height:24px;display:flex;align-items:center;
   justify-content:center;font-size:11px;font-weight:bold;}
-.res-icon.ok{background:var(--green);color:#fff;}
-.res-icon.bad{background:var(--red);color:#fff;}
-.res-stats{display:grid;grid-template-columns:1fr 1fr 1fr;border:2px solid #222;margin:14px 0;}
-.res-stat{padding:10px 6px;text-align:center;border-right:1px solid #222;}
+.res-icon.ok{background:var(--green);color:var(--text);}
+.res-icon.bad{background:var(--red);color:var(--text);}
+.res-stats{display:grid;grid-template-columns:1fr 1fr 1fr;border:2px solid var(--border);margin:14px 0;}
+.res-stat{padding:10px 6px;text-align:center;border-right:1px solid var(--border);}
 .res-stat:last-child{border-right:none;}
-.res-stat-lbl{font-family:'Press Start 2P',monospace;font-size:6px;color:#555;margin-bottom:4px;}
-.res-stat-val{font-size:20px;color:#fff;}
+.res-stat-lbl{font-family:'Press Start 2P',monospace;font-size:6px;color:var(--text-dim);margin-bottom:4px;}
+.res-stat-val{font-size:20px;color:var(--text);}
 .res-msg{text-align:center;margin:14px 0;}
 .res-badge-wrap{display:flex;justify-content:center;margin:14px 0;}
 .res-badge{width:200px;padding:20px;text-align:center;
@@ -433,37 +511,37 @@ body.exam-open #main,body.exam-open #nav{
   box-shadow:0 0 20px rgba(247,147,26,0.25);
   animation:badgePop .5s ease .3s both;}
 @keyframes badgePop{from{transform:scale(0);opacity:0}60%{transform:scale(1.1)}to{transform:scale(1);opacity:1}}
-.res-badge.locked{filter:grayscale(1);opacity:.5;box-shadow:none;border-color:#333;animation:none;}
+.res-badge.locked{filter:grayscale(1);opacity:.5;box-shadow:none;border-color:var(--text-dim);animation:none;}
 .res-badge-icon{font-size:42px;margin-bottom:8px;}
-.res-badge-lbl{font-family:'Press Start 2P',monospace;font-size:7px;color:#888;margin-bottom:4px;}
+.res-badge-lbl{font-family:'Press Start 2P',monospace;font-size:7px;color:var(--text-muted);margin-bottom:4px;}
 .res-badge-name{font-family:'Press Start 2P',monospace;font-size:9px;color:var(--btc);margin-bottom:6px;line-height:1.6;}
-.res-badge.locked .res-badge-name{color:#555;}
-.res-badge-desc{font-size:15px;color:#888;}
+.res-badge.locked .res-badge-name{color:var(--text-dim);}
+.res-badge-desc{font-size:15px;color:var(--text-muted);}
 .res-actions{display:flex;justify-content:center;gap:12px;margin:14px 0;flex-wrap:wrap;}
 .btn-rp{font-family:'Press Start 2P',monospace;font-size:8px;background:var(--btc);
-  color:#000;border:none;padding:12px 20px;cursor:pointer;
+  color:var(--darker);border:none;padding:12px 20px;cursor:pointer;
   box-shadow:4px 4px 0 #000;transition:all .1s;}
-.btn-rp:hover{transform:translate(2px,2px);box-shadow:2px 2px 0 #000;}
+.btn-rp:hover{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--darkest);}
 .btn-rs{font-family:'Press Start 2P',monospace;font-size:7px;background:transparent;
-  border:2px solid #444;color:#888;padding:10px 16px;cursor:pointer;transition:all .1s;}
+  border:2px solid var(--border);color:var(--text-muted);padding:10px 16px;cursor:pointer;transition:all .1s;}
 .btn-rs:hover{border-color:var(--btc);color:var(--btc);}
 .res-rev-toggle{text-align:center;margin-top:6px;}
-.btn-rev{font-family:'Press Start 2P',monospace;font-size:7px;color:#444;
+.btn-rev{font-family:'Press Start 2P',monospace;font-size:7px;color:var(--text-dim);
   background:none;border:none;cursor:pointer;transition:color .15s;}
-.btn-rev:hover{color:#888;}
-.res-review{display:none;margin-top:12px;border-top:2px solid #111;padding-top:12px;}
+.btn-rev:hover{color:var(--text-muted);}
+.res-review{display:none;margin-top:12px;border-top:2px solid var(--border);padding-top:12px;}
 .res-review.open{display:block;}
-.rri{display:flex;gap:10px;padding:8px 0;border-bottom:1px solid #111;align-items:flex-start;}
-.rri-n{font-family:'Press Start 2P',monospace;font-size:7px;color:#666;white-space:nowrap;margin-top:3px;}
+.rri{display:flex;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);align-items:flex-start;}
+.rri-n{font-family:'Press Start 2P',monospace;font-size:7px;color:var(--text-dim);white-space:nowrap;margin-top:3px;}
 .rri-n.ok{color:var(--green);}
 .rri-n.bad{color:var(--red);}
-.rri-q{font-size:16px;color:#ccc;line-height:1.4;}
+.rri-q{font-size:16px;color:var(--text-muted);line-height:1.4;}
 .rri-a{font-size:14px;margin-top:3px;}
 
 /* ══════════════════════════════════════
    GAME OVER
 ══════════════════════════════════════ */
-#gameOver{display:none;position:absolute;inset:0;background:rgba(5,5,15,0.97);
+#gameOver{display:none;position:absolute;inset:0;background:var(--darker);
   z-index:20;flex-direction:column;align-items:center;
   justify-content:center;gap:16px;padding:32px;text-align:center;}
 #gameOver.show{display:flex;}
@@ -481,7 +559,7 @@ body.exam-open #main,body.exam-open #nav{
 }
 
 /* ══ EJERCICIOS ══ */
-#exOverlay{position:absolute;inset:0;background:rgba(5,5,15,.97);z-index:30;display:none;flex-direction:column;overflow-y:auto;}
+#exOverlay{position:absolute;inset:0;background:var(--darker);z-index:30;display:none;flex-direction:column;overflow-y:auto;}
 #exOverlay.on{display:flex;}
 .ex-wrap{padding:20px 18px;flex:1;}
 .ex-head{font-family:'Press Start 2P',monospace;font-size:8px;color:var(--btc);margin-bottom:16px;display:flex;align-items:center;gap:10px;}
@@ -489,59 +567,59 @@ body.exam-open #main,body.exam-open #nav{
 .ex-section{background:var(--darker);border-left:4px solid var(--btc);padding:12px 14px;}
 .ex-section.red{border-left-color:var(--red);}
 .ex-section.green{border-left-color:var(--green);}
-.ex-lbl{font-family:'Press Start 2P',monospace;font-size:6px;color:#555;margin-bottom:6px;}
+.ex-lbl{font-family:'Press Start 2P',monospace;font-size:6px;color:var(--text-dim);margin-bottom:6px;}
 .ex-big{font-family:'VT323',monospace;font-size:clamp(28px,5vw,38px);line-height:1;}
 .ex-mxn{color:var(--btc);}
 .ex-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:8px;}
-.ex-inp{font-family:'Press Start 2P',monospace;font-size:9px;background:var(--darkest);border:2px solid #333;color:#fff;padding:8px 10px;width:130px;outline:none;}
+.ex-inp{font-family:'Press Start 2P',monospace;font-size:9px;background:var(--darkest);border:2px solid var(--border);color:var(--text);padding:8px 10px;width:130px;outline:none;}
 .ex-inp:focus{border-color:var(--btc);}
-.ex-unit{font-size:16px;color:#666;font-family:'VT323',monospace;}
-.ex-slider{-webkit-appearance:none;width:160px;height:6px;background:#222;outline:none;cursor:pointer;}
+.ex-unit{font-size:16px;color:var(--text-dim);font-family:'VT323',monospace;}
+.ex-slider{-webkit-appearance:none;width:160px;height:6px;background:var(--surface);outline:none;cursor:pointer;}
 .ex-slider::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;background:var(--btc);cursor:pointer;}
 .ex-slider-val{font-family:'Press Start 2P',monospace;font-size:9px;color:var(--btc);min-width:34px;}
 .ex-vs{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
-.ex-card{background:var(--darkest);border:2px solid #1a1a2e;padding:10px;}
+.ex-card{background:var(--darkest);border:2px solid var(--border);padding:10px;}
 .ex-card .ex-lbl{margin-bottom:4px;}
 .ex-val{font-family:'VT323',monospace;font-size:clamp(22px,4vw,30px);line-height:1.1;}
 .ex-val.good{color:var(--green);}
 .ex-val.bad{color:var(--red);}
-.ex-sub{font-family:'VT323',monospace;font-size:14px;color:#555;margin-top:2px;}
-.ex-note{font-family:'VT323',monospace;font-size:15px;color:#444;margin-top:4px;}
-.btn-done{font-family:'Press Start 2P',monospace;font-size:7px;background:var(--btc);color:#000;border:none;padding:10px 20px;cursor:pointer;box-shadow:3px 3px 0 #000;display:block;margin-top:14px;}
-.btn-done:hover{transform:translate(1px,1px);box-shadow:2px 2px 0 #000;}
+.ex-sub{font-family:'VT323',monospace;font-size:14px;color:var(--text-dim);margin-top:2px;}
+.ex-note{font-family:'VT323',monospace;font-size:15px;color:var(--text-dim);margin-top:4px;}
+.btn-done{font-family:'Press Start 2P',monospace;font-size:7px;background:var(--btc);color:var(--darker);border:none;padding:10px 20px;cursor:pointer;box-shadow:3px 3px 0 #000;display:block;margin-top:14px;}
+.btn-done:hover{transform:translate(1px,1px);box-shadow:2px 2px 0 var(--darkest);}
 
 /* ══ TRIVIA RÁPIDA ══ */
 /* triviaOverlay now inline fixed */
 
 .tri-head{font-family:'Press Start 2P',monospace;font-size:8px;color:var(--btc);margin-bottom:16px;text-align:center;}
-.tri-q{font-family:'VT323',monospace;font-size:clamp(20px,4vw,26px);color:#fff;margin-bottom:16px;text-align:center;line-height:1.4;}
+.tri-q{font-family:'VT323',monospace;font-size:clamp(20px,4vw,26px);color:var(--text);margin-bottom:16px;text-align:center;line-height:1.4;}
 .tri-opts{display:grid;grid-template-columns:1fr 1fr;gap:8px;width:100%;max-width:420px;margin-bottom:12px;}
-.tri-btn{font-family:'Press Start 2P',monospace;font-size:7px;background:var(--dark);border:3px solid #222;color:#aaa;padding:10px 8px;cursor:pointer;text-align:left;line-height:1.5;width:100%;}
-.tri-btn:hover{border-color:var(--btc);color:#fff;}
+.tri-btn{font-family:'Press Start 2P',monospace;font-size:7px;background:var(--dark);border:3px solid var(--border);color:var(--text-muted);padding:10px 8px;cursor:pointer;text-align:left;line-height:1.5;width:100%;}
+.tri-btn:hover{border-color:var(--btc);color:var(--text);}
 .tri-btn.correct{background:rgba(22,160,133,.2);border-color:var(--green);color:var(--green);}
 .tri-btn.wrong{background:rgba(192,57,43,.2);border-color:var(--red);color:var(--red);}
-.tri-fb{font-family:'VT323',monospace;font-size:18px;color:#aaa;text-align:center;min-height:40px;padding:4px 0;}
-.tri-score{font-family:'Press Start 2P',monospace;font-size:7px;color:#555;text-align:center;}
+.tri-fb{font-family:'VT323',monospace;font-size:18px;color:var(--text-muted);text-align:center;min-height:40px;padding:4px 0;}
+.tri-score{font-family:'Press Start 2P',monospace;font-size:7px;color:var(--text-dim);text-align:center;}
 
 
 /* ══ AUDIO PANEL ══ */
 #audioPanel{position:absolute;top:40px;right:8px;z-index:50;background:var(--darkest);
-  border:3px solid #333;padding:12px 14px;display:none;min-width:200px;box-shadow:4px 4px 0 #000;}
+  border:3px solid var(--border);padding:12px 14px;display:none;min-width:200px;box-shadow:4px 4px 0 #000;}
 #audioPanel.on{display:block;}
-#audioBtn{position:absolute;top:8px;right:8px;z-index:51;background:var(--darker);border:2px solid #333;
-  color:#555;padding:4px 8px;cursor:pointer;font-family:'Press Start 2P',monospace;font-size:6px;
+#audioBtn{position:absolute;top:8px;right:8px;z-index:51;background:var(--darker);border:2px solid var(--border);
+  color:var(--text-dim);padding:4px 8px;cursor:pointer;font-family:'Press Start 2P',monospace;font-size:6px;
   transition:all .15s;}
 #audioBtn:hover,#audioBtn.active{border-color:var(--btc);color:var(--btc);}
 .au-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
-.au-lbl{font-family:'Press Start 2P',monospace;font-size:6px;color:#555;min-width:60px;}
-.au-slider{-webkit-appearance:none;width:100px;height:4px;background:#222;outline:none;cursor:pointer;}
+.au-lbl{font-family:'Press Start 2P',monospace;font-size:6px;color:var(--text-dim);min-width:60px;}
+.au-slider{-webkit-appearance:none;width:100px;height:4px;background:var(--surface);outline:none;cursor:pointer;}
 .au-slider::-webkit-slider-thumb{-webkit-appearance:none;width:12px;height:12px;background:var(--btc);cursor:pointer;}
-.au-mute{font-family:'Press Start 2P',monospace;font-size:6px;background:transparent;border:2px solid #333;
-  color:#555;padding:4px 8px;cursor:pointer;}
+.au-mute{font-family:'Press Start 2P',monospace;font-size:6px;background:transparent;border:2px solid var(--border);
+  color:var(--text-dim);padding:4px 8px;cursor:pointer;}
 .au-mute:hover,.au-mute.on{border-color:var(--red);color:var(--red);}
-.au-scene{font-family:'Press Start 2P',monospace;font-size:5px;color:#333;margin-top:4px;
-  padding-top:6px;border-top:1px solid #1a1a2e;line-height:1.8;}
-.au-scene span{color:#555;}
+.au-scene{font-family:'Press Start 2P',monospace;font-size:5px;color:var(--text-dim);margin-top:4px;
+  padding-top:6px;border-top:1px solid var(--border);line-height:1.8;}
+.au-scene span{color:var(--text-dim);}
 
 
 /* ══ SKIP BADGE ══ */
@@ -552,7 +630,7 @@ body.exam-open #main,body.exam-open #nav{
 /* ══ BTC TICKER ══ */
 .tdot{width:6px;height:6px;background:var(--red);animation:tickerPulse 2s infinite;}
 @keyframes tickerPulse{0%,100%{background:var(--red)}50%{background:var(--green)}}
-#tP.flash{color:#fff!important;transition:none!important;}
+#tP.flash{color:var(--text)!important;transition:none!important;}
 
 </style>
 </head>
@@ -560,18 +638,34 @@ body.exam-open #main,body.exam-open #nav{
 
 <!-- ══ NAVBAR ══ -->
 <nav id="nav">
-  <a href="#">
-    <span style="font-size:14px;">◀</span>
-    <span class="px" style="font-size:8px;">DON MEMO Y LOS SATS</span>
+  <!-- Logo + título -->
+  <a href="index.html" style="display:flex;align-items:center;gap:8px;text-decoration:none;flex-shrink:0;">
+    <span style="font-size:13px;color:var(--text-dim);">◀</span>
+    <span class="px" style="font-size:clamp(6px,1.2vw,8px);color:var(--text);">DON MEMO Y LOS SATS</span>
   </a>
-  <div class="px" style="font-size:8px;color:var(--btc);" id="navModLabel">INTRO — EL DINERO Y POR QUÉ FALLA</div>
-  <div style="display:flex;align-items:center;gap:12px;">
-    <div style="border:2px solid var(--btc);padding:4px 10px;background:rgba(247,147,26,0.08);display:flex;align-items:center;gap:6px;">
-      <span style="font-size:12px;">₿</span>
-      <span class="px" style="font-size:8px;color:var(--btc);" id="navP">---,---</span>
+
+  <!-- Módulo actual (centro) -->
+  <div class="px" id="navModLabel" style="font-size:clamp(5px,1vw,7px);color:var(--btc);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:220px;">INTRO — EL DINERO</div>
+
+  <!-- Derecha: precio + tema + inicio -->
+  <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;">
+    <!-- Precio BTC -->
+    <div style="border:2px solid var(--accent2);padding:0 10px;height:30px;display:flex;align-items:center;gap:5px;background:rgba(181,158,125,0.06);">
+      <span style="font-size:10px;color:var(--btc);">₿</span>
+      <span class="px" style="font-size:clamp(6px,1vw,8px);color:var(--btc);" id="navP">---,---</span>
     </div>
-    <span style="font-size:16px;cursor:pointer;color:#666;">⚙</span>
-    <span style="font-size:16px;cursor:pointer;color:#666;" onclick="openExam(curExamCh())" title="Mini examen">✕</span>
+    <!-- Toggle tema -->
+    <button id="themeToggle" onclick="toggleTheme()"
+      style="font-family:'Press Start 2P',monospace;font-size:7px;background:none;border:2px solid var(--border);color:var(--text-muted);height:30px;padding:0 8px;cursor:pointer;transition:all 0.2s;"
+      onmouseover="this.style.borderColor='var(--gold)';this.style.color='var(--gold)'"
+      onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-muted)'">🌙</button>
+    <!-- Inicio -->
+    <a href="index.html" class="px"
+      style="font-size:7px;background:var(--accent2);color:var(--text);text-decoration:none;height:30px;padding:0 10px;display:inline-flex;align-items:center;gap:4px;box-shadow:3px 3px 0 #000;transition:all 0.1s;"
+      onmouseover="this.style.background='var(--accent)';this.style.transform='translate(1px,1px)';this.style.boxShadow='2px 2px 0 #000'"
+      onmouseout="this.style.background='var(--accent2)';this.style.transform='';this.style.boxShadow='3px 3px 0 #000'">
+      ⌂ INICIO
+    </a>
   </div>
 </nav>
 
@@ -579,12 +673,12 @@ body.exam-open #main,body.exam-open #nav{
 
 
 <!-- ══ TUTORIAL — PRIMERA VEZ ══ -->
-<div id="tutorialScreen" style="position:fixed;inset:0;z-index:9998;background:rgba(5,5,15,.97);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(4px);">
+<div id="tutorialScreen" style="position:fixed;inset:0;z-index:9998;background:var(--darker);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(4px);">
 
   <!-- Título -->
   <div style="text-align:center;margin-bottom:16px;">
     <div style="font-family:'Press Start 2P',monospace;font-size:clamp(7px,1.5vw,11px);color:var(--btc);margin-bottom:4px;">BIENVENIDO A</div>
-    <div style="font-family:'Press Start 2P',monospace;font-size:clamp(9px,2vw,15px);color:#fff;">DON MEMO Y LOS SATS</div>
+    <div style="font-family:'Press Start 2P',monospace;font-size:clamp(9px,2vw,15px);color:var(--text);">DON MEMO Y LOS SATS</div>
   </div>
 
   <!-- Carrusel -->
@@ -592,64 +686,118 @@ body.exam-open #main,body.exam-open #nav{
 
     <!-- Paso 1: Panel izquierdo -->
     <div class="tut-slide" id="tslide-0" style="display:block;">
-      <div style="background:#0d0d1a;border:3px solid #222;border-top:3px solid var(--btc);padding:24px 20px;min-height:260px;">
+      <div style="background:var(--darker);border:3px solid var(--border);border-top:3px solid var(--btc);padding:24px 20px;min-height:260px;">
         <div style="text-align:center;margin-bottom:12px;">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="36" height="36" fill="#F7931A"><path d="M5 2h11v1h2v1h1v16h-1v1h-2v1H5v-1H3V3h1V2h1zm1 2v15h9v-1h1V5h-1V4H6zm7 2H8v2h5V6zm0 4H8v2h5v-2zm-3 4H8v2h2v-2z"/></svg>
           <div style="font-family:'Press Start 2P',monospace;font-size:8px;color:var(--btc);margin-top:6px;">PANEL IZQUIERDO</div>
         </div>
-        <div style="font-family:'VT323',monospace;font-size:clamp(17px,4vw,21px);color:#aaa;line-height:1.8;">
-          <div style="margin-bottom:6px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="#F7931A" style="vertical-align:middle;margin-right:6px;"><path d="M3 5h2v2H3V5zm4 0h14v2H7V5zm-4 6h2v2H3v-2zm4 0h14v2H7v-2zm-4 6h2v2H3v-2zm4 0h14v2H7v-2z"/></svg><b style="color:#fff">DATOS</b> — tarjetas con info real de Bitcoin</div>
-          <div style="margin-bottom:6px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="#F7931A" style="vertical-align:middle;margin-right:6px;"><path d="M9 3h8v1h1v7h-1v1h-3v5h-1v1H8v-1H7v-1H6v-2h1v-1h1v-1h3V5h-1V4H9V3zm2 2v6h-3v1H7v2h1v1h3v-1h1V5h-1zm4-1h-2v1h2V4z"/></svg><b style="color:#fff">NOTAS</b> — escribe lo que aprendas</div>
-          <div style="margin-bottom:6px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="#F7931A" style="vertical-align:middle;margin-right:6px;"><path d="M4 2h11v1h1v1h1v16h-1v1h-1v1H4v-1H3V3h1V2zm1 1v16h9v-1h1V4h-1V3H5zm8 2H7v1h6V5zm0 3H7v1h6V8zm-3 3H7v1h3v-1z"/></svg><b style="color:#fff">GLOSARIO</b> — 18 términos clave</div>
-          <div><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="#F7931A" style="vertical-align:middle;margin-right:6px;"><path d="M7 3h10v1h1v1h1v4h-1v1h-1v1h-1v1h-1v1h-2v1h-1v1H8v-1H7v-1H6v-1H5V9H4V5h1V4h1V3h1zm0 2H5v3h1v1h1v1h2v1h2v-1h2v-1h1V8h1V5H7zm2 10h6v1H9v-1zm-1 2h8v1H8v-1z"/></svg><b style="color:#fff">LOGROS</b> — desbloquéalos al avanzar</div>
+        <div style="font-family:'VT323',monospace;font-size:clamp(17px,4vw,21px);color:var(--text-muted);line-height:1.8;">
+          <div style="margin-bottom:6px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="#F7931A" style="vertical-align:middle;margin-right:6px;"><path d="M3 5h2v2H3V5zm4 0h14v2H7V5zm-4 6h2v2H3v-2zm4 0h14v2H7v-2zm-4 6h2v2H3v-2zm4 0h14v2H7v-2z"/></svg><b style="color:var(--text)">DATOS</b> — tarjetas con info real de Bitcoin</div>
+          <div style="margin-bottom:6px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="#F7931A" style="vertical-align:middle;margin-right:6px;"><path d="M9 3h8v1h1v7h-1v1h-3v5h-1v1H8v-1H7v-1H6v-2h1v-1h1v-1h3V5h-1V4H9V3zm2 2v6h-3v1H7v2h1v1h3v-1h1V5h-1zm4-1h-2v1h2V4z"/></svg><b style="color:var(--text)">NOTAS</b> — escribe lo que aprendas</div>
+          <div style="margin-bottom:6px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="#F7931A" style="vertical-align:middle;margin-right:6px;"><path d="M4 2h11v1h1v1h1v16h-1v1h-1v1H4v-1H3V3h1V2zm1 1v16h9v-1h1V4h-1V3H5zm8 2H7v1h6V5zm0 3H7v1h6V8zm-3 3H7v1h3v-1z"/></svg><b style="color:var(--text)">GLOSARIO</b> — 18 términos clave</div>
+          <div><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="#F7931A" style="vertical-align:middle;margin-right:6px;"><path d="M7 3h10v1h1v1h1v4h-1v1h-1v1h-1v1h-1v1h-2v1h-1v1H8v-1H7v-1H6v-1H5V9H4V5h1V4h1V3h1zm0 2H5v3h1v1h1v1h2v1h2v-1h2v-1h1V8h1V5H7zm2 10h6v1H9v-1zm-1 2h8v1H8v-1z"/></svg><b style="color:var(--text)">LOGROS</b> — desbloquéalos al avanzar</div>
         </div>
       </div>
     </div>
 
     <!-- Paso 2: El juego -->
     <div class="tut-slide" id="tslide-1" style="display:none;">
-      <div style="background:#0d0d1a;border:3px solid #222;border-top:3px solid var(--green);padding:24px 20px;min-height:260px;">
+      <div style="background:var(--darker);border:3px solid var(--border);border-top:3px solid var(--green);padding:24px 20px;min-height:260px;">
         <div style="text-align:center;margin-bottom:12px;">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="36" height="36" fill="#16A085"><path d="M3 8h18v1h1v6h-1v1H3v-1H2V9h1V8zm3 2v1H5v2h1v1h2v-1h1v-1h1v1h1v1h4v-1h1v-1h1v1h1v1h2v-1h1v-2h-1v-1h-1V9h-2v1h-1v1H9v-1H8V9H6v1H5zm1 1h2v2H7v-2zm10 0h2v2h-2v-2z"/></svg>
           <div style="font-family:'Press Start 2P',monospace;font-size:8px;color:var(--green);margin-top:6px;">EL JUEGO</div>
         </div>
-        <div style="font-family:'VT323',monospace;font-size:clamp(17px,4vw,21px);color:#aaa;line-height:1.8;margin-bottom:14px;">
-          <div style="margin-bottom:6px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="#16A085" style="vertical-align:middle;margin-right:6px;"><path d="M6 3h10v1h1v1h1v14h-1v1H6v-1H5V5h1V4V3zm1 2v14h10V5H7zm2 2h6v2H9V7zm0 4h6v2H9v-2zm0 4h3v2H9v-2z"/></svg>Diálogos con <b style="color:#fff">Don Memo</b></div>
-          <div style="margin-bottom:6px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="#16A085" style="vertical-align:middle;margin-right:6px;"><path d="M4 4h2v6H4V4zm0 8h2v8H4v-8zm4-4h2v12H8V8zm0-4h2v2H8V4zm4 8h2v6h-2v-6zm0-8h2v6h-2V4zm4 4h2v10h-2V8zm0-4h2v2h-2V4z"/></svg><b style="color:#fff">Elige</b> respuestas con los botones</div>
-          <div style="margin-bottom:6px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="#16A085" style="vertical-align:middle;margin-right:6px;"><path d="M8 1h8v1h1v1h1v2h-1v1H7V5H6V3h1V2h1V1zm-1 6h10v1l1 1v5l-1 1v1H7v-1l-1-1V9l1-1V7zm1 2v6h8V9H8zm2 1h4v1h1v2h-1v1h-4v-1H9v-2h1v-1zm-1 8h6v1h1v3H6v-3h1v-1z"/></svg><b style="color:#fff">Ejercicios</b> interactivos en cada módulo</div>
-          <div><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="#16A085" style="vertical-align:middle;margin-right:6px;"><path d="M12 2l1 3h3l-2 2 1 3-3-2-3 2 1-3-2-2h3z"/></svg><b style="color:#fff">Trivia + Examen</b> al final de cada módulo</div>
+        <div style="font-family:'VT323',monospace;font-size:clamp(17px,4vw,21px);color:var(--text-muted);line-height:1.8;margin-bottom:14px;">
+          <div style="margin-bottom:6px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="#16A085" style="vertical-align:middle;margin-right:6px;"><path d="M6 3h10v1h1v1h1v14h-1v1H6v-1H5V5h1V4V3zm1 2v14h10V5H7zm2 2h6v2H9V7zm0 4h6v2H9v-2zm0 4h3v2H9v-2z"/></svg>Diálogos con <b style="color:var(--text)">Don Memo</b></div>
+          <div style="margin-bottom:6px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="#16A085" style="vertical-align:middle;margin-right:6px;"><path d="M4 4h2v6H4V4zm0 8h2v8H4v-8zm4-4h2v12H8V8zm0-4h2v2H8V4zm4 8h2v6h-2v-6zm0-8h2v6h-2V4zm4 4h2v10h-2V8zm0-4h2v2h-2V4z"/></svg><b style="color:var(--text)">Elige</b> respuestas con los botones</div>
+          <div style="margin-bottom:6px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="#16A085" style="vertical-align:middle;margin-right:6px;"><path d="M8 1h8v1h1v1h1v2h-1v1H7V5H6V3h1V2h1V1zm-1 6h10v1l1 1v5l-1 1v1H7v-1l-1-1V9l1-1V7zm1 2v6h8V9H8zm2 1h4v1h1v2h-1v1h-4v-1H9v-2h1v-1zm-1 8h6v1h1v3H6v-3h1v-1z"/></svg><b style="color:var(--text)">Ejercicios</b> interactivos en cada módulo</div>
+          <div><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="#16A085" style="vertical-align:middle;margin-right:6px;"><path d="M12 2l1 3h3l-2 2 1 3-3-2-3 2 1-3-2-2h3z"/></svg><b style="color:var(--text)">Trivia + Examen</b> al final de cada módulo</div>
         </div>
         <!-- Controles -->
-        <div style="font-family:'Press Start 2P',monospace;font-size:6px;color:#555;margin-bottom:8px;">CONTROLES:</div>
+        <div style="font-family:'Press Start 2P',monospace;font-size:6px;color:var(--text-dim);margin-bottom:8px;">CONTROLES:</div>
         <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
-          <svg width="30" height="25" viewBox="0 0 32 27" xmlns="http://www.w3.org/2000/svg"><rect x="1" y="1" width="30" height="24" fill="#1a1a2e"/><rect x="0" y="0" width="32" height="25" fill="none" stroke="#444" stroke-width="1"/><rect x="1" y="25" width="30" height="2" fill="#111"/><text x="16" y="17" text-anchor="middle" font-family="'Press Start 2P',monospace" font-size="9px" fill="#F7931A">SPC</text></svg>
-          <svg width="30" height="25" viewBox="0 0 32 27" xmlns="http://www.w3.org/2000/svg"><rect x="1" y="1" width="30" height="24" fill="#1a1a2e"/><rect x="0" y="0" width="32" height="25" fill="none" stroke="#444" stroke-width="1"/><rect x="1" y="25" width="30" height="2" fill="#111"/><text x="16" y="17" text-anchor="middle" font-family="'Press Start 2P',monospace" font-size="10px" fill="#F7931A">↵</text></svg>
-          <span style="font-family:'VT323',monospace;font-size:15px;color:#777;">avanzar</span>
-          <svg width="26" height="22" viewBox="0 0 28 24" xmlns="http://www.w3.org/2000/svg"><rect x="1" y="1" width="26" height="21" fill="#1a1a2e"/><rect x="0" y="0" width="28" height="22" fill="none" stroke="#444" stroke-width="1"/><rect x="1" y="22" width="26" height="2" fill="#111"/><text x="14" y="16" text-anchor="middle" font-size="13px" fill="#F7931A">←</text></svg>
-          <svg width="26" height="22" viewBox="0 0 28 24" xmlns="http://www.w3.org/2000/svg"><rect x="1" y="1" width="26" height="21" fill="#1a1a2e"/><rect x="0" y="0" width="28" height="22" fill="none" stroke="#444" stroke-width="1"/><rect x="1" y="22" width="26" height="2" fill="#111"/><text x="14" y="16" text-anchor="middle" font-size="13px" fill="#F7931A">→</text></svg>
-          <span style="font-family:'VT323',monospace;font-size:15px;color:#777;">navegar</span>
+          <svg width="30" height="25" viewBox="0 0 32 27" xmlns="http://www.w3.org/2000/svg"><rect x="1" y="1" width="30" height="24" fill="var(--dark)"/><rect x="0" y="0" width="32" height="25" fill="none" stroke="#444" stroke-width="1"/><rect x="1" y="25" width="30" height="2" fill="#111"/><text x="16" y="17" text-anchor="middle" font-family="'Press Start 2P',monospace" font-size="9px" fill="#F7931A">SPC</text></svg>
+          <svg width="30" height="25" viewBox="0 0 32 27" xmlns="http://www.w3.org/2000/svg"><rect x="1" y="1" width="30" height="24" fill="var(--dark)"/><rect x="0" y="0" width="32" height="25" fill="none" stroke="#444" stroke-width="1"/><rect x="1" y="25" width="30" height="2" fill="#111"/><text x="16" y="17" text-anchor="middle" font-family="'Press Start 2P',monospace" font-size="10px" fill="#F7931A">↵</text></svg>
+          <span style="font-family:'VT323',monospace;font-size:15px;color:var(--text-muted);">avanzar</span>
+          <svg width="26" height="22" viewBox="0 0 28 24" xmlns="http://www.w3.org/2000/svg"><rect x="1" y="1" width="26" height="21" fill="var(--dark)"/><rect x="0" y="0" width="28" height="22" fill="none" stroke="#444" stroke-width="1"/><rect x="1" y="22" width="26" height="2" fill="#111"/><text x="14" y="16" text-anchor="middle" font-size="13px" fill="#F7931A">←</text></svg>
+          <svg width="26" height="22" viewBox="0 0 28 24" xmlns="http://www.w3.org/2000/svg"><rect x="1" y="1" width="26" height="21" fill="var(--dark)"/><rect x="0" y="0" width="28" height="22" fill="none" stroke="#444" stroke-width="1"/><rect x="1" y="22" width="26" height="2" fill="#111"/><text x="14" y="16" text-anchor="middle" font-size="13px" fill="#F7931A">→</text></svg>
+          <span style="font-family:'VT323',monospace;font-size:15px;color:var(--text-muted);">navegar</span>
         </div>
       </div>
     </div>
 
     <!-- Paso 3: Panel derecho + audio -->
     <div class="tut-slide" id="tslide-2" style="display:none;">
-      <div style="background:#0d0d1a;border:3px solid #222;border-top:3px solid var(--gold);padding:24px 20px;min-height:260px;">
+      <div style="background:var(--darker);border:3px solid var(--border);border-top:3px solid var(--gold);padding:24px 20px;min-height:260px;">
         <div style="text-align:center;margin-bottom:12px;">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="36" height="36" fill="#D4A017"><path d="M4 3h16v1h1v16h-1v1H4v-1H3V4h1V3zm2 2v14h12V5H6zm2 2h8v2H8V7zm0 4h8v2H8v-2zm0 4h5v2H8v-2z"/></svg>
           <div style="font-family:'Press Start 2P',monospace;font-size:8px;color:var(--gold);margin-top:6px;">PANEL DERECHO</div>
         </div>
-        <div style="font-family:'VT323',monospace;font-size:clamp(17px,4vw,21px);color:#aaa;line-height:1.8;margin-bottom:14px;">
-          <div style="margin-bottom:6px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="#D4A017" style="vertical-align:middle;margin-right:6px;"><path d="M4 3h16v1h1v16h-1v1H4v-1H3V4h1V3zm2 2v14h12V5H6zm2 2h8v2H8V7zm0 4h8v2H8v-2zm0 4h5v2H8v-2z"/></svg><b style="color:#fff">6 CAPÍTULOS</b> — haz clic para saltar</div>
+        <div style="font-family:'VT323',monospace;font-size:clamp(17px,4vw,21px);color:var(--text-muted);line-height:1.8;margin-bottom:14px;">
+          <div style="margin-bottom:6px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="#D4A017" style="vertical-align:middle;margin-right:6px;"><path d="M4 3h16v1h1v16h-1v1H4v-1H3V4h1V3zm2 2v14h12V5H6zm2 2h8v2H8V7zm0 4h8v2H8v-2zm0 4h5v2H8v-2z"/></svg><b style="color:var(--text)">6 CAPÍTULOS</b> — haz clic para saltar</div>
           <div style="margin-bottom:6px;"><span style="color:var(--green);margin-right:6px;">▶</span><span style="color:var(--green)">Verde</span> = completado</div>
-          <div style="margin-bottom:14px;"><span style="color:#555;margin-right:6px;">▶</span><span style="color:#555">Gris</span> = por desbloquear</div>
+          <div style="margin-bottom:14px;"><span style="color:var(--text-dim);margin-right:6px;">▶</span><span style="color:var(--text-dim)">Gris</span> = por desbloquear</div>
         </div>
-        <div style="border-top:1px solid #1a1a2e;padding-top:12px;display:flex;align-items:flex-start;gap:12px;">
+        <div style="border-top:1px solid var(--border);padding-top:12px;display:flex;align-items:flex-start;gap:12px;">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="28" height="28" fill="#F7931A" style="flex-shrink:0;margin-top:2px;"><path d="M9 3h9v1h1v6h-1v1h-3v1h-1v5h-1v1H8v-1H7v-1H6v-2h1v-1h1v-1h3V5H9V4V3zm2 2v6H8v1H7v2h1v1h3v-1h1V5h-1zm4 0h-2v1h2V5z"/></svg>
-          <div style="font-family:'VT323',monospace;font-size:clamp(16px,3.5vw,20px);color:#aaa;line-height:1.7;">
-            <b style="color:#fff">AUDIO</b> — botón arriba derecha<br>
+          <div style="font-family:'VT323',monospace;font-size:clamp(16px,3.5vw,20px);color:var(--text-muted);line-height:1.7;">
+            <b style="color:var(--text)">AUDIO</b> — botón arriba derecha<br>
             Volumen · Silenciar<br>
             Música cambia por escena
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Paso 4: Vista móvil -->
+    <div class="tut-slide" id="tslide-3" style="display:none;">
+      <div style="background:var(--darker);border:3px solid var(--border);border-top:3px solid #8A6FD4;padding:24px 20px;min-height:260px;">
+        <div style="text-align:center;margin-bottom:14px;">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="36" height="36" fill="#8A6FD4"><path d="M7 2h10v1h1v18h-1v1H7v-1H6V3h1V2zm1 2v16h8V4H8zm3 13h2v2h-2v-2z"/></svg>
+          <div style="font-family:'Press Start 2P',monospace;font-size:8px;color:#8A6FD4;margin-top:6px;">EN MÓVIL</div>
+        </div>
+
+        <!-- Diagrama móvil pixel art -->
+        <div style="display:flex;gap:16px;align-items:flex-start;justify-content:center;margin-bottom:14px;">
+
+          <!-- Teléfono pixel art con layout -->
+          <div style="border:3px solid #8A6FD4;border-radius:6px;padding:6px;width:90px;background:var(--darkest);flex-shrink:0;">
+            <!-- Barra superior = ticker -->
+            <div style="background:#F7931A;height:8px;margin-bottom:4px;display:flex;align-items:center;justify-content:center;">
+              <div style="font-family:'Press Start 2P',monospace;font-size:4px;color:#000;">BTC</div>
+            </div>
+            <!-- Imagen de escena -->
+            <div style="background:#16A085;height:42px;margin-bottom:4px;display:flex;align-items:center;justify-content:center;">
+              <div style="font-family:'Press Start 2P',monospace;font-size:4px;color:var(--text);text-align:center;line-height:1.6;">ESCENA<br>PIXEL</div>
+            </div>
+            <!-- Caja de diálogo -->
+            <div style="border:2px solid #F7931A;padding:3px;margin-bottom:4px;">
+              <div style="font-family:'Press Start 2P',monospace;font-size:3px;color:#F7931A;margin-bottom:2px;">DON MEMO</div>
+              <div style="background:var(--dark);height:14px;"></div>
+            </div>
+            <!-- Botones de navegación -->
+            <div style="display:flex;gap:2px;">
+              <div style="flex:1;background:var(--dark);border:1px solid var(--border);height:10px;display:flex;align-items:center;justify-content:center;">
+                <div style="font-family:'Press Start 2P',monospace;font-size:3px;color:var(--text-dim);">◀</div>
+              </div>
+              <div style="flex:1;background:var(--dark);border:1px solid var(--border);height:10px;display:flex;align-items:center;justify-content:center;">
+                <div style="font-family:'Press Start 2P',monospace;font-size:3px;color:#F7931A;">▶</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Descripción -->
+          <div style="font-family:'VT323',monospace;font-size:clamp(15px,3.5vw,19px);color:var(--text-muted);line-height:1.9;flex:1;">
+            <div style="margin-bottom:5px;"><span style="color:#8A6FD4;">📱</span> Los paneles laterales <b style="color:var(--text)">se ocultan</b> en pantallas pequeñas</div>
+            <div style="margin-bottom:5px;"><span style="color:#F7931A;">👆</span> <b style="color:var(--text)">Toca</b> la pantalla o los botones para avanzar</div>
+            <div style="margin-bottom:5px;"><span style="color:#16A085;">↔</span> Desliza <b style="color:var(--text)">horizontal</b> para ver paneles</div>
+            <div><span style="color:var(--gold);">🔊</span> El botón <b style="color:var(--text)">VOL</b> aparece arriba a la derecha</div>
+          </div>
+        </div>
+
+        <div style="border-top:1px solid var(--border);padding-top:10px;text-align:center;">
+          <div style="font-family:'VT323',monospace;font-size:clamp(14px,3vw,17px);color:var(--text-dim);">
+            Recomendado: orientación <b style="color:var(--text-muted)">vertical</b> · pantalla completa
           </div>
         </div>
       </div>
@@ -659,14 +807,15 @@ body.exam-open #main,body.exam-open #nav{
   <!-- Puntos de progreso -->
   <div style="display:flex;gap:10px;margin-top:14px;align-items:center;" id="tutDots">
     <div class="tut-dot active" id="tdot-0" onclick="goTutSlide(0)" style="width:10px;height:10px;background:var(--btc);cursor:pointer;"></div>
-    <div class="tut-dot" id="tdot-1" onclick="goTutSlide(1)" style="width:10px;height:10px;background:#333;cursor:pointer;"></div>
-    <div class="tut-dot" id="tdot-2" onclick="goTutSlide(2)" style="width:10px;height:10px;background:#333;cursor:pointer;"></div>
+    <div class="tut-dot" id="tdot-1" onclick="goTutSlide(1)" style="width:10px;height:10px;background:var(--surface);cursor:pointer;"></div>
+    <div class="tut-dot" id="tdot-2" onclick="goTutSlide(2)" style="width:10px;height:10px;background:var(--surface);cursor:pointer;"></div>
+    <div class="tut-dot" id="tdot-3" onclick="goTutSlide(3)" style="width:10px;height:10px;background:var(--surface);cursor:pointer;"></div>
   </div>
 
   <!-- Navegación -->
   <div style="display:flex;gap:12px;margin-top:14px;align-items:center;width:100%;max-width:520px;justify-content:space-between;">
     <button id="tutPrevBtn" onclick="tutNav(-1)"
-      style="font-family:'Press Start 2P',monospace;font-size:7px;background:#1a1a2e;color:#555;border:2px solid #333;padding:10px 16px;cursor:pointer;visibility:hidden;">
+      style="font-family:'Press Start 2P',monospace;font-size:7px;background:var(--dark);color:var(--text-dim);border:2px solid var(--border);padding:10px 16px;cursor:pointer;visibility:hidden;">
       ◀ ANTERIOR
     </button>
     <button id="tutNextBtn" onclick="tutNav(1)"
@@ -678,48 +827,53 @@ body.exam-open #main,body.exam-open #nav{
 </div>
 
 <!-- ══ PANTALLA RPG — CREAR PERSONAJE ══ -->
-<div id="rpgScreen" style="position:fixed;inset:0;z-index:9999;background:#05050F;display:flex;align-items:center;justify-content:center;flex-direction:column;">
+<div id="rpgScreen" style="position:fixed;inset:0;z-index:9999;background:var(--darker);display:flex;align-items:center;justify-content:center;flex-direction:column;cursor:pointer;" onclick="beginCourse()">
   <!-- scanlines -->
   <div style="position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.15) 2px,rgba(0,0,0,0.15) 4px);z-index:1;"></div>
-  <div style="position:relative;z-index:2;width:min(480px,92vw);text-align:center;">
-    <!-- Logo / imagen del juego — reemplaza esta img con tu logo final -->
-    <div style="margin:0 auto 24px;text-align:center;">
-      <img id="rpgLogo" src="" alt=""
-        style="max-width:340px;width:90%;display:none;image-rendering:pixelated;"
-        onload="this.style.display='block';document.getElementById('rpgLogoFallback').style.display='none'"/>
-      <!-- Fallback de texto mientras no hay imagen -->
-      <div id="rpgLogoFallback" style="font-family:'Press Start 2P',monospace;color:var(--btc);font-size:clamp(12px,3vw,18px);text-shadow:0 0 20px rgba(247,147,26,.5),3px 3px 0 #8B4500;line-height:1.6;">
-        DON MEMO<br><span style="font-size:.6em;color:var(--gold);">Y LOS SATS</span>
+  <!-- estrellas pixel -->
+  <div style="position:absolute;inset:0;z-index:0;overflow:hidden;" id="starField"></div>
+  <div style="position:relative;z-index:2;width:min(480px,92vw);text-align:center;animation:introFloat 3s ease-in-out infinite;">
+
+    <!-- UINIK STUDIOS PRESENTA -->
+    <div style="font-family:'Press Start 2P',monospace;font-size:clamp(7px,1.8vw,10px);color:var(--text-dim);letter-spacing:2px;margin-bottom:28px;">
+      UINIK STUDIOS PRESENTA
+    </div>
+
+    <!-- Título principal -->
+    <div style="margin-bottom:20px;">
+      <div style="font-family:'Press Start 2P',monospace;font-size:clamp(14px,4vw,26px);color:var(--btc);text-shadow:0 0 30px rgba(247,147,26,.7),4px 4px 0 #8B4500;line-height:1.5;margin-bottom:8px;">
+        DON MEMO
+      </div>
+      <div style="font-family:'Press Start 2P',monospace;font-size:clamp(8px,2.5vw,14px);color:var(--gold);text-shadow:2px 2px 0 #000;letter-spacing:1px;">
+        Y LOS SATS
       </div>
     </div>
 
+    <!-- Línea decorativa pixel -->
+    <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin:18px 0;">
+      <div style="height:2px;flex:1;background:linear-gradient(to right,transparent,#F7931A);"></div>
+      <div style="font-family:'Press Start 2P',monospace;font-size:10px;color:var(--btc);">₿</div>
+      <div style="height:2px;flex:1;background:linear-gradient(to left,transparent,#F7931A);"></div>
     </div>
 
-    <!-- Dialog box RPG style -->
-    <div style="background:#0D0D1A;border:4px solid #F7931A;box-shadow:6px 6px 0 #000,0 0 30px rgba(247,147,26,.2);padding:20px 24px;margin-bottom:20px;text-align:left;">
-      <div style="font-family:'Press Start 2P',monospace;font-size:8px;color:#F7931A;margin-bottom:10px;display:flex;align-items:center;gap:8px;">
-        🟠 DON MEMO
-      </div>
-      <div style="font-family:'VT323',monospace;font-size:clamp(18px,4vw,24px);color:#e2e8f0;line-height:1.5;" id="rpgGreet">
-        Mijo... antes de sentarnos,<br>¿cómo te llamo yo?
-      </div>
+    <!-- Subtítulo -->
+    <div style="font-family:'VT323',monospace;font-size:clamp(16px,4vw,22px);color:var(--text-dim);line-height:1.6;margin-bottom:32px;">
+      Un curso de Bitcoin para jóvenes de México<br>
+      <span style="color:var(--text-dim);font-size:.85em;">Mérida, Yucatán · 2025</span>
     </div>
 
-    <!-- Input -->
-    <div style="display:flex;gap:0;margin-bottom:12px;">
-      <input id="rpgName" type="text" maxlength="18" placeholder="Tu nombre aquí..."
-        style="flex:1;font-family:'Press Start 2P',monospace;font-size:9px;background:#0D0D1A;border:4px solid #444;border-right:none;color:#fff;padding:12px 14px;outline:none;"
-        onfocus="this.style.borderColor='#F7931A'" onblur="this.style.borderColor='#444'"
-        onkeydown="if(event.key==='Enter')beginCourse()"/>
-      <button onclick="beginCourse()" style="font-family:'Press Start 2P',monospace;font-size:8px;background:#F7931A;color:#000;border:4px solid #F7931A;padding:12px 16px;cursor:pointer;box-shadow:3px 3px 0 #000;white-space:nowrap;" onmouseover="this.style.background='#D4A017'" onmouseout="this.style.background='#F7931A'">
-        LISTO
-      </button>
+    <!-- PRESS START -->
+    <div style="font-family:'Press Start 2P',monospace;font-size:clamp(7px,2vw,10px);color:var(--text);animation:introBlink 1.2s step-end infinite;letter-spacing:1px;">
+      ▶ PRESIONA PARA COMENZAR
     </div>
-    <div style="font-family:'VT323',monospace;font-size:14px;color:#333;">Déjalo vacío y Don Memo te dirá "Mijo"</div>
+
   </div>
 </div>
 <style>
 @keyframes rpgFadeOut{from{opacity:1;transform:scale(1)}to{opacity:0;transform:scale(1.04)}}
+@keyframes introBlink{0%,100%{opacity:1}50%{opacity:0}}
+@keyframes introFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+@keyframes twinkle{0%,100%{opacity:.2}50%{opacity:1}}
 </style>
 
 <div id="main">
@@ -745,7 +899,7 @@ body.exam-open #main,body.exam-open #nav{
           <button class="btn-save" id="saveBtn" onclick="saveNote()">💾 GUARDAR</button>
         </div>
         <div class="nt-divider">── NOTAS GUARDADAS ──</div>
-        <div class="nt-list" id="ntList"><div style="font-size:15px;color:#333;text-align:center;margin-top:8px;">Sin notas aún</div></div>
+        <div class="nt-list" id="ntList"><div style="font-size:15px;color:var(--text-dim);text-align:center;margin-top:8px;">Sin notas aún</div></div>
       </div>
     </div>
     <div class="tc" id="tc2">
@@ -779,7 +933,7 @@ body.exam-open #main,body.exam-open #nav{
         <span class="px" style="font-size:7px;color:var(--btc);">BTC/MXN</span>
         <span class="px" style="font-size:8px;color:var(--gold);" id="tP">---,---</span>
         <span style="font-size:13px;" id="tC"></span>
-        <span style="font-size:13px;color:#555;" id="tS"></span>
+        <span style="font-size:13px;color:var(--text-dim);" id="tS"></span>
       </div>
 
       <!-- ══ AUDIO ══ -->
@@ -790,7 +944,7 @@ body.exam-open #main,body.exam-open #nav{
           <span class="au-lbl">VOLUMEN</span>
           <input class="au-slider" id="volSlider" type="range" min="0" max="100" value="70"
             oninput="setVolume(this.value)"/>
-          <span id="volVal" style="font-family:'Press Start 2P',monospace;font-size:6px;color:#555;">70</span>
+          <span id="volVal" style="font-family:'Press Start 2P',monospace;font-size:6px;color:var(--text-dim);">70</span>
         </div>
         <button class="au-mute" id="muteBtn" onclick="toggleMute()">SILENCIAR</button>
         <div class="au-scene">
@@ -847,28 +1001,28 @@ body.exam-open #main,body.exam-open #nav{
     <div class="ph"><span class="px" style="font-size:8px;">📸 LA HISTORIA</span></div>
     <div class="pol-scroll">
       <div class="pol current" id="pol0" onclick="jmpCh(0)">
-        <div class="pol-img"><div class="pol-scene-css" style="background:linear-gradient(135deg,#7B5B3A,#5A8A3C,#F7931A);">🌳</div></div>
+        <div class="pol-img"><div class="pol-scene-css" style="background:url('img/1.png') center/cover no-repeat;"></div></div>
         <div class="pol-badge cur">EN CURSO ▶</div>
         <div class="pol-caption" style="color:var(--btc);">El Parque<br>Intro</div>
       </div>
       <div class="pol locked" id="pol1">
-        <div class="pol-img"><div class="pol-scene-css" style="background:#111;">📓</div></div>
+        <div class="pol-img"><div class="pol-scene-css" style="background:url('img/9.png') center/cover no-repeat;"></div></div>
         <div class="pol-caption">¿Por qué Bitcoin?<br>Mód. 1</div>
       </div>
       <div class="pol locked" id="pol2">
-        <div class="pol-img"><div class="pol-scene-css" style="background:#111;">⚡</div></div>
+        <div class="pol-img"><div class="pol-scene-css" style="background:url('img/24.png') center/cover no-repeat;"></div></div>
         <div class="pol-caption">Lo especial<br>Mód. 2</div>
       </div>
       <div class="pol locked" id="pol3">
-        <div class="pol-img"><div class="pol-scene-css" style="background:#111;">🔗</div></div>
+        <div class="pol-img"><div class="pol-scene-css" style="background:url('img/36.png') center/cover no-repeat;"></div></div>
         <div class="pol-caption">Cómo funciona<br>Mód. 3</div>
       </div>
       <div class="pol locked" id="pol4">
-        <div class="pol-img"><div class="pol-scene-css" style="background:#111;">🗺️</div></div>
+        <div class="pol-img"><div class="pol-scene-css" style="background:url('img/47.png') center/cover no-repeat;"></div></div>
         <div class="pol-caption">Bitcoin en MX<br>Mód. 4</div>
       </div>
       <div class="pol locked" id="pol5">
-        <div class="pol-img"><div class="pol-scene-css" style="background:#111;">🏆</div></div>
+        <div class="pol-img"><div class="pol-scene-css" style="background:url('img/58.png') center/cover no-repeat;"></div></div>
         <div class="pol-caption">Tu Decisión<br>Final</div>
       </div>
     </div>
@@ -884,7 +1038,7 @@ body.exam-open #main,body.exam-open #nav{
         </svg>
         <div>
           <div class="px" style="font-size:12px;color:var(--btc);" id="donutPct">0%</div>
-          <div style="font-size:13px;color:#666;" id="donutSub">0/61 diálogos</div>
+          <div style="font-size:13px;color:var(--text-dim);" id="donutSub">0/61 diálogos</div>
         </div>
       </div>
     </div>
@@ -900,6 +1054,7 @@ body.exam-open #main,body.exam-open #nav{
   <div class="mob-tab" id="mt1" onclick="mobTab(1)"><span class="mti">📓</span>NOTAS</div>
   <div class="mob-tab" id="mt2" onclick="mobTab(2)"><span class="mti">📸</span>HISTORIA</div>
   <div class="mob-tab" id="mt3" onclick="mobTab(3)"><span class="mti">📖</span>GLOSARIO</div>
+  <div class="mob-tab" id="mt4" onclick="mobTab(4)"><span class="mti">🏅</span>LOGROS</div>
 </div>
 
 <!-- DRAWER -->
@@ -918,7 +1073,7 @@ body.exam-open #main,body.exam-open #nav{
     <div id="gameOver">
       <div style="font-size:48px;">💀</div>
       <div class="px" style="font-size:18px;color:var(--red);">GAME OVER</div>
-      <div style="font-size:20px;color:#999;line-height:1.5;max-width:340px;">
+      <div style="font-size:20px;color:var(--text-muted);line-height:1.5;max-width:340px;">
         Se te acabaron las vidas, mijo.<br>Don Memo tiene paciencia infinita.
       </div>
       <div style="display:flex;gap:12px;margin-top:8px;">
@@ -931,7 +1086,7 @@ body.exam-open #main,body.exam-open #nav{
     <div id="examHeader">
       <div class="exam-title-col">
         <span class="px" style="font-size:9px;color:var(--btc);">⚡ MINI EXAMEN</span>
-        <span style="font-size:18px;color:#777;letter-spacing:2px;" id="examChLabel">INTRODUCCIÓN</span>
+        <span style="font-size:18px;color:var(--text-muted);letter-spacing:2px;" id="examChLabel">INTRODUCCIÓN</span>
       </div>
       <div class="exam-lives">
         <span class="heart" id="h0">❤️</span>
@@ -970,7 +1125,7 @@ body.exam-open #main,body.exam-open #nav{
     <!-- RESULTS -->
     <div id="examResults">
       <div class="res-score">
-        <div class="px" style="font-size:9px;color:#555;margin-bottom:6px;">RESULTADO FINAL</div>
+        <div class="px" style="font-size:9px;color:var(--text-dim);margin-bottom:6px;">RESULTADO FINAL</div>
         <div id="resBig"></div>
         <div class="res-icons" id="resIcons"></div>
       </div>
@@ -1033,152 +1188,156 @@ const BADGES=[
 // ══════════════════════════════════════
 const DIALOGS=[
   // ── INTRO ──
-  {ch:0,sp:'DON MEMO',txt:'Mmm.',data:null},
-  {ch:0,sp:'DON MEMO',txt:'¿Sabes cuánto valía ese billete cuando nació tu papá?',data:null},
-  {ch:0,sp:'MATEO',txt:'¿Cien pesos?',data:null},
+  {ch:0,sp:'DON MEMO',txt:'Mmm.',data:null,img:'img/1.png'},
+  {ch:0,sp:'DON MEMO',txt:'¿Sabes cuánto valía ese billete cuando nació tu papá?',data:null,img:'img/1.png'},
+  {ch:0,sp:'MATEO',txt:'¿Cien pesos?',data:null,img:'img/2.png'},
   {ch:0,sp:'DON MEMO',txt:'Cien pesos... sí. Pero con esos cien pesos, cuando nació tu papá, podías comprar lo que hoy te cuesta cuatrocientos.',data:null,
   choices:[
     {txt:'A) ¿Entonces alguien nos robó el dinero?', nx:4},
     {txt:'B) ¿Cómo puede valer menos si nadie me lo quitó?', nx:4},
     {txt:'C) Abuelo, tengo que comprar unas skins...',nx:4}
-  ]},
-  {ch:0,sp:'DON MEMO',txt:'Exacto. Nadie te lo quitó. Y eso es lo más extraño de todo. El dinero puede perder valor solo... por cómo está hecho.',data:{col:'red',cat:'DATO REAL',txt:'Con $100 pesos de 1995 comprabas lo que hoy cuesta ~$1,400 pesos.',meta:'Intro · Dato 1',title:'EL PESO SE ENCOGE',detail:'Inflación acumulada 1995–2025: más del 1,300%. Fuente: INPC Banxico.',bars:[{lbl:'1995',pct:100,col:'#16A085'},{lbl:'2025',pct:7,col:'#C0392B'}],src:'Fuente: INPC Banxico'}},
-  {ch:0,sp:'DON MEMO',txt:'Cuando yo era joven me fui al norte. A Chicago. Mandaba dinero a tu abuela cada mes. Muchos años. Y nunca entendí por qué, aunque yo trabajara más, acá siempre alcanzaba para menos.',data:null},
-  {ch:0,sp:'DON MEMO',txt:'Hasta que descubrí algo. Algo que nadie me enseñó en la escuela. Ni tu papá sabe. Casi nadie sabe.',data:null},
+  ],img:'img/3.png'},
+  {ch:0,sp:'DON MEMO',txt:'Exacto. Nadie te lo quitó. Y eso es lo más extraño de todo. El dinero puede perder valor solo... por cómo está hecho.',data:{col:'red',cat:'DATO REAL',txt:'Con $100 pesos de 1995 comprabas lo que hoy cuesta ~$1,400 pesos.',meta:'Intro · Dato 1',title:'EL PESO SE ENCOGE',detail:'Inflación acumulada 1995–2025: más del 1,300%. Fuente: INPC Banxico.',bars:[{lbl:'1995',pct:100,col:'#16A085'},{lbl:'2025',pct:7,col:'#C0392B'}],src:'Fuente: INPC Banxico'},img:'img/4.png'},
+  {ch:0,sp:'DON MEMO',txt:'Cuando yo era joven me fui al norte. A Chicago. Mandaba dinero a tu abuela cada mes. Muchos años. Y nunca entendí por qué, aunque yo trabajara más, acá siempre alcanzaba para menos.',data:null,img:'img/5.png'},
+  {ch:0,sp:'DON MEMO',txt:'Hasta que descubrí algo. Algo que nadie me enseñó en la escuela. Ni tu papá sabe. Casi nadie sabe.',data:null,img:'img/6.png'},
   {ch:0,sp:'DON MEMO',txt:'Que el dinero... es una tecnología. Y como toda tecnología, puede estar mal diseñada. Y puede mejorarse.',data:null,
   choices:[
     {txt:'A) ¿Y Bitcoin es esa mejora?', nx:8},
     {txt:'B) ¿Entonces el dinero es como una app?', nx:8},
     {txt:'C) ¿Por qué nadie arregla eso entonces?', nx:8}
-  ]},
-  {ch:0,sp:'DON MEMO',txt:'Bitcoin... sí. Pero antes de hablar de Bitcoin, hay que entender bien por qué el dinero de ahorita falla. ¿Me das chance de contarte?',data:null},
+  ],img:'img/7.png'},
+  {ch:0,sp:'DON MEMO',txt:'Bitcoin... sí. Pero antes de hablar de Bitcoin, hay que entender bien por qué el dinero de ahorita falla. ¿Me das chance de contarte?',data:null,img:'img/8.png'},
   // ── MÓDULO 1: ¿POR QUÉ EXISTE BITCOIN? ──
-  {ch:1,sp:'DON MEMO',txt:'Mira este cuaderno. Veinte años mandando dinero a tu abuela. Western Union. MoneyGram. Cada quincena.',data:null},
+  {ch:1,sp:'DON MEMO',txt:'Mira este cuaderno. Veinte años mandando dinero a tu abuela. Western Union. MoneyGram. Cada quincena.',data:null,img:'img/9.png'},
   {ch:1,sp:'DON MEMO',txt:'Quinientos dólares cada quince días. A veces menos, cuando no había mucho trabajo. Pero siempre mandaba.',data:{col:'blue',cat:'EJERCICIO',txt:'$45 comisión × 24 envíos × 20 años = $21,600 USD perdidos en intermediarios.',meta:'Módulo 1 · Ejercicio 1',title:'LO QUE COBRAN LOS INTERMEDIARIOS',detail:'Don Memo pagó 9% de comisión por envío. Con Bitcoin Lightning el mismo servicio cuesta menos de $0.01 USD por envío. En 20 años: ~$5 USD total en lugar de $21,600.',bars:[{lbl:'WU cobró',pct:100,col:'#C0392B'},{lbl:'Lightning',pct:0,col:'#16A085'}],src:'Banco Mundial, Western Union'},
   choices:[
     {txt:'A) ¿Y no podías mandar el dinero de otra forma?', nx:11},
     {txt:'B) Eso está muy mal, ¿no los puedes demandar?', nx:11},
     {txt:'C) ¿Cuánto es eso en pesos?', nx:11}
-  ]},
-  {ch:1,sp:'DON MEMO',txt:'No había de otra. Eso era lo que había: bancos y remesadoras. El sistema estaba diseñado así. Para que alguien siempre se quedara una parte en el camino. ¿Quieres ver en números cuánto perdía?',data:null,exercise:{type:'remesa',nx:12}},
+  ],img:'img/10.png'},
+  {ch:1,sp:'DON MEMO',txt:'No había de otra. Eso era lo que había: bancos y remesadoras. El sistema estaba diseñado así. Para que alguien siempre se quedara una parte en el camino. ¿Quieres ver en números cuánto perdía?',data:null,exercise:{type:'remesa',nx:12},img:'img/11.png'},
   {ch:1,sp:'DON MEMO',txt:'¿Sabes qué es un intermediario? Alguien que se mete entre tú y la otra persona. Y por meterse... cobra. A veces te ayuda de verdad. A veces solo está ahí porque el sistema no funcionaría sin él. O eso dicen.',data:{col:'blue',cat:'DATO REAL',txt:'51% de adultos mexicanos sin cuenta bancaria. 37 millones fuera del sistema financiero.',meta:'Módulo 1 · Dato 1',title:'SISTEMA FINANCIERO EN MÉXICO',detail:'Banco emisor → Banco receptor → Banco corresponsal → Procesador → Remesadora. Cada eslabón cobra, tarda y puede decirte que no. México recibe $63,313M USD en remesas al año.',bars:[{lbl:'Con banco',pct:49,col:'#2980B9'},{lbl:'Sin banco',pct:51,col:'#C0392B'}],src:'Fuente: INEGI ENIF 2021, Banxico Feb 2025'},
   choices:[
     {txt:'A) Alguien que está en medio de dos personas.', nx:13},
     {txt:'B) ¿Como un banco?', nx:13},
     {txt:'C) No sé.', nx:13}
-  ]},
-  {ch:1,sp:'DON MEMO',txt:'¿Y sabes cuál es el verdadero problema? No solo que cobran. Es que pueden decirte que no. Pueden congelar tu dinero. Pueden cerrarte la cuenta. Tu dinero... pero ellos deciden.',data:null},
-  {ch:1,sp:'DON MEMO',txt:'Hasta que alguien encontró la forma de mandar valor de una persona a otra... sin que nadie estuviera en medio.',data:null},
-  {ch:1,sp:'DON MEMO',txt:'¿Cuánto cuesta una nieve ahí? Cuando yo tenía tu edad costaba tres pesos. Eso es. El dinero se encogió. No la nieve, no la tienda... el dinero. Y hay una palabra para eso.',data:null},
+  ],img:'img/12.png'},
+  {ch:1,sp:'DON MEMO',txt:'¿Y sabes cuál es el verdadero problema? No solo que cobran. Es que pueden decirte que no. Pueden congelar tu dinero. Pueden cerrarte la cuenta. Tu dinero... pero ellos deciden.',data:null,img:'img/13.jpg'},
+  {ch:1,sp:'DON MEMO',txt:'Hasta que alguien encontró la forma de mandar valor de una persona a otra... sin que nadie estuviera en medio.',data:null,img:'img/14.jpg'},
+  {ch:1,sp:'DON MEMO',txt:'¿Cuánto cuesta una nieve ahí? Cuando yo tenía tu edad costaba tres pesos. Eso es. El dinero se encogió. No la nieve, no la tienda... el dinero. Y hay una palabra para eso.',data:null,img:'img/15.png'},
   {ch:1,sp:'DON MEMO',txt:'Inflación. Cuando el gobierno necesita dinero, le dice al banco central: imprime más. Y el banco central imprime. Pero la cantidad de cosas que se pueden comprar no cambia de golpe. Entonces con más pesos persiguiendo las mismas cosas... los precios suben.',data:{col:'red',cat:'INFLACIÓN MX',txt:'$100 pesos de 2014 = poder adquisitivo de ~$55 pesos hoy. Inflación acumulada: ~82%.',meta:'Módulo 1 · Dato 2',title:'82% DE INFLACIÓN EN 10 AÑOS',detail:'Inflación acumulada 2014–2024: ~82%. Año más alto reciente: 2022 con 8.7% anual. El peso ha perdido más del 95% de su valor vs dólar en 40 años. Si guardas $1,500 pesos bajo el colchón 10 años, valen ~$920 en términos reales.',bars:[{lbl:'2014 $100',pct:100,col:'#16A085'},{lbl:'2024 $100',pct:55,col:'#C0392B'}],src:'Fuente: INPC Banxico SF61745'},
   choices:[
     {txt:'A) ¿Porque suben los precios?', nx:17},
     {txt:'B) ¿Porque imprimen más dinero?', nx:17},
     {txt:'C) No sé exactamente.', nx:17}
-  ]},
-  {ch:1,sp:'DON MEMO',txt:'Pruébalo con tus propios números.',data:null,exercise:{type:'inflacion',nx:18}},
-  {ch:1,sp:'DON MEMO',txt:'Y el peor de los casos... no te avisaron. Nadie te preguntó si estabas de acuerdo en que tu dinero valiera menos. Por eso en 2008 alguien decidió hacer algo al respecto.',data:null},
-  {ch:1,sp:'DON MEMO',txt:'31 de octubre de 2008. El mundo financiero estaba colapsando. Bancos quebrando. Gobiernos rescatándolos con el dinero de la gente. En ese momento, alguien publicó un documento en internet.',data:null},
+  ],img:'img/16.png'},
+  {ch:1,sp:'DON MEMO',txt:'Pruébalo con tus propios números.',data:null,exercise:{type:'inflacion',nx:18},img:'img/17.png'},
+  {ch:1,sp:'DON MEMO',txt:'Y el peor de los casos... no te avisaron. Nadie te preguntó si estabas de acuerdo en que tu dinero valiera menos. Por eso en 2008 alguien decidió hacer algo al respecto.',data:null,img:'img/18.png'},
+  {ch:1,sp:'DON MEMO',txt:'31 de octubre de 2008. El mundo financiero estaba colapsando. Bancos quebrando. Gobiernos rescatándolos con el dinero de la gente. En ese momento, alguien publicó un documento en internet.',data:null,img:'img/19.png'},
   {ch:1,sp:'DON MEMO',txt:'Nadie sabe quién. Firmó con el nombre de Satoshi Nakamoto. Puede ser una persona. Puede ser un grupo. Hasta hoy nadie lo conoce.',data:{col:'orange',cat:'HISTORIA BTC',txt:'31 Oct 2008 · Satoshi Nakamoto publica el whitepaper. El resto es historia.',meta:'Módulo 1 · Dato 3',title:'EL NACIMIENTO DE BITCOIN',detail:'31 Oct 2008: Whitepaper. 3 Ene 2009: Genesis Block con mensaje "Chancellor on brink of second bailout for banks". 22 May 2010: 10,000 BTC por 2 pizzas. 2011: Satoshi desaparece. 2021: El Salvador adopta Bitcoin como moneda de curso legal.',bars:[{lbl:'Whitepaper',pct:100,col:'#F7931A'},{lbl:'Adopción',pct:100,col:'#D4A017'}],src:'Bitcoin Whitepaper, Satoshi Nakamoto 2008'},
   choices:[
     {txt:'A) ¿Y no es sospechoso eso de ser anónimo?', nx:21},
     {txt:'B) ¿Y qué decía el documento?', nx:21},
     {txt:'C) Suena a película de acción.', nx:21}
-  ]},
-  {ch:1,sp:'DON MEMO',txt:'El documento describía un sistema de dinero que funcionara sin bancos. Sin intermediarios. De persona a persona, directo. Y que nadie pudiera inflar porque tendría un límite fijo para siempre.',data:null},
-  {ch:1,sp:'DON MEMO',txt:'Y lo más curioso de todo... después de crear Bitcoin, Satoshi desapareció. Nunca tocó los bitcoins que minó al principio. Los dejó ahí. Quietos. Como si nunca hubieran sido suyos.',data:null},
-  {ch:1,sp:'DON MEMO',txt:'Yo creo... que quería demostrar que Bitcoin no era de nadie. Que era de todos. O de nadie. Depende cómo lo veas.',data:null},
+  ],img:'img/20.png'},
+  {ch:1,sp:'DON MEMO',txt:'El documento describía un sistema de dinero que funcionara sin bancos. Sin intermediarios. De persona a persona, directo. Y que nadie pudiera inflar porque tendría un límite fijo para siempre.',data:null,img:'img/21.png'},
+  {ch:1,sp:'DON MEMO',txt:'Y lo más curioso de todo... después de crear Bitcoin, Satoshi desapareció. Nunca tocó los bitcoins que minó al principio. Los dejó ahí. Quietos. Como si nunca hubieran sido suyos.',data:null,img:'img/22.png'},
+  {ch:1,sp:'DON MEMO',txt:'Yo creo... que quería demostrar que Bitcoin no era de nadie. Que era de todos. O de nadie. Depende cómo lo veas.',data:null,img:'img/23.png'},
   // ── MÓDULO 2: QUÉ HACE ESPECIAL A BITCOIN ──
-  {ch:2,sp:'DON MEMO',txt:'Bien. Ya sabes por qué existe Bitcoin. Los dos: intermediarios e inflación. ¿Y cómo resuelve la inflación si no hay banco central que lo controle?',data:null},
+  {ch:2,sp:'DON MEMO',txt:'Bien. Ya sabes por qué existe Bitcoin. Los dos: intermediarios e inflación. ¿Y cómo resuelve la inflación si no hay banco central que lo controle?',data:null,img:'img/24.png'},
   {ch:2,sp:'DON MEMO',txt:'Exacto. Hay una regla escrita en el código de Bitcoin desde el primer día. Una regla que nadie puede cambiar. Veintiún millones. Eso es todo lo que existirá de Bitcoin en toda la historia. Ni uno más.',data:{col:'orange',cat:'ESCASEZ',txt:'Solo existirán 21,000,000 Bitcoin. Para siempre. Matemáticamente imposible crear más.',meta:'Módulo 2 · Dato 1',title:'21 MILLONES. SIEMPRE.',detail:'Bitcoin ya minados: ~19.7M (93.8%). Bitcoin restantes: ~1.3M. Último bitcoin: ~año 2140. Ningún gobierno, empresa ni individuo puede cambiar este límite.',bars:[{lbl:'Minado',pct:94,col:'#F7931A'},{lbl:'Queda',pct:6,col:'#D4A017'}],src:'Bitcoin Core, bitnodes.io 2025'},
   choices:[
     {txt:'A) ¿Y si alguien cambia el código?', nx:26},
     {txt:'B) ¿Quién puso esa regla?', nx:26},
     {txt:'C) ¿Veintiún millones es mucho o poco?', nx:26}
-  ]},
-  {ch:2,sp:'DON MEMO',txt:'Cualquiera puede intentar cambiar el código. Pero si cambias las reglas de Bitcoin, los miles de computadoras que forman la red simplemente te ignoran. Tu versión de Bitcoin no es Bitcoin. Es otra cosa que nadie usa.',data:null},
+  ],img:'img/25.png'},
+  {ch:2,sp:'DON MEMO',txt:'Cualquiera puede intentar cambiar el código. Pero si cambias las reglas de Bitcoin, los miles de computadoras que forman la red simplemente te ignoran. Tu versión de Bitcoin no es Bitcoin. Es otra cosa que nadie usa.',data:null,img:'img/26.png'},
   {ch:2,sp:'DON MEMO',txt:'Ahora bien. ¿Tú tienes $1,500 pesos, verdad? Un Bitcoin se divide en cien millones de partes iguales. Cada una se llama satoshi, en honor a su creador. No necesitas un Bitcoin completo.',data:{col:'orange',cat:'SATOSHIS',txt:'1 Bitcoin = 100,000,000 satoshis. Con $1,500 pesos tienes ~83,333 sats.',meta:'Módulo 2 · Ejercicio',title:'¿CUÁNTOS SATS TIENES?',detail:'Si Bitcoin = $1,800,000 MXN: 1 sat = $0.018 MXN. Con $1,500 MXN: ~83,333 sats. Con $500 MXN: ~27,777 sats. Con $50 MXN: ~2,777 sats. ¡No necesitas un BTC completo!',bars:[{lbl:'Tu acceso',pct:100,col:'#F7931A'},{lbl:'Barrera',pct:0,col:'#C0392B'}],src:'CoinGecko, precio referencial'},
   choices:[
     {txt:'A) No, un Bitcoin cuesta como un millón de pesos.', nx:28},
     {txt:'B) Sí, porque se divide en partes chiquitas.', nx:28},
     {txt:'C) No sé cuánto cuesta.', nx:28}
-  ]},
-  {ch:2,sp:'DON MEMO',txt:'No necesitas ser rico para usar Bitcoin. Un sat es un sat. Calcula cuántos sats puedes tener con lo que tienes.',data:null,exercise:{type:'sats',nx:29}},
-  {ch:2,sp:'DON MEMO',txt:'Y cada cuatro años la recompensa de los mineros se reduce a la mitad. Eso se llama halving. Es lo que garantiza el límite de los veintiún millones.',data:{col:'orange',cat:'HALVING',txt:'2009: 50 BTC/bloque → 2012: 25 → 2016: 12.5 → 2020: 6.25 → 2024: 3.125 BTC.',meta:'Módulo 2 · Dato 2',title:'EL HALVING: ESCASEZ PROGRAMADA',detail:'Cada 210,000 bloques (~4 años) la recompensa se reduce a la mitad. Proyección 2028: 1.5625 BTC/bloque. Este mecanismo controla matemáticamente la emisión total.',bars:[{lbl:'2009 50BTC',pct:100,col:'#D4A017'},{lbl:'2024 3.1',pct:6,col:'#F7931A'}],src:'Bitcoin Core, halvingclock.com'}},
+  ],img:'img/27.png'},
+  {ch:2,sp:'DON MEMO',txt:'No necesitas ser rico para usar Bitcoin. Un sat es un sat. Calcula cuántos sats puedes tener con lo que tienes.',data:null,exercise:{type:'sats',nx:29},img:'img/28.png'},
+  {ch:2,sp:'DON MEMO',txt:'Y cada cuatro años la recompensa de los mineros se reduce a la mitad. Eso se llama halving. Es lo que garantiza el límite de los veintiún millones.',data:{col:'orange',cat:'HALVING',txt:'2009: 50 BTC/bloque → 2012: 25 → 2016: 12.5 → 2020: 6.25 → 2024: 3.125 BTC.',meta:'Módulo 2 · Dato 2',title:'EL HALVING: ESCASEZ PROGRAMADA',detail:'Cada 210,000 bloques (~4 años) la recompensa se reduce a la mitad. Proyección 2028: 1.5625 BTC/bloque. Este mecanismo controla matemáticamente la emisión total.',bars:[{lbl:'2009 50BTC',pct:100,col:'#D4A017'},{lbl:'2024 3.1',pct:6,col:'#F7931A'}],src:'Bitcoin Core, halvingclock.com'},img:'img/29.png'},
   {ch:2,sp:'DON MEMO',txt:'Pregunta. Si Bitcoin no tiene banco... ¿quién revisa que nadie haga trampa? ¿Que nadie invente bitcoins de la nada o gaste el mismo dos veces?',data:null,
   choices:[
     {txt:'A) ¿Una computadora principal?', nx:31},
     {txt:'B) ¿Miles de computadoras al mismo tiempo?', nx:31},
     {txt:'C) No sé cómo funcionaría eso.', nx:31}
-  ]},
-  {ch:2,sp:'DON MEMO',txt:'Miles de computadoras. En todo el mundo. Cada una tiene una copia completa de todas las transacciones desde el primer día. Si alguien intenta hacer trampa, el resto lo detecta y lo rechaza.',data:{col:'green',cat:'DESCENTRALIZACIÓN',txt:'Nodos activos: +17,000 en más de 100 países. Uptime: 99.98% desde 2009.',meta:'Módulo 2 · Dato 3',title:'LA RED SIN DUEÑO',detail:'Si apagas el 90% de los nodos, el 10% restante sigue la cadena. Sin CEO, sin sede, sin apagado posible. El peso: lo controla Banxico. Bitcoin: nadie.',bars:[{lbl:'Nodos',pct:100,col:'#16A085'},{lbl:'Censurable',pct:0,col:'#C0392B'}],src:'bitnodes.io, 2025'}},
-  {ch:2,sp:'DON MEMO',txt:'El peso mexicano: lo controla Banxico. Pueden imprimir más mañana. Tu cuenta bancaria: el banco puede congelarla. Bitcoin: nadie la controla. Ni el más poderoso gobierno del mundo puede confiscar tus bitcoin si tú tienes las llaves.',data:null},
-  {ch:2,sp:'DON MEMO',txt:'Mira. El oro era lo más cercano a un dinero duro. Pero pesa. No lo puedes mandar por internet. No se divide fácil. Bitcoin es como el oro... pero para el siglo veintiuno.',data:{col:'orange',cat:'COMPARATIVA',txt:'Solo Bitcoin tiene oferta fija, es portable globalmente y funciona 24/7 sin permiso.',meta:'Módulo 2 · Dato 4',title:'BITCOIN VS EL MUNDO',detail:'¿Oferta fija? Peso: NO | Oro: casi | Bitcoin: SÍ. ¿Confiscable? Peso: sí | Oro: sí | Bitcoin: no (con llaves). ¿Portable global? Solo Bitcoin. ¿24/7? Solo Bitcoin. ¿Divisible al extremo? Solo Bitcoin (hasta 0.00000001 BTC).',bars:[{lbl:'Bitcoin',pct:100,col:'#F7931A'},{lbl:'Peso',pct:10,col:'#C0392B'}],src:'Análisis propio'}},
+  ],img:'img/30.png'},
+  {ch:2,sp:'DON MEMO',txt:'Miles de computadoras. En todo el mundo. Cada una tiene una copia completa de todas las transacciones desde el primer día. Si alguien intenta hacer trampa, el resto lo detecta y lo rechaza.',data:{col:'green',cat:'DESCENTRALIZACIÓN',txt:'Nodos activos: +17,000 en más de 100 países. Uptime: 99.98% desde 2009.',meta:'Módulo 2 · Dato 3',title:'LA RED SIN DUEÑO',detail:'Si apagas el 90% de los nodos, el 10% restante sigue la cadena. Sin CEO, sin sede, sin apagado posible. El peso: lo controla Banxico. Bitcoin: nadie.',bars:[{lbl:'Nodos',pct:100,col:'#16A085'},{lbl:'Censurable',pct:0,col:'#C0392B'}],src:'bitnodes.io, 2025'},img:'img/31.png'},
+  {ch:2,sp:'DON MEMO',txt:'El peso mexicano: lo controla Banxico. Pueden imprimir más mañana. Tu cuenta bancaria: el banco puede congelarla. Bitcoin: nadie la controla. Ni el más poderoso gobierno del mundo puede confiscar tus bitcoin si tú tienes las llaves.',data:null,img:'img/32.png'},
+  {ch:2,sp:'DON MEMO',txt:'Mira. El oro era lo más cercano a un dinero duro. Pero pesa. No lo puedes mandar por internet. No se divide fácil. Bitcoin es como el oro... pero para el siglo veintiuno.',data:{col:'orange',cat:'COMPARATIVA',txt:'Solo Bitcoin tiene oferta fija, es portable globalmente y funciona 24/7 sin permiso.',meta:'Módulo 2 · Dato 4',title:'BITCOIN VS EL MUNDO',detail:'¿Oferta fija? Peso: NO | Oro: casi | Bitcoin: SÍ. ¿Confiscable? Peso: sí | Oro: sí | Bitcoin: no (con llaves). ¿Portable global? Solo Bitcoin. ¿24/7? Solo Bitcoin. ¿Divisible al extremo? Solo Bitcoin (hasta 0.00000001 BTC).',bars:[{lbl:'Bitcoin',pct:100,col:'#F7931A'},{lbl:'Peso',pct:10,col:'#C0392B'}],src:'Análisis propio'},img:'img/33.png'},
   {ch:2,sp:'MATEO',txt:'Para guardar valor. Para mandar dinero sin intermediarios. Para que nadie te lo quite.',data:null,
   choices:[
     {txt:'A) ¿Entonces Bitcoin es mejor que el oro?', nx:35},
     {txt:'B) ¿Y qué pasa si se va la luz o el internet?', nx:35},
     {txt:'C) Creo que ya entiendo para qué sirve.', nx:35}
-  ]},
-  {ch:2,sp:'DON MEMO',txt:'Sí. Eso es. Eso es exactamente.',data:null},
+  ],img:'img/34.png'},
+  {ch:2,sp:'DON MEMO',txt:'Sí. Eso es. Eso es exactamente.',data:null,img:'img/35.png'},
   // ── MÓDULO 3: CÓMO FUNCIONA BITCOIN ──
-  {ch:3,sp:'DON MEMO',txt:'[12 años después — Mérida, Yucatán. Mateo tiene 25 años. Tiene una hamaquería frente al parque: "Aceptamos Bitcoin ₿"]',data:null},
-  {ch:3,sp:'DON MEMO',txt:'"Mateo... el dinero es una tecnología. Y como toda tecnología, puede mejorarse."',data:null},
-  {ch:3,sp:'DIEGO',txt:'Oye, ¿en serio aceptas Bitcoin aquí? ¿Cómo funciona eso? ¿No es eso de los hackers?',data:null},
-  {ch:3,sp:'MATEO',txt:'Siéntate, Diego. Te voy a contar algo. Esa fue exactamente la pregunta que me hice cuando tenía trece años.',data:null},
-  {ch:3,sp:'MATEO',txt:'Cuando mandas dinero por banco, el banco dice "sí, este dinero existe". Bitcoin resuelve eso sin árbitro. Con matemáticas. Y con miles de testigos al mismo tiempo.',data:null},
-  {ch:3,sp:'MATEO',txt:'Imagínate un cuaderno. Pero no uno solo. El mismo cuaderno, copiado idéntico en diecisiete mil computadoras alrededor del mundo. Cada vez que alguien manda Bitcoin, se anota en todos los cuadernos al mismo tiempo.',data:{col:'orange',cat:'BLOCKCHAIN',txt:'El blockchain: ~880,000 bloques. +1 billón de transacciones. Hackeado en 15 años: 0 veces.',meta:'Módulo 3 · Dato 1',title:'EL CUADERNO INDESTRUCTIBLE',detail:'Tamaño del historial: ~600 GB. Cada bloque tiene un "hash": código matemático único. Si cambias algo en una página vieja, su hash cambia y rompe toda la cadena posterior. Imposible en práctica.',bars:[{lbl:'Uptime',pct:99,col:'#F7931A'},{lbl:'Hacks',pct:0,col:'#16A085'}],src:'mempool.space, 2025'}},
+  {ch:3,sp:'DON MEMO',txt:'[12 años después — Mérida, Yucatán. Mateo tiene 25 años. Tiene una hamaquería frente al parque: "Aceptamos Bitcoin ₿"]',data:null,img:'img/36.png'},
+  {ch:3,sp:'DON MEMO',txt:'"Mateo... el dinero es una tecnología. Y como toda tecnología, puede mejorarse."',data:null,img:'img/37.png'},
+  {ch:3,sp:'DIEGO',txt:'Oye, ¿en serio aceptas Bitcoin aquí? ¿Cómo funciona eso? ¿No es eso de los hackers?',data:null,img:'img/38.png'},
+  {ch:3,sp:'MATEO',txt:'Siéntate, Diego. Te voy a contar algo. Esa fue exactamente la pregunta que me hice cuando tenía trece años.',data:null,img:'img/39.png'},
+  {ch:3,sp:'MATEO',txt:'Cuando mandas dinero por banco, el banco dice "sí, este dinero existe". Bitcoin resuelve eso sin árbitro. Con matemáticas. Y con miles de testigos al mismo tiempo.',data:null,img:'img/40.png'},
+  {ch:3,sp:'MATEO',txt:'Imagínate un cuaderno. Pero no uno solo. El mismo cuaderno, copiado idéntico en diecisiete mil computadoras alrededor del mundo. Cada vez que alguien manda Bitcoin, se anota en todos los cuadernos al mismo tiempo.',data:{col:'orange',cat:'BLOCKCHAIN',txt:'El blockchain: ~880,000 bloques. +1 billón de transacciones. Hackeado en 15 años: 0 veces.',meta:'Módulo 3 · Dato 1',title:'EL CUADERNO INDESTRUCTIBLE',detail:'Tamaño del historial: ~600 GB. Cada bloque tiene un "hash": código matemático único. Si cambias algo en una página vieja, su hash cambia y rompe toda la cadena posterior. Imposible en práctica.',bars:[{lbl:'Uptime',pct:99,col:'#F7931A'},{lbl:'Hacks',pct:0,col:'#16A085'}],src:'mempool.space, 2025'},img:'img/41.png'},
   {ch:3,sp:'MATEO',txt:'Si alguien borra una página... los otros 17,000 cuadernos lo detectan. Además cada página tiene un hash: código matemático único que incluye el hash de la anterior. Encadenados. Puedes verificarlo en mempool.space.',data:null,
   choices:[
     {txt:'A) Los otros cuadernos lo detectan y corrigen.', nx:43},
     {txt:'B) ¿Se pierde la transacción?', nx:43},
     {txt:'C) ¿Es imposible borrarlo?', nx:43}
-  ]},
+  ],img:'img/42.png'},
   {ch:3,sp:'MATEO',txt:'Los mineros. Para escribir la siguiente página del cuaderno, tienes que ganar un concurso de dados. Un dado con mil millones de caras. El primero en sacar el número correcto escribe la página y recibe Bitcoin nuevo.',data:{col:'orange',cat:'MINERÍA',txt:'Hashrate: ~700 Exahashes/seg. Costo de ataque 51%: >$20,000M USD.',meta:'Módulo 3 · Dato 2',title:'LA SEGURIDAD EN NÚMEROS',detail:'El concurso requiere cálculos matemáticos reales. No puedes inventar la respuesta. Eso cuesta electricidad real. No hay atajo. Por eso "ser honesto es más barato que hacer trampa".',bars:[{lbl:'Costo ataque',pct:100,col:'#C0392B'},{lbl:'Viable',pct:0,col:'#16A085'}],src:'Hashrate Index, 2025'},
   choices:[
     {txt:'A) ¿Y si dos ganan al mismo tiempo?', nx:44},
     {txt:'B) ¿Eso no gasta mucha electricidad?', nx:44},
     {txt:'C) ¿Por qué no simplemente hacen trampa?', nx:44}
-  ]},
-  {ch:3,sp:'MATEO',txt:'Y cada cuatro años, la recompensa de los mineros se reduce a la mitad. El halving. 2009: 50 BTC. 2024: 3.125 BTC. Así se garantiza el límite de los 21 millones.',data:null},
-  {ch:3,sp:'MATEO',txt:'Mira. Esto es el blockchain en tiempo real: mempool.space. Cada bloque que aparece fue minado por alguien, en algún lugar del mundo, gastando electricidad real.',data:null},
-  {ch:3,sp:'MATEO',txt:'Desde el 3 de enero de 2009. Nunca ha parado. Ni un día. Ni una hora.',data:{col:'green',cat:'HISTORIA VIVA',txt:'Genesis Block: 3 Ene 2009. Uptime: 99.98%. Más de 15 años sin parar.',meta:'Módulo 3 · Dato 3',title:'15 AÑOS SIN PARAR',detail:'El blockchain de Bitcoin ha funcionado sin interrupciones desde el Genesis Block. Uptime: 99.98%. Bloques totales: ~880,000. Cada ~10 minutos, uno nuevo. Sin excepción.',bars:[{lbl:'Online',pct:99,col:'#16A085'},{lbl:'Offline',pct:0,col:'#C0392B'}],src:'Bitcoin Uptime Tracker, 2025'}},
+  ],img:'img/43.png'},
+  {ch:3,sp:'MATEO',txt:'Y cada cuatro años, la recompensa de los mineros se reduce a la mitad. El halving. 2009: 50 BTC. 2024: 3.125 BTC. Así se garantiza el límite de los 21 millones.',data:null,img:'img/44.png'},
+  {ch:3,sp:'MATEO',txt:'Mira. Esto es el blockchain en tiempo real: mempool.space. Cada bloque que aparece fue minado por alguien, en algún lugar del mundo, gastando electricidad real.',data:null,img:'img/45.png'},
+  {ch:3,sp:'MATEO',txt:'Desde el 3 de enero de 2009. Nunca ha parado. Ni un día. Ni una hora.',data:{col:'green',cat:'HISTORIA VIVA',txt:'Genesis Block: 3 Ene 2009. Uptime: 99.98%. Más de 15 años sin parar.',meta:'Módulo 3 · Dato 3',title:'15 AÑOS SIN PARAR',detail:'El blockchain de Bitcoin ha funcionado sin interrupciones desde el Genesis Block. Uptime: 99.98%. Bloques totales: ~880,000. Cada ~10 minutos, uno nuevo. Sin excepción.',bars:[{lbl:'Online',pct:99,col:'#16A085'},{lbl:'Offline',pct:0,col:'#C0392B'}],src:'Bitcoin Uptime Tracker, 2025'},img:'img/46.png'},
   // ── MÓDULO 4: CÓMO USAR BITCOIN EN MÉXICO ──
-  {ch:4,sp:'DIEGO',txt:'Ok. Ya entiendo más o menos cómo funciona. Pero... ¿cómo lo uso yo? ¿Dónde guardo mis bitcoins?',data:null},
+  {ch:4,sp:'DIEGO',txt:'Ok. Ya entiendo más o menos cómo funciona. Pero... ¿cómo lo uso yo? ¿Dónde guardo mis bitcoins?',data:null,img:'img/47.png'},
   {ch:4,sp:'MATEO',txt:'En una wallet. Pero antes: la wallet NO guarda bitcoins. Guarda tus llaves. No tus bitcoins. Tus llaves. La diferencia importa muchísimo.',data:{col:'green',cat:'TIPOS DE WALLET',txt:'Phoenix · Blink · Muun (Lightning no-custodial). Exchange: Bitso (solo comprar).',meta:'Módulo 4 · Dato 1',title:'TU PUERTA A BITCOIN',detail:'Móvil Lightning no-custodial: Phoenix, Blink, Muun — recomendadas para principiantes en México. Escritorio: Sparrow, Electrum. Hardware: Ledger, Trezor, ColdCard. Exchange: solo para comprar, nunca para guardar.',bars:[{lbl:'Self-custody',pct:100,col:'#16A085'},{lbl:'Riesgo custodial',pct:70,col:'#C0392B'}],src:'Phoenix, Blink, Muun, Ledger'},
   choices:[
     {txt:'A) Una app que guarda mis bitcoins.', nx:49},
     {txt:'B) Algo como una cuenta bancaria.', nx:49},
     {txt:'C) Algo donde guardo mis contraseñas para acceder.', nx:49}
-  ]},
-  {ch:4,sp:'MATEO',txt:'Tu llave privada es un número secreto que demuestra que esos bitcoins son tuyos. Quien tiene esa llave, tiene los bitcoins. Punto. Sin apelación. Sin servicio al cliente.',data:null},
-  {ch:4,sp:'DIEGO',txt:'¿Y si pierdo el celular?',data:null},
-  {ch:4,sp:'MATEO',txt:'Por eso existe la seed phrase. Doce palabras. Las generó mi wallet el día que la creé. Con estas doce palabras puedo recuperar todos mis bitcoins en cualquier dispositivo del mundo.',data:{col:'green',cat:'SEED PHRASE',txt:'12 palabras maestras. NUNCA digital. SIEMPRE en físico. MÚLTIPLES copias. NADIE la ve.',meta:'Módulo 4 · Dato 2',title:'LAS 12 PALABRAS QUE LO SON TODO',detail:'1. NUNCA en foto, nube, email o WhatsApp. 2. SIEMPRE en papel o metal. 3. MÚLTIPLES copias en lugares físicos distintos. 4. NADIE la ve: ni familia, ni pareja. 5. PRUÉBALA antes de depositar fondos reales.',bars:[{lbl:'Seguridad',pct:100,col:'#16A085'},{lbl:'Digital',pct:0,col:'#C0392B'}],src:'Bitcoin best practices, BIP39'}},
+  ],img:'img/48.png'},
+  {ch:4,sp:'MATEO',txt:'Tu llave privada es un número secreto que demuestra que esos bitcoins son tuyos. Quien tiene esa llave, tiene los bitcoins. Punto. Sin apelación. Sin servicio al cliente.',data:null,img:'img/49.png'},
+  {ch:4,sp:'DIEGO',txt:'¿Y si pierdo el celular?',data:null,img:'img/50.png'},
+  {ch:4,sp:'MATEO',txt:'Por eso existe la seed phrase. Doce palabras. Las generó mi wallet el día que la creé. Con estas doce palabras puedo recuperar todos mis bitcoins en cualquier dispositivo del mundo.',data:{col:'green',cat:'SEED PHRASE',txt:'12 palabras maestras. NUNCA digital. SIEMPRE en físico. MÚLTIPLES copias. NADIE la ve.',meta:'Módulo 4 · Dato 2',title:'LAS 12 PALABRAS QUE LO SON TODO',detail:'1. NUNCA en foto, nube, email o WhatsApp. 2. SIEMPRE en papel o metal. 3. MÚLTIPLES copias en lugares físicos distintos. 4. NADIE la ve: ni familia, ni pareja. 5. PRUÉBALA antes de depositar fondos reales.',bars:[{lbl:'Seguridad',pct:100,col:'#16A085'},{lbl:'Digital',pct:0,col:'#C0392B'}],src:'Bitcoin best practices, BIP39'},img:'img/51.png'},
   {ch:4,sp:'MATEO',txt:'Mi abuelo me lo dijo antes de que yo entendiera. "Not your keys, not your coins, mijo." Ahora lo entiendo perfectamente. Quien tiene tus doce palabras, tiene tus bitcoins. No tú.',data:null,
   choices:[
     {txt:'A) ¿Qué pasa si alguien ve esas palabras?', nx:53},
     {txt:'B) ¿Por qué en metal y no en papel?', nx:53},
     {txt:'C) ¿No es muy complicado eso?', nx:53}
-  ]},
-  {ch:4,sp:'DIEGO',txt:'Oye, pero si una transacción tarda diez minutos... ¿cómo puedes cobrar en tu negocio?',data:null},
-  {ch:4,sp:'MATEO',txt:'Para eso existe Lightning. Lightning Network es una capa sobre Bitcoin que permite pagos instantáneos. Menos de un segundo. Comisión menor a un peso mexicano, sin importar el monto.',data:{col:'green',cat:'LIGHTNING',txt:'<1 segundo. Comisión: $0.001–$0.01 USD. Chicago→Mérida en 2 seg vs 3 días por Western Union.',meta:'Módulo 4 · Dato 3',title:'LIGHTNING NETWORK: PAGOS INSTANTÁNEOS',detail:'Don Memo perdió $21,600 USD en comisiones en 20 años. Con Lightning: ~$5 USD total. Nodos activos: >15,000 en el mundo. Capacidad: >5,000 BTC en canales.',bars:[{lbl:'Western Union',pct:100,col:'#C0392B'},{lbl:'Lightning',pct:1,col:'#16A085'}],src:'1ML.com, River Financial 2025'}},
-  {ch:4,sp:'MATEO',txt:'500+ negocios en México aceptan Bitcoin. Bitso: exchange mexicano. Blink: wallet con pesos + Lightning. Bitcoin Beach Yucatán. Cajeros en CDMX, GDL y MTY. Regulación: Ley Fintech 2018.',data:{col:'green',cat:'MÉXICO HOY',txt:'500+ negocios. BTCMap.org. Bitso, Blink, cajeros. Regulación: CNBV Ley Fintech 2018.',meta:'Módulo 4 · Dato 4',title:'BITCOIN EN TU COLONIA',detail:'Encuentra negocios cercanos en BTCMap.org. Bitcoin Beach Yucatán: adopción local. Comunidades activas en Mérida, CDMX, Guadalajara y Monterrey. CNBV reconoce activos virtuales.',bars:[{lbl:'2022',pct:30,col:'#F7931A'},{lbl:'2025',pct:100,col:'#F7931A'}],src:'BTCMap.org, CNBV Ley Fintech 2018'}},
+  ],img:'img/52.png'},
+  {ch:4,sp:'DIEGO',txt:'Oye, pero si una transacción tarda diez minutos... ¿cómo puedes cobrar en tu negocio?',data:null,img:'img/53.png'},
+  {ch:4,sp:'MATEO',txt:'Para eso existe Lightning. Lightning Network es una capa sobre Bitcoin que permite pagos instantáneos. Menos de un segundo. Comisión menor a un peso mexicano, sin importar el monto.',data:{col:'green',cat:'LIGHTNING',txt:'<1 segundo. Comisión: $0.001–$0.01 USD. Chicago→Mérida en 2 seg vs 3 días por Western Union.',meta:'Módulo 4 · Dato 3',title:'LIGHTNING NETWORK: PAGOS INSTANTÁNEOS',detail:'Don Memo perdió $21,600 USD en comisiones en 20 años. Con Lightning: ~$5 USD total. Nodos activos: >15,000 en el mundo. Capacidad: >5,000 BTC en canales.',bars:[{lbl:'Western Union',pct:100,col:'#C0392B'},{lbl:'Lightning',pct:1,col:'#16A085'}],src:'1ML.com, River Financial 2025'},img:'img/54.png'},
+  {ch:4,sp:'MATEO',txt:'500+ negocios en México aceptan Bitcoin. Bitso: exchange mexicano. Blink: wallet con pesos + Lightning. Bitcoin Beach Yucatán. Cajeros en CDMX, GDL y MTY. Regulación: Ley Fintech 2018.',data:{col:'green',cat:'MÉXICO HOY',txt:'500+ negocios. BTCMap.org. Bitso, Blink, cajeros. Regulación: CNBV Ley Fintech 2018.',meta:'Módulo 4 · Dato 4',title:'BITCOIN EN TU COLONIA',detail:'Encuentra negocios cercanos en BTCMap.org. Bitcoin Beach Yucatán: adopción local. Comunidades activas en Mérida, CDMX, Guadalajara y Monterrey. CNBV reconoce activos virtuales.',bars:[{lbl:'2022',pct:30,col:'#F7931A'},{lbl:'2025',pct:100,col:'#F7931A'}],src:'BTCMap.org, CNBV Ley Fintech 2018'},img:'img/55.png'},
   {ch:4,sp:'MATEO',txt:'Al principio sí se confunden mis clientes. Por eso les explico. Igual que mi abuelo me explicó a mí en ese parque de ahí enfrente hace doce años.',data:null,
   choices:[
     {txt:'A) Quiero empezar. ¿Por dónde?', nx:57},
     {txt:'B) ¿Y si Bitcoin baja de precio?', nx:57},
     {txt:'C) Es mucha información junta.', nx:57}
-  ]},
-  {ch:4,sp:'MATEO',txt:'Descarga Phoenix o Blink. Crea tu wallet. Guarda tu seed phrase en papel. Encuentra el negocio Bitcoin más cercano en BTCMap.org. Y empieza con tus primeros sats.',data:null},
+  ],img:'img/56.png'},
+  {ch:4,sp:'MATEO',txt:'Descarga Phoenix o Blink. Crea tu wallet. Guarda tu seed phrase en papel. Encuentra el negocio Bitcoin más cercano en BTCMap.org. Y empieza con tus primeros sats.',data:null,img:'img/57.png'},
   // ── CONCLUSIÓN ──
-  {ch:5,sp:'MATEO',txt:'Don Memo murió hace tres años. Nunca vio su hamaquería. Pero sí vio algo mejor.',data:null},
-  {ch:5,sp:'DON MEMO',txt:'"¿Guardaste una parte, mijo?"',data:null},
-  {ch:5,sp:'MATEO',txt:'Le dije que sí. No guardé los $1,500 pesos. Los cambié a satoshis esa misma semana. Ciento cuarenta pesos de comisión en Bitso. Y los dejé ahí. Doce años de satoshis.',data:null},
-  {ch:5,sp:'MATEO',txt:'No me hice rico. No era ese el punto. El punto era entender. Entender que el dinero es una tecnología. Que puede mejorarse. Y que la mejora ya existe. Ahora es tu turno. ⚡🧡',data:null},
+  {ch:5,sp:'MATEO',txt:'Don Memo murió hace tres años. Nunca vio su hamaquería. Pero sí vio algo mejor.',data:null,img:'img/58.png'},
+  {ch:5,sp:'DON MEMO',txt:'"¿Guardaste una parte, mijo?"',data:null,img:'img/59.png'},
+  {ch:5,sp:'MATEO',txt:'Le dije que sí. No guardé los $1,500 pesos. Los cambié a satoshis esa misma semana. Ciento cuarenta pesos de comisión en Bitso. Y los dejé ahí. Doce años de satoshis.',data:null,img:'img/60.png'},
+  {ch:5,sp:'MATEO',txt:'No me hice rico. No era ese el punto. El punto era entender. Entender que el dinero es una tecnología. Que puede mejorarse. Y que la mejora ya existe. Ahora es tu turno. ⚡🧡',data:null,img:'img/61.png'},
+  // ── MÓDULO BONUS: GRADUACIÓN ──
+  {ch:6,sp:'MATEO',txt:'Eso fue lo que aprendí. No en un salón. No en un libro. En una banca de parque, con un viejito que olía a café y hablaba despacio.',data:null,img:'img/62.png'},
+  {ch:6,sp:'MATEO',txt:'Don Memo ya no está. Pero los sats siguen ahí. Y ahora tú también sabes lo que yo sé.',data:null,img:'img/63.png'},
+  {ch:6,sp:'MATEO',txt:'Gracias a él reforzamos lo esencial. Ahora tú decides si seguir o si con esto es suficiente. De cualquier forma... ya no eres el mismo.',data:null,img:'img/64.png'}
 ];
 
 // ch:0→idx 0, ch:1→9, ch:2→23, ch:3→35, ch:4→46, ch:5→57
-const CH_START=[0,9,23,35,46,57];
+const CH_START=[0,9,23,35,46,57,62];
 // Note: indices verified after choices insertion
 
 // ══════════════════════════════════════
@@ -1329,20 +1488,22 @@ function curExamCh(){return DIALOGS[ST.idx]?.ch||0;}
 // INIT
 // ══════════════════════════════════════
 window.onload=()=>{
+  initStars();
+  applyThemeUI();
   buildGlossary();buildBadges();renderNotes();
-  fetchBTC();setInterval(fetchBTC,15000);
+  fetchUSDMXN().then(fetchBTC);setInterval(fetchBTC,15000);setInterval(fetchUSDMXN,300000);
   drawMemo();
   const tutDone = localStorage.getItem('tut_done');
   const saved   = localStorage.getItem('rpgname');
   if(!tutDone){
-    // Primera vez: mostrar tutorial, ocultar RPG
+    // Primera vez: tutorial primero, ocultar pantalla de intro
     document.getElementById('rpgScreen').style.display='none';
   } else if(!saved){
-    // Tutorial visto, sin nombre: mostrar RPG
+    // Tutorial visto pero sin nombre: mostrar pantalla UINIK STUDIOS
     document.getElementById('tutorialScreen').style.display='none';
     document.getElementById('rpgScreen').style.display='flex';
   } else {
-    // Todo listo: directo al curso
+    // Ya visitó antes: directo al curso
     document.getElementById('tutorialScreen').style.display='none';
     document.getElementById('rpgScreen').style.display='none';
     showD(DIALOGS[0]); updProg();
@@ -1373,7 +1534,7 @@ function drawMemo(){
 // ══════════════════════════════════════
 // DIALOG ENGINE
 // ══════════════════════════════════════
-const MOD_LABELS=['INTRO — EL DINERO','MÓD.1 — ¿POR QUÉ BITCOIN?','MÓD.2 — LO QUE HACE ESPECIAL','MÓD.3 — CÓMO FUNCIONA','MÓD.4 — CÓMO USAR BTC','CONCLUSIÓN'];
+const MOD_LABELS=['INTRO — EL DINERO','MÓD.1 — ¿POR QUÉ BITCOIN?','MÓD.2 — LO QUE HACE ESPECIAL','MÓD.3 — CÓMO FUNCIONA','MÓD.4 — CÓMO USAR BTC','CONCLUSIÓN','BONUS — GRADUACIÓN'];
 
 function showD(d){
   if(!d)return;
@@ -1382,10 +1543,20 @@ function showD(d){
   document.getElementById('dhint').style.display='none';
   const nm=localStorage.getItem('rpgname')||'Mijo';
   const spEl=document.getElementById('spk');
-  const _uname=(localStorage.getItem('rpgname')||'TÚ').toUpperCase(); spEl.textContent=d.sp==='TÚ'||d.sp==='MATEO'?_uname:d.sp==='DIEGO'?'DIEGO':d.sp;
+  spEl.textContent=d.sp==='TÚ'||d.sp==='MATEO'?'MATEO':d.sp==='DIEGO'?'DIEGO':d.sp;
+  // ── Imagen de escena ──
+  if(d.img){
+    const gbg=document.getElementById('gbg');
+    gbg.style.transition='opacity 0.4s';
+    gbg.style.opacity='0';
+    setTimeout(()=>{
+      gbg.style.background=`linear-gradient(rgba(0,0,0,0.18),rgba(0,0,0,0.18)),url('${d.img}') center/cover no-repeat`;
+      gbg.style.opacity='1';
+    },200);
+  }
   const spColors={'DON MEMO':'#fff','MATEO':'var(--btc)','DIEGO':'var(--blue)'};
   spEl.style.background=spColors[d.sp]||'#fff';
-  spEl.style.color=d.sp==='DON MEMO'?'#000':'#000';
+  spEl.style.color=d.sp==='DON MEMO'?'var(--darker)':'var(--darker)';
   const txt=d.txt.replace(/{n}/g,nm);
   const tEl=document.getElementById('dtxt');
   tEl.innerHTML='';
@@ -1400,6 +1571,7 @@ function showD(d){
       else document.getElementById('dhint').style.display='block';
       if(d.data)setTimeout(()=>addCard(d.data),700);
       checkChEnd(d);
+      checkGraduation(d);
       if(d.exercise)ST.pendingEx=d.exercise;  // se abre cuando el usuario avance
     }
   },10);
@@ -1450,6 +1622,7 @@ function adv(){
       else setTimeout(()=>showChoices(d.choices),300);
       if(d.data)setTimeout(()=>addCard(d.data),400);
       checkChEnd(d);
+      checkGraduation(d);
       if(d.exercise)ST.pendingEx=d.exercise;
     }return;
   }
@@ -1517,7 +1690,7 @@ function addCard(data){
   card.className='dc '+(data.col||'');
   const bars=data.bars.map(b=>`<div class="pbar-row"><span class="pbar-lbl" style="color:${b.col}">${b.lbl}</span><div class="pbar-track"><div class="pbar-fill" style="width:${b.pct}%;background:${b.col}"></div></div><span class="pbar-val" style="color:${b.col}">${b.pct}%</span></div>`).join('');
   const cc=data.col==='red'?'var(--red)':data.col==='blue'?'var(--blue)':data.col==='green'?'var(--green)':'var(--btc)';
-  card.innerHTML=`<span class="dc-badge">🔴 NUEVO</span><div style="font-family:'Press Start 2P',monospace;font-size:6px;color:${cc};">${data.cat}</div><p>${data.txt}</p><div class="dc-meta">${data.meta}</div><span class="dc-more" onclick="togCard(this)">▶ VER MÁS</span><div class="dc-expand"><div style="font-family:'Press Start 2P',monospace;font-size:7px;color:#fff;margin-bottom:8px;">${data.title}</div><p>${data.detail}</p><div class="pbar-wrap">${bars}</div><div class="dc-src">📌 ${data.src}</div><span class="dc-more" onclick="togCard(this)" style="color:#888;">✕ CERRAR</span></div>`;
+  card.innerHTML=`<span class="dc-badge">🔴 NUEVO</span><div style="font-family:'Press Start 2P',monospace;font-size:6px;color:${cc};">${data.cat}</div><p>${data.txt}</p><div class="dc-meta">${data.meta}</div><span class="dc-more" onclick="togCard(this)">▶ VER MÁS</span><div class="dc-expand"><div style="font-family:'Press Start 2P',monospace;font-size:7px;color:var(--text);margin-bottom:8px;">${data.title}</div><p>${data.detail}</p><div class="pbar-wrap">${bars}</div><div class="dc-src">📌 ${data.src}</div><span class="dc-more" onclick="togCard(this)" style="color:var(--text-muted);">✕ CERRAR</span></div>`;
   list.insertBefore(card,list.firstChild);
   setTimeout(()=>{const b=card.querySelector('.dc-badge');if(b)b.style.display='none';},4000);
   const pl=document.getElementById('pl');
@@ -1549,7 +1722,7 @@ function saveNote(){
 function delNote(id){ST.notes=ST.notes.filter(n=>n.id!==id);localStorage.setItem('dmn',JSON.stringify(ST.notes));renderNotes();}
 function renderNotes(){
   const list=document.getElementById('ntList');
-  if(!ST.notes.length){list.innerHTML='<div style="font-size:15px;color:#333;text-align:center;margin-top:8px;">Sin notas aún</div>';return;}
+  if(!ST.notes.length){list.innerHTML='<div style="font-size:15px;color:var(--text-dim);text-align:center;margin-top:8px;">Sin notas aún</div>';return;}
   list.innerHTML='';
   ST.notes.forEach(n=>{const d=document.createElement('div');d.className='nt-item';d.innerHTML=`<button class="nt-del" onclick="delNote(${n.id})">✕</button><p>${n.txt}</p><div class="ntm">${n.t}</div>`;list.appendChild(d);});
 }
@@ -1582,20 +1755,50 @@ function updBadges(curCh){
 // ══════════════════════════════════════
 // BTC PRICE
 // ══════════════════════════════════════
+let _usdMxn=17.5;
+async function fetchUSDMXN(){
+  try{
+    const r=await fetch('https://api.frankfurter.app/latest?from=USD&to=MXN');
+    const d=await r.json();
+    _usdMxn=d.rates.MXN;
+  }catch(e){}
+}
+
 async function fetchBTC(){
   try{
-    const r=await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=mxn&include_24hr_change=true');
-    const d=await r.json();const p=d.bitcoin.mxn,ch=d.bitcoin.mxn_24h_change;
+    const [priceRes,changeRes]=await Promise.all([
+      fetch('https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT'),
+      fetch('https://api.binance.com/api/v3/ticker/24hr?symbol=BTCUSDT')
+    ]);
+    if(!priceRes.ok) throw new Error('HTTP '+priceRes.status);
+    const priceData=await priceRes.json();
+    const changeData=await changeRes.json();
+    const usd=parseFloat(priceData.price);
+    const ch=parseFloat(changeData.priceChangePercent);
+    const p=Math.round(usd*_usdMxn);
     window._btcMXN=p;
     const fmt=p.toLocaleString('es-MX',{maximumFractionDigits:0});
     const tpEl=document.getElementById('tP');
     if(tpEl){tpEl.classList.add('flash');tpEl.textContent='$'+fmt+' MXN';setTimeout(()=>tpEl.classList.remove('flash'),400);}
     const navP=document.getElementById('navP');if(navP)navP.textContent='$'+fmt;
-    const ce=document.getElementById('tC');if(ce){ce.textContent=(ch>=0?'▲':'▼')+Math.abs(ch).toFixed(2)+'%';ce.style.color=ch>=0?'#16A085':'#C0392B';}
+    const ce=document.getElementById('tC');if(ce){ce.textContent=(ch>=0?'▲':'▼')+Math.abs(ch).toFixed(2)+'%';ce.style.color=ch>=0?'var(--green)':'var(--red)';}
     const ts=document.getElementById('tS');if(ts)ts.textContent='1sat='+(p/1e8).toFixed(4)+' MXN';
-    // update live exercise if open
     if(document.getElementById('exOverlay')?.classList.contains('on'))refreshExInputs();
-  }catch(e){const n=document.getElementById('navP');if(n)n.textContent='sin conexión';}
+  }catch(e){
+    const n=document.getElementById('navP');if(n)n.textContent='sin conexión';
+    // fallback a CoinGecko
+    try{
+      const r=await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=mxn&include_24hr_change=true');
+      const d=await r.json();const p=d.bitcoin.mxn,ch=d.bitcoin.mxn_24h_change;
+      window._btcMXN=p;
+      const fmt=p.toLocaleString('es-MX',{maximumFractionDigits:0});
+      const tpEl=document.getElementById('tP');
+      if(tpEl){tpEl.classList.add('flash');tpEl.textContent='$'+fmt+' MXN';setTimeout(()=>tpEl.classList.remove('flash'),400);}
+      const navP=document.getElementById('navP');if(navP)navP.textContent='$'+fmt;
+      const ce=document.getElementById('tC');if(ce){ce.textContent=(ch>=0?'▲':'▼')+Math.abs(ch).toFixed(2)+'%';}
+      const ts=document.getElementById('tS');if(ts)ts.textContent='1sat='+(p/1e8).toFixed(4)+' MXN';
+    }catch(e2){}
+  }
 }
 
 // ══════════════════════════════════════
@@ -1711,7 +1914,7 @@ function showResults(){
   res.style.display='block';res.classList.add('show');
   const pct=Math.round((ES.score/tot)*100);
   const col=pct>=80?'var(--btc)':pct>=60?'var(--gold)':'#888';
-  document.getElementById('resBig').innerHTML=`<span style="font-family:'Press Start 2P',monospace;font-size:32px;color:${col};">${ES.score}</span><span style="font-family:'Press Start 2P',monospace;font-size:18px;color:#555;"> / ${tot}</span>`;
+  document.getElementById('resBig').innerHTML=`<span style="font-family:'Press Start 2P',monospace;font-size:32px;color:${col};">${ES.score}</span><span style="font-family:'Press Start 2P',monospace;font-size:18px;color:var(--text-dim);"> / ${tot}</span>`;
   const icons=document.getElementById('resIcons');icons.innerHTML='';
   ES.answers.forEach(a=>{const d=document.createElement('div');d.className='res-icon '+(a.ok?'ok':'bad');d.textContent=a.ok?'✓':'✗';icons.appendChild(d);});
   const m=Math.floor(elapsed/60),s=elapsed%60;
@@ -1722,7 +1925,7 @@ function showResults(){
   if(ES.score===tot){msg='⚡ PERFECTO';mc='var(--btc)';}
   else if(pct>=60){msg='✓ BIEN HECHO';mc='var(--gold)';}
   else{msg='📖 SIGUE PRACTICANDO';mc='#888';}
-  document.getElementById('resMsg').innerHTML=`<span style="font-family:'Press Start 2P',monospace;font-size:10px;color:${mc};">${msg}</span><br><span style="font-size:18px;color:#888;">${pct>=60?'Casi lo tienes perfectamente, mijo.':'Don Memo tiene mucha paciencia.'}</span>`;
+  document.getElementById('resMsg').innerHTML=`<span style="font-family:'Press Start 2P',monospace;font-size:10px;color:${mc};">${msg}</span><br><span style="font-size:18px;color:var(--text-muted);">${pct>=60?'Casi lo tienes perfectamente, mijo.':'Don Memo tiene mucha paciencia.'}</span>`;
   const passed=pct>=60;
   const bd=EXAM_DATA[ES.ch]?.badge;
   if(bd){
@@ -1763,13 +1966,26 @@ function restartExam(){
 // MOBILE
 // ══════════════════════════════════════
 function mobTab(n){
-  for(let i=0;i<4;i++)document.getElementById('mt'+i).classList.toggle('on',i===n);
+  for(let i=0;i<5;i++){const el=document.getElementById('mt'+i);if(el)el.classList.toggle('on',i===n);}
   const drawer=document.getElementById('drawer'),dc=document.getElementById('drawerContent');
   if(n===0){drawer.classList.remove('open');return;}
   drawer.classList.add('open');dc.innerHTML='';
-  const src=n===1?'tc1':n===2?'pr':'tc2';
+  const src=n===1?'tc1':n===2?'pr':n===3?'tc2':'tc3';
   const clone=document.getElementById(src).cloneNode(true);
-  clone.style.cssText='display:flex;width:100%;border:none;flex:1;flex-direction:column;overflow:hidden;';
+  clone.style.cssText='display:flex;width:100%;border:none;flex:1;flex-direction:column;overflow:auto;';
+  if(n===3){
+    const gloListClone=clone.querySelector('.glo-list');
+    if(gloListClone){
+      gloListClone.style.overflowY='auto';gloListClone.style.flex='1';gloListClone.innerHTML='';
+      GLOSSARY.forEach(t=>{
+        const item=document.createElement('div');item.className='glo-item';
+        item.innerHTML=`<div class="glo-hdr" onclick="togGlo(this)"><div class="glo-dot" style="background:${t.color}"></div><span class="glo-term">${t.term}</span><span class="glo-arrow">▼</span></div><div class="glo-body"><div class="glo-def">${t.def}</div><div class="glo-eg">${t.eg}</div></div>`;
+        gloListClone.appendChild(item);
+      });
+      const si=clone.querySelector('.glo-search');
+      if(si)si.oninput=function(){const q=this.value.toLowerCase();gloListClone.querySelectorAll('.glo-item').forEach(item=>{const t=item.querySelector('.glo-term').textContent.toLowerCase();const d=item.querySelector('.glo-def').textContent.toLowerCase();item.style.display=(t.includes(q)||d.includes(q))?'':'none';});};
+    }
+  }
   dc.appendChild(clone);
 }
 function openDrawer(){
@@ -1801,21 +2017,19 @@ function closeTutorial(){
   localStorage.setItem('tut_done','1');
   // Si ya tiene nombre, arrancar curso; si no, mostrar RPG
   const saved = localStorage.getItem('rpgname');
-  if(saved){
-    showD(DIALOGS[0]); updProg();
-  } else {
-    document.getElementById('rpgScreen').style.display='flex';
-    setTimeout(()=>document.getElementById('rpgName').focus(), 100);
-  }
+  // Siempre mostrar pantalla UINIK STUDIOS después del tutorial
+  document.getElementById('rpgScreen').style.display='flex';
 }
 
 // ══════════════════════════════════════
 // RPG INTRO SCREEN
 // ══════════════════════════════════════
 function beginCourse(){
-  const val=document.getElementById('rpgName').value.trim();
-  const name=val||'Mijo';
-  localStorage.setItem('rpgname',name);
+  localStorage.setItem('rpgname','MATEO');
+  // Desbloquear audio tras gesto del usuario
+  const a=document.getElementById('bgAudio');
+  if(a&&a.paused){a.volume=_vol;a.src=AUDIO_SCENES[0]||'';a.play().catch(()=>{});}
+  _currentScene=0;
   const scr=document.getElementById('rpgScreen');
   if(scr){scr.style.animation='rpgFadeOut .5s forwards';setTimeout(()=>{scr.style.display='none';showD(DIALOGS[0]);updProg();},500);}
 }
@@ -1855,12 +2069,12 @@ function openEx(type,nextIdx){
       <div class="ex-section red">
         <div class="ex-lbl">💸 EL PESO VS EL TIEMPO</div>
         <div class="ex-row">
-          <span style="font-size:16px;color:#aaa;font-family:var(--vt)">¿Cuánto tienes?</span>
+          <span style="font-size:16px;color:var(--text-muted);font-family:var(--vt)">¿Cuánto tienes?</span>
           <input class="ex-inp" id="infM" type="number" value="1500" min="1" max="1000000" oninput="calcInfl()"/>
           <span class="ex-unit">pesos MXN</span>
         </div>
         <div class="ex-row">
-          <span style="font-size:16px;color:#aaa;font-family:var(--vt)">¿Desde qué año?</span>
+          <span style="font-size:16px;color:var(--text-muted);font-family:var(--vt)">¿Desde qué año?</span>
           <input class="ex-slider" id="infY" type="range" min="2000" max="2023" value="2015" oninput="document.getElementById('infYL').textContent=this.value;calcInfl()"/>
           <span class="ex-slider-val" id="infYL">2015</span>
         </div>
@@ -1888,7 +2102,7 @@ function openEx(type,nextIdx){
       <div class="ex-section">
         <div class="ex-lbl">₿ CUÁNTOS SATS PUEDES TENER, ${nm.toUpperCase()}</div>
         <div class="ex-row">
-          <span style="font-size:16px;color:#aaa;">¿Cuánto pesos tienes?</span>
+          <span style="font-size:16px;color:var(--text-muted);">¿Cuánto pesos tienes?</span>
           <input class="ex-inp" id="satM" type="number" value="1500" min="1" max="1000000" oninput="calcSats()"/>
           <span class="ex-unit">pesos MXN</span>
         </div>
@@ -1913,7 +2127,7 @@ function openEx(type,nextIdx){
       <div class="ex-section red">
         <div class="ex-lbl">💸 COMO DON MEMO — MANDANDO DINERO A CASA</div>
         <div class="ex-row">
-          <span style="font-size:16px;color:#aaa;">¿Cuánto envías?</span>
+          <span style="font-size:16px;color:var(--text-muted);">¿Cuánto envías?</span>
           <input class="ex-inp" id="remM" type="number" value="500" min="1" max="50000" oninput="calcRem()"/>
           <span class="ex-unit">USD</span>
         </div>
@@ -1923,13 +2137,13 @@ function openEx(type,nextIdx){
           <div class="ex-lbl">🏦 WESTERN UNION</div>
           <div class="ex-val bad" id="remWU">—</div>
           <div class="ex-sub bad" id="remWUcom" style="color:var(--red)">—</div>
-          <div class="ex-sub" style="color:#444">~3 días hábiles</div>
+          <div class="ex-sub" style="color:var(--text-dim)">~3 días hábiles</div>
         </div>
         <div class="ex-card">
           <div class="ex-lbl">⚡ LIGHTNING NETWORK</div>
           <div class="ex-val good" id="remLN">—</div>
           <div class="ex-sub" style="color:var(--green)">comisión ~$0.001 USD</div>
-          <div class="ex-sub" style="color:#444">&lt; 2 segundos</div>
+          <div class="ex-sub" style="color:var(--text-dim)">&lt; 2 segundos</div>
         </div>
       </div>
       <div class="ex-note" id="remNote">Don Memo perdió $21,600 USD en 20 años de comisiones</div>
@@ -2024,13 +2238,13 @@ function renderTriviaQ(){
 
   // Progreso
   const prog = document.createElement('div');
-  prog.style.cssText = "font-family:'Press Start 2P',monospace;font-size:6px;color:#555;text-align:center;";
+  prog.style.cssText = "font-family:'Press Start 2P',monospace;font-size:6px;color:var(--text-dim);text-align:center;";
   prog.textContent = 'Pregunta '+(_trivIdx+1)+' de '+qs.length;
   box.appendChild(prog);
 
   // Pregunta
   const qEl = document.createElement('div');
-  qEl.style.cssText = "font-family:'VT323',monospace;font-size:26px;color:#fff;text-align:center;line-height:1.4;width:100%;";
+  qEl.style.cssText = "font-family:'VT323',monospace;font-size:26px;color:var(--text);text-align:center;line-height:1.4;width:100%;";
   qEl.textContent = q.q;
   box.appendChild(qEl);
 
@@ -2045,7 +2259,7 @@ function renderTriviaQ(){
   const letras = ['A','B','C','D'];
   q.opts.forEach((opt, i) => {
     const btn = document.createElement('button');
-    btn.style.cssText = "font-family:'Press Start 2P',monospace;font-size:7px;background:#1A1A2E;border:3px solid #333;color:#aaa;padding:12px 10px;cursor:pointer;text-align:left;line-height:1.6;width:100%;";
+    btn.style.cssText = "font-family:'Press Start 2P',monospace;font-size:7px;background:var(--dark);border:3px solid var(--border);color:var(--text-muted);padding:12px 10px;cursor:pointer;text-align:left;line-height:1.6;width:100%;";
     btn.innerHTML = '<b style="color:#F7931A">'+letras[i]+')</b> '+opt;
     btn.onclick = () => {
       if(_trivAns) return;
@@ -2084,8 +2298,8 @@ function renderTriviaEnd(){
   const ov = document.getElementById('triviaOverlay');
   ov.innerHTML = '<div style="min-height:100%;display:flex;align-items:center;justify-content:center;padding:24px;"><div style="text-align:center;max-width:400px;">'
     +'<div style="font-family:\'Press Start 2P\',monospace;font-size:10px;color:#F7931A;margin-bottom:20px;">TRIVIA COMPLETA</div>'
-    +'<div style="font-family:\'VT323\',monospace;font-size:28px;color:#fff;margin-bottom:20px;">'+_trivScore+' / '+qs.length+' correctas</div>'
-    +'<button onclick="doneTrivia()" style="font-family:\'Press Start 2P\',monospace;font-size:8px;background:#16A085;color:#fff;border:none;padding:14px 28px;cursor:pointer;box-shadow:3px 3px 0 #000;width:100%;">IR AL EXAMEN ▶</button>'
+    +'<div style="font-family:\'VT323\',monospace;font-size:28px;color:var(--text);margin-bottom:20px;">'+_trivScore+' / '+qs.length+' correctas</div>'
+    +'<button onclick="doneTrivia()" style="font-family:\'Press Start 2P\',monospace;font-size:8px;background:#16A085;color:var(--text);border:none;padding:14px 28px;cursor:pointer;box-shadow:3px 3px 0 #000;width:100%;">IR AL EXAMEN ▶</button>'
     +'</div></div>';
 }
 
@@ -2101,12 +2315,13 @@ function doneTrivia(){
 // Mapa de escenas → archivos de audio
 // Cuando tengas tus archivos, pon la ruta aquí:
 const AUDIO_SCENES = {
-  0: '',  // Intro         → ej: 'audio/intro.mp3'
-  1: '',  // Módulo 1      → ej: 'audio/mod1.mp3'
-  2: '',  // Módulo 2      → ej: 'audio/mod2.mp3'
-  3: '',  // Módulo 3      → ej: 'audio/mod3.mp3'
-  4: '',  // Módulo 4      → ej: 'audio/mod4.mp3'
-  5: '',  // Conclusión    → ej: 'audio/final.mp3'
+  0: 'https://cdn.pixabay.com/audio/2024/01/16/audio_a80a56d0cf.mp3', // Intro — lofi chill nostálgico, tarde en el parque
+  1: 'https://cdn.pixabay.com/audio/2023/10/02/audio_b9eb58c21b.mp3', // Módulo 1 — lofi melancólico, remesas y Chicago
+  2: 'https://cdn.pixabay.com/audio/2024/03/11/audio_27a9e6a21e.mp3', // Módulo 2 — lofi jazzy, reflexivo, límite de 21M
+  3: 'https://cdn.pixabay.com/audio/2023/11/13/audio_347d22f4a8.mp3', // Módulo 3 — lofi upbeat, hamaquería y Diego
+  4: 'https://cdn.pixabay.com/audio/2024/02/15/audio_a10b4e6c12.mp3', // Módulo 4 — lofi chill moderno, wallets y Lightning
+  5: 'https://cdn.pixabay.com/audio/2023/09/25/audio_c6e8f3a1b5.mp3', // Conclusión — lofi emocional, noche en Mérida
+  6: 'https://cdn.pixabay.com/audio/2024/01/16/audio_a80a56d0cf.mp3'  // Bonus — mismo que intro, círculo completo
 };
 let _muted=false, _vol=0.7, _currentScene=-1;
 
@@ -2163,7 +2378,7 @@ function goTutSlide(n) {
   const prev = document.getElementById('tutPrevBtn');
   const next = document.getElementById('tutNextBtn');
   prev.style.visibility = _tutSlide === 0 ? 'hidden' : 'visible';
-  if (_tutSlide === 2) {
+  if (_tutSlide === 3) {
     next.textContent = 'ENTENDIDO — COMENZAR ▶';
     next.style.background = 'var(--green)';
     next.style.color = '#fff';
@@ -2175,14 +2390,288 @@ function goTutSlide(n) {
 }
 function tutNav(dir) {
   const next = _tutSlide + dir;
-  if (next > 2) { closeTutorial(); return; }
+  if (next > 3) { closeTutorial(); return; }
   if (next < 0) return;
   goTutSlide(next);
 }
+
+// ══════════════════════════════════════
+// GRADUACIÓN
+// ══════════════════════════════════════
+function checkGraduation(d){
+  // Último diálogo del curso (idx 64 = último de ch:6)
+  if(d.ch===6 && DIALOGS.indexOf(d)===DIALOGS.length-1){
+    setTimeout(()=>{
+      document.getElementById('gradScreen').style.display='block';
+      // Pre-rellenar nombre si ya lo tiene
+      const n=localStorage.getItem('rpgname')||'';
+      if(n){
+        document.getElementById('certName').value=n;
+        document.getElementById('certNamePreview')?document.getElementById('certNamePreview').textContent=n:null;
+      }
+    },1800);
+  }
+}
+
+function downloadCert(){
+  const name=(document.getElementById('certName').value||'').trim()||'Estudiante';
+  const canvas=document.getElementById('certCanvas');
+  const ctx=canvas.getContext('2d');
+  const W=900,H=636;
+
+  // ── Fondo ──
+  ctx.fillStyle='#05050F';
+  ctx.fillRect(0,0,W,H);
+
+  // ── Borde exterior pixel art (doble línea) ──
+  ctx.strokeStyle='#F7931A';
+  ctx.lineWidth=6;
+  ctx.strokeRect(10,10,W-20,H-20);
+  ctx.strokeStyle='#D4A017';
+  ctx.lineWidth=2;
+  ctx.strokeRect(18,18,W-36,H-36);
+
+  // ── Esquinas decorativas pixel art ──
+  const corner=(x,y,sx,sy)=>{
+    ctx.fillStyle='#F7931A';
+    [[0,0,16,4],[0,0,4,16],[sx*12,0,16,4],[sx*12,0,4,16]].forEach(([dx,dy,w,hh])=>{
+      ctx.fillRect(x+dx,y+dy,w*Math.sign(sx)||w,hh);
+    });
+  };
+  [
+    [18,18,1,1],[W-34,18,-1,1],[18,H-34,1,-1],[W-34,H-34,-1,-1]
+  ].forEach(([x,y,sx,sy])=>{
+    ctx.fillStyle='#F7931A';
+    ctx.fillRect(x,y,sx*20,4);ctx.fillRect(x,y,4,sy*20);
+    ctx.fillRect(x+sx*8,y+sy*8,sx*8,4);ctx.fillRect(x+sx*8,y+sy*8,4,sy*8);
+  });
+
+  // ── Logo Bitcoin pixel (₿) grande central arriba ──
+  ctx.fillStyle='#F7931A';
+  ctx.font='bold 52px monospace';
+  ctx.textAlign='center';
+  ctx.fillText('₿',W/2,88);
+
+  // ── Título ──
+  ctx.fillStyle='#F7931A';
+  ctx.font='bold 13px "Courier New",monospace';
+  ctx.textAlign='center';
+  ctx.fillText('UINIK TEAM — CERTIFICADO DE CONCLUSIÓN',W/2,130);
+
+  // Línea separadora
+  ctx.strokeStyle='#F7931A';ctx.lineWidth=1;
+  ctx.beginPath();ctx.moveTo(60,145);ctx.lineTo(W-60,145);ctx.stroke();
+
+  // ── Subtítulo ──
+  ctx.fillStyle='#aaaaaa';
+  ctx.font='11px "Courier New",monospace';
+  ctx.fillText('Este documento certifica que',W/2,175);
+
+  // ── Nombre del estudiante ──
+  ctx.fillStyle='#ffffff';
+  ctx.font='bold 32px "Courier New",monospace';
+  // Si el nombre es largo, reducir tamaño
+  let fontSize=32;
+  while(ctx.measureText(name).width>700&&fontSize>16){
+    fontSize-=2;
+    ctx.font=`bold ${fontSize}px "Courier New",monospace`;
+  }
+  ctx.fillText(name,W/2,228);
+
+  // Línea bajo el nombre
+  const nw=Math.min(ctx.measureText(name).width+60,600);
+  ctx.strokeStyle='#D4A017';ctx.lineWidth=1;
+  ctx.beginPath();ctx.moveTo(W/2-nw/2,240);ctx.lineTo(W/2+nw/2,240);ctx.stroke();
+
+  // ── Descripción del curso ──
+  ctx.fillStyle='#aaaaaa';
+  ctx.font='11px "Courier New",monospace';
+  ctx.fillText('ha completado satisfactoriamente el curso',W/2,270);
+
+  ctx.fillStyle='#ffffff';
+  ctx.font='bold 16px "Courier New",monospace';
+  ctx.fillText('DON MEMO Y LOS SATS',W/2,298);
+
+  ctx.fillStyle='#F7931A';
+  ctx.font='11px "Courier New",monospace';
+  ctx.fillText('Conocimientos Principales de Bitcoin',W/2,320);
+
+  // Línea separadora
+  ctx.strokeStyle='var(--dark)';ctx.lineWidth=1;
+  ctx.beginPath();ctx.moveTo(60,340);ctx.lineTo(W-60,340);ctx.stroke();
+
+  // ── Aviso legal ──
+  ctx.fillStyle='#444444';
+  ctx.font='9px "Courier New",monospace';
+  const disclaimer=[
+    'Este certificado no está avalado por ninguna institución pública',
+    'ni por los organizadores del hackathon. Es un reconocimiento',
+    'personal de conclusión del curso. att: Uinik Team'
+  ];
+  disclaimer.forEach((line,i)=>ctx.fillText(line,W/2,368+i*16));
+
+  // ── Módulos completados ──
+  ctx.fillStyle='#16A085';
+  ctx.font='bold 10px "Courier New",monospace';
+  ctx.fillText('MÓDULOS COMPLETADOS',W/2,428);
+
+  const mods=['INTRO','MÓD.1','MÓD.2','MÓD.3','MÓD.4','CONCLUSIÓN'];
+  const mw=120,gap=8,totalW=mods.length*(mw+gap)-gap;
+  const startX=(W-totalW)/2;
+  mods.forEach((m,i)=>{
+    const bx=startX+i*(mw+gap);
+    ctx.fillStyle='#0D1A0D';
+    ctx.fillRect(bx,438,mw,26);
+    ctx.strokeStyle='#16A085';ctx.lineWidth=1;
+    ctx.strokeRect(bx,438,mw,26);
+    ctx.fillStyle='#16A085';
+    ctx.font='7px "Courier New",monospace';
+    ctx.textAlign='center';
+    ctx.fillText(m,bx+mw/2,455);
+  });
+
+  // ── Fecha y firma ──
+  const today=new Date();
+  const dateStr=today.toLocaleDateString('es-MX',{year:'numeric',month:'long',day:'numeric'});
+  ctx.textAlign='left';
+  ctx.fillStyle='#555';
+  ctx.font='9px "Courier New",monospace';
+  ctx.fillText('Fecha: '+dateStr,60,510);
+
+  ctx.textAlign='right';
+  ctx.fillStyle='#F7931A';
+  ctx.font='bold 10px "Courier New",monospace';
+  ctx.fillText('UINIK TEAM',W-60,510);
+  ctx.fillStyle='#555';
+  ctx.font='8px "Courier New",monospace';
+  ctx.fillText('uinik.btc',W-60,524);
+
+  // Línea de firma
+  ctx.strokeStyle='#333';ctx.lineWidth=1;
+  ctx.beginPath();ctx.moveTo(W-200,530);ctx.lineTo(W-60,530);ctx.stroke();
+
+  // ── Pixel art decorativo: pequeños bloques de Bitcoin ──
+  const pixelDeco=(px,py,color)=>{
+    ctx.fillStyle=color;
+    [[1,0],[2,0],[0,1],[3,1],[1,2],[2,2],[0,3],[3,3],[1,4],[2,4]].forEach(([dx,dy])=>
+      ctx.fillRect(px+dx*4,py+dy*4,3,3));
+  };
+  pixelDeco(30,560,'#F7931A33');
+  pixelDeco(W-60,560,'#F7931A33');
+
+  // ── Footer ──
+  ctx.textAlign='center';
+  ctx.fillStyle='#222';
+  ctx.font='8px "Courier New",monospace';
+  ctx.fillText('Generado en: Don Memo y los Sats — Curso de Bitcoin para jóvenes de México',W/2,608);
+
+  // ── Descargar ──
+  const link=document.createElement('a');
+  link.download='certificado-bitcoin-'+name.replace(/\s+/g,'-').toLowerCase()+'.png';
+  link.href=canvas.toDataURL('image/png');
+  link.click();
+}
+
+// ══════════════════════════════════════
+// THEME TOGGLE — Tobacco & Mahogany
+// ══════════════════════════════════════
+function toggleTheme(){
+  const html=document.documentElement;
+  const isLight=html.classList.toggle('light');
+  localStorage.setItem('uinik-theme',isLight?'light':'dark');
+  const btn=document.getElementById('themeToggle');
+  if(btn) btn.textContent=isLight?'🌑':'🌙';
+}
+
+function applyThemeUI(){
+  const isLight=document.documentElement.classList.contains('light');
+  const btn=document.getElementById('themeToggle');
+  if(btn) btn.textContent=isLight?'🌑':'🌙';
+}
+
+// Escuchar cambios del sistema en tiempo real (si no hay preferencia guardada)
+window.matchMedia('(prefers-color-scheme:dark)').addEventListener('change',e=>{
+  if(!localStorage.getItem('uinik-theme')){
+    const nowLight=!e.matches;
+    const html=document.documentElement;
+    nowLight?html.classList.add('light'):html.classList.remove('light');
+    applyThemeUI();
+  }
+});
 </script>
 
 <!-- ══ TRIVIA OVERLAY — fixed body level ══ -->
-<div id="triviaOverlay" style="display:none;position:fixed;inset:0;z-index:10000;background:rgba(5,5,15,.97);overflow-y:auto;"></div>
+<div id="triviaOverlay" style="display:none;position:fixed;inset:0;z-index:10000;background:var(--darker);overflow-y:auto;"></div>
+
+
+<!-- ══ PANTALLA DE GRADUACIÓN ══ -->
+<div id="gradScreen" style="display:none;position:fixed;inset:0;z-index:10001;background:var(--darkest);overflow-y:auto;">
+  <!-- scanlines -->
+  <div style="position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.12) 2px,rgba(0,0,0,.12) 4px);z-index:0;"></div>
+  <div style="position:relative;z-index:1;max-width:600px;margin:0 auto;padding:32px 20px;text-align:center;">
+
+    <!-- Trofeo pixel art -->
+    <div style="margin-bottom:20px;">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="64" height="64" fill="#F7931A">
+        <path d="M7 3h10v1h1v1h1v4h-1v1h-1v1h-1v1h-1v1h-2v1h-1v1H8v-1H7v-1H6v-1H5V9H4V5h1V4h1V3h1zm0 2H5v3h1v1h1v1h2v1h2v-1h2v-1h1V8h1V5H7zm2 10h6v1H9v-1zm-1 2h8v1H8v-1z"/>
+      </svg>
+    </div>
+
+    <div style="font-family:'Press Start 2P',monospace;font-size:clamp(8px,2vw,12px);color:var(--btc);margin-bottom:8px;">¡FELICIDADES!</div>
+    <div style="font-family:'Press Start 2P',monospace;font-size:clamp(6px,1.5vw,9px);color:var(--text);line-height:1.8;margin-bottom:24px;">HAS COMPLETADO<br>DON MEMO Y LOS SATS</div>
+
+    <!-- Mensaje de Don Memo -->
+    <div style="background:var(--darker);border:3px solid #F7931A;padding:18px 20px;margin-bottom:24px;text-align:left;">
+      <div style="font-family:'Press Start 2P',monospace;font-size:7px;color:#F7931A;margin-bottom:10px;">🟠 DON MEMO</div>
+      <div style="font-family:'VT323',monospace;font-size:clamp(17px,4vw,22px);color:var(--text);line-height:1.6;">
+        Gracias a Don Memo hemos reforzado conocimiento sobre Bitcoin. Ahora tú tienes la opción de saber si seguir continuando.
+      </div>
+    </div>
+
+    <!-- Formulario certificado -->
+    <div style="background:var(--darker);border:3px solid var(--border);padding:20px;margin-bottom:20px;">
+      <div style="font-family:'Press Start 2P',monospace;font-size:8px;color:var(--gold);margin-bottom:14px;">📜 TU CERTIFICADO</div>
+      <div style="font-family:'VT323',monospace;font-size:17px;color:var(--text-muted);margin-bottom:12px;line-height:1.6;">
+        Escribe tu nombre para generar tu certificado de conclusión.
+      </div>
+      <input id="certName" type="text" placeholder="Tu nombre completo"
+        style="width:100%;box-sizing:border-box;font-family:'Press Start 2P',monospace;font-size:8px;background:var(--surface);border:3px solid #F7931A;color:var(--text);padding:12px 10px;margin-bottom:14px;outline:none;"
+        oninput="document.getElementById('certNamePreview').textContent=this.value||'Tu Nombre'"/>
+      <div style="font-family:'VT323',monospace;font-size:14px;color:var(--text-dim);line-height:1.7;margin-bottom:14px;">
+        Este certificado no está avalado por ninguna institución pública ni por los organizadores del hackathon. Es un reconocimiento personal de que completaste un curso con los conocimientos principales de Bitcoin.<br>
+        <span style="color:#F7931A;">att: Uinik Team</span>
+      </div>
+      <button onclick="downloadCert()"
+        style="font-family:'Press Start 2P',monospace;font-size:7px;background:#F7931A;color:#000;border:none;padding:12px 20px;cursor:pointer;box-shadow:3px 3px 0 #000;width:100%;margin-bottom:8px;">
+        ⬇ DESCARGAR CERTIFICADO
+      </button>
+    </div>
+
+    <!-- Módulo avanzado -->
+    <div style="background:var(--darker);border:3px solid #16A085;padding:20px;margin-bottom:20px;">
+      <div style="font-family:'Press Start 2P',monospace;font-size:8px;color:#16A085;margin-bottom:12px;">⚡ ¿QUIERES IR MÁS LEJOS?</div>
+      <div style="font-family:'VT323',monospace;font-size:clamp(16px,3.5vw,20px);color:var(--text-muted);line-height:1.6;margin-bottom:14px;">
+        Si gustas puedes realizar un curso más especializado y con más tecnicismos sobre Bitcoin — wallets, minería, transacciones y más. También podrás descargar tu certificado al finalizarlo.
+        <br><br>
+        <span style="color:var(--text-dim);font-size:14px;">El mismo aviso aplica: certificado no avalado por instituciones. att: Uinik Team</span>
+      </div>
+      <a href="" id="advancedCourseBtn"
+        style="display:block;font-family:'Press Start 2P',monospace;font-size:7px;background:#16A085;color:var(--text);border:none;padding:12px 20px;cursor:pointer;box-shadow:3px 3px 0 #000;text-decoration:none;text-align:center;">
+        IR AL CURSO AVANZADO ▶
+      </a>
+    </div>
+
+    <!-- Volver -->
+    <button onclick="document.getElementById('gradScreen').style.display='none'"
+      style="font-family:'Press Start 2P',monospace;font-size:6px;background:transparent;color:var(--text-dim);border:2px solid var(--border);padding:8px 16px;cursor:pointer;">
+      ← VOLVER AL CURSO
+    </button>
+
+  </div>
+</div>
+
+<!-- Canvas oculto para generar el certificado -->
+<canvas id="certCanvas" width="900" height="636" style="display:none;"></canvas>
 
 </body>
 </html>
