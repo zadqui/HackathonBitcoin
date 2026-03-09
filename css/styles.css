@@ -229,6 +229,13 @@ html.light nav { box-shadow: 0 2px 10px var(--glow-r); }
   box-shadow: 4px 4px 0 #000, 0 0 18px var(--glow-r);
   transform: translateY(-2px);
 }
+/* Team cards no suben — el efecto lo da el borde energizado */
+.team-card:hover {
+  transform: none;
+  box-shadow: none;
+  border-color: var(--btc);
+}
+
 html.light .card:hover { box-shadow: 4px 4px 0 rgba(0,0,0,0.15); border-color: var(--accent); }
 
 /* ══════════ BUTTONS ══════════ */
@@ -557,13 +564,14 @@ html.light #navLogo {
 /* Wrapper de la card de equipo */
 .team-card {
   position: relative;
+  overflow: hidden;
 }
 
 /* Pseudo-elemento del borde energizado */
 .team-card::before {
   content: '';
   position: absolute;
-  inset: -2px;
+  inset: 0;
   z-index: 2;
   border-radius: 0;
   background: linear-gradient(
@@ -621,13 +629,11 @@ html.light #navLogo {
   animation: glitchShift 0.45s steps(1) 0.07s 1, glitchColor 0.45s steps(1) 0.07s 1;
 }
 
-/* Info panel: deslizar hacia arriba al hover */
+/* Info panel: fondo sutil al hover, sin mover */
 .team-card .team-info {
-  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
-              background 0.35s ease;
+  transition: background 0.35s ease;
 }
 .team-card:hover .team-info {
-  transform: translateY(-4px);
   background: rgba(247, 147, 26, 0.06);
 }
 
@@ -657,17 +663,29 @@ html.light .team-card:hover .glitch-layer.c {
   background: rgba(20, 160, 160, 0.15);
 }
 
+/* ══════════ BLOOD ANGELS GRID ══════════ */
+@media (max-width: 768px) {
+  .blood-angels-main-grid {
+    grid-template-columns: 1fr !important;
+    gap: 32px !important;
+  }
+  .blood-angels-cards-grid {
+    max-width: 360px;
+    margin: 0 auto;
+  }
+}
+
 /* ══════════ 6. TEAM CARD — TOOLTIP ROL ══════════ */
 .team-role-badge {
   position: absolute;
-  top: 12px;
-  left: 12px;
+  top: 10px;
+  left: 10px;
   z-index: 10;
   background: rgba(26, 15, 10, 0.92);
   border: 1px solid var(--btc);
-  padding: 7px 13px;
+  padding: 5px 10px;
   font-family: 'Press Start 2P', monospace;
-  font-size: 9px;
+  font-size: 7px;
   color: var(--btc);
   pointer-events: none;
   opacity: 0;

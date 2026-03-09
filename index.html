@@ -162,7 +162,7 @@
 </div>
 
 <!-- ══════════ ENCUESTA ══════════ -->
-<section class="section-pad" style="padding:80px 24px;background:var(--section-alt);border-top:3px solid var(--border);border-bottom:3px solid var(--border);">
+<section class="section-pad" style="padding:80px 24px;background:var(--darker);border-top:3px solid var(--border);border-bottom:3px solid var(--border);">
   <div style="max-width:700px;margin:0 auto;">
     <div class="reveal" style="text-align:center;margin-bottom:48px;">
       <div class="section-title" style="font-size:16px;">ANTES DE EMPEZAR...</div>
@@ -214,7 +214,7 @@
 </section>
 
 <!-- ══════════ ¿POR QUÉ? ══════════ -->
-<section id="porque" class="section-pad" style="padding:80px 24px;">
+<section id="porque" class="section-pad" style="padding:80px 24px;background:var(--section-alt);border-top:3px solid var(--border);border-bottom:3px solid var(--border);">
   <div style="max-width:1100px;margin:0 auto;">
     <div class="reveal" style="text-align:center;margin-bottom:60px;">
       <div class="section-title" style="font-size:18px;">¿POR QUÉ DEBERÍA IMPORTARTE?</div>
@@ -298,7 +298,7 @@
 </section>
 
 <!-- ══════════ EL CURSO ══════════ -->
-<section id="curso" class="section-pad" style="padding:80px 24px;background:var(--section-alt);border-top:3px solid var(--border);border-bottom:3px solid var(--border);">
+<section id="curso" class="section-pad" style="padding:80px 24px;background:var(--darker);border-top:3px solid var(--border);border-bottom:3px solid var(--border);">
   <div style="max-width:1100px;margin:0 auto;">
     <div class="reveal" style="text-align:center;margin-bottom:60px;">
       <div class="section-title" style="font-size:18px;">¿QUÉ VAS A APRENDER?</div>
@@ -426,7 +426,7 @@
 </section>
 
 <!-- ══════════ CALCULADORA ══════════ -->
-<section id="calculadora" class="section-pad" style="padding:80px 24px;">
+<section id="calculadora" class="section-pad" style="padding:80px 24px;background:var(--section-alt);border-top:3px solid var(--border);border-bottom:3px solid var(--border);">
   <div style="max-width:1100px;margin:0 auto;">
     <div class="reveal" style="text-align:center;margin-bottom:60px;">
       <div class="section-title" style="font-size:18px;">⚡ CALCULADORA BITCOIN EN VIVO</div>
@@ -496,7 +496,7 @@
 </section>
 
 <!-- ══════════ DON MEMO ══════════ -->
-<section id="memo" class="section-pad" style="padding:80px 24px;background:var(--section-alt);border-top:3px solid var(--border);">
+<section id="memo" class="section-pad" style="padding:80px 24px;background:var(--darker);border-top:3px solid var(--border);">
   <div style="max-width:1100px;margin:0 auto;">
     <div class="two-col" style="gap:60px;align-items:center;">
       <div class="reveal" style="display:flex;flex-direction:column;gap:20px;">
@@ -561,17 +561,30 @@
   </div>
 </section>
 
-
 <!-- ══════════ BLOOD ANGELS ══════════ -->
-<section style="padding:80px 24px;background:var(--section-alt);">
+<section style="padding:80px 24px;background:var(--section-alt);border-top:3px solid var(--border);">
   <div style="max-width:900px;margin:0 auto;">
 
-    <div class="reveal" style="text-align:center;margin-bottom:60px;">
+    <div class="reveal" style="text-align:center;margin-bottom:40px;">
       <div class="section-title" style="font-size:18px;">BLOOD ANGELS</div>
       <p style="font-size:20px;color:var(--text-muted);margin-top:12px;">Hecho en Mérida, Yucatán 🇲🇽</p>
     </div>
 
-    <div class="two-col" style="gap:32px;max-width:760px;margin:0 auto;">
+    <!-- Layout: texto izquierda, cards derecha -->
+    <div class="blood-angels-main-grid" style="display:grid;grid-template-columns:1fr 1.6fr;gap:48px;align-items:center;max-width:960px;margin:0 auto;">
+
+      <!-- Texto izquierda -->
+      <div class="reveal" style="display:flex;flex-direction:column;gap:20px;">
+        <p style="font-size:18px;color:var(--text);line-height:1.85;">Desarrolladores yucatecos explorando las fronteras de Bitcoin. Este proyecto nace del reto de transformar el aprendizaje autodidacta en soluciones tangibles — construidas desde cero, sobre la red.</p>
+        <div style="display:flex;flex-direction:column;gap:10px;padding-top:4px;">
+          <div style="display:flex;align-items:center;gap:10px;font-size:15px;color:var(--text-muted);"><span style="color:var(--btc);">▸</span> Hackathon Bitcoin México 2026</div>
+          <div style="display:flex;align-items:center;gap:10px;font-size:15px;color:var(--text-muted);"><span style="color:var(--btc);">▸</span> Diseño · Desarrollo · Historia</div>
+          <div style="display:flex;align-items:center;gap:10px;font-size:15px;color:var(--text-muted);"><span style="color:var(--btc);">▸</span> Mérida, Yucatán 🇲🇽</div>
+        </div>
+      </div>
+
+      <!-- Cards derecha -->
+      <div class="blood-angels-cards-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start;">
 
       <!-- Armando -->
       <div class="reveal card team-card" style="padding:0;overflow:hidden;position:relative;">
@@ -584,9 +597,9 @@
           <div class="glitch-layer c"></div>
           <div class="team-role-badge">[ DISEÑO & FRONTEND ]</div>
         </div>
-        <div class="team-info" style="padding:20px 24px 24px;">
-          <div class="pixel team-role-label" style="font-size:10px;color:var(--btc);margin-bottom:6px;">DISEÑO & FRONTEND</div>
-          <div class="pixel team-name" style="font-size:11px;color:var(--text);margin-bottom:16px;">Armando Lara</div>
+        <div class="team-info" style="padding:14px 16px 16px;">
+          <div class="pixel team-role-label" style="font-size:8px;color:var(--btc);margin-bottom:4px;">DISEÑO & FRONTEND</div>
+          <div class="pixel team-name" style="font-size:9px;color:var(--text);margin-bottom:12px;">Armando Lara</div>
           <div style="display:flex;gap:12px;">
             <a href="https://www.instagram.com/armando_lar4/" target="_blank" rel="noopener"
               style="display:inline-flex;text-decoration:none;color:var(--text-muted);transition:color 0.2s;"
@@ -612,9 +625,9 @@
           <div class="glitch-layer c"></div>
           <div class="team-role-badge">[ DESARROLLO ]</div>
         </div>
-        <div class="team-info" style="padding:20px 24px 24px;">
-          <div class="pixel team-role-label" style="font-size:10px;color:var(--btc);margin-bottom:6px;">DESARROLLO</div>
-          <div class="pixel team-name" style="font-size:11px;color:var(--text);margin-bottom:16px;">Zadquiel Chan</div>
+        <div class="team-info" style="padding:14px 16px 16px;">
+          <div class="pixel team-role-label" style="font-size:8px;color:var(--btc);margin-bottom:4px;">DESARROLLO</div>
+          <div class="pixel team-name" style="font-size:9px;color:var(--text);margin-bottom:12px;">Zadquiel Chan</div>
           <div style="display:flex;gap:12px;">
             <a href="https://www.instagram.com/orzaboss/" target="_blank" rel="noopener"
               style="display:inline-flex;text-decoration:none;color:var(--text-muted);transition:color 0.2s;"
@@ -629,7 +642,8 @@
         </div>
       </div>
 
-    </div>
+      </div> <!-- cierre grid cards -->
+    </div> <!-- cierre grid principal -->
   </div>
 </section>
 
