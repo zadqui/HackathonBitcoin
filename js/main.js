@@ -15,21 +15,6 @@ function toggleMobileMenu() {
 }
 function closeMobileMenu() { document.getElementById('mobileMenu').classList.remove('open'); }
 
-// ── PARTICLES ──
-(function() {
-  const c = document.getElementById('particles');
-  const s = ['⚡','₿','⚡','⚡'];
-  for(let i=0;i<12;i++){
-    const el=document.createElement('div');
-    el.className='particle pixel';
-    el.textContent=s[Math.floor(Math.random()*s.length)];
-    el.style.left=Math.random()*100+'vw';
-    el.style.fontSize=(8+Math.random()*8)+'px';
-    el.style.animationDuration=(12+Math.random()*20)+'s';
-    el.style.animationDelay=(Math.random()*15)+'s';
-    c.appendChild(el);
-  }
-})();
 
 // ── SCROLL PROGRESS ──
 window.addEventListener('scroll',()=>{
@@ -470,3 +455,69 @@ function updateLogos(isLight) {
     }
   });
 })();
+
+// ══════════ 1. PORQUE-CARDS — TILT 3D ══════════
+document.querySelectorAll('.porque-card').forEach(card => {
+  card.addEventListener('mousemove', e => {
+    const rect = card.getBoundingClientRect();
+    const cx = rect.left + rect.width / 2;
+    const cy = rect.top + rect.height / 2;
+    const dx = (e.clientX - cx) / (rect.width / 2);
+    const dy = (e.clientY - cy) / (rect.height / 2);
+    const rotX = (-dy * 6).toFixed(2);
+    const rotY = (dx * 6).toFixed(2);
+    card.style.transform = `perspective(800px) rotateX(${rotX}deg) rotateY(${rotY}deg) translateY(-4px)`;
+    card.style.boxShadow = `${-dx*6}px ${-dy*6}px 0 #000, 0 0 18px var(--glow-r)`;
+  });
+  card.addEventListener('mouseleave', () => {
+    card.style.transform = 'perspective(800px) rotateX(0deg) rotateY(0deg) translateY(0)';
+    card.style.boxShadow = '';
+  });
+});
+
+// ══════════ 2. TIMELINE — LÍNEA QUE SE DIBUJA ══════════
+(function() {
+  const line = document.getElementById('timelineLine');
+  const dots = document.querySelectorAll('.timeline-dot');
+  if (!line) return;
+  const delays = [0, 320, 640, 960, 1280];
+  const obs = new IntersectionObserver(entries => {
+    if (entries[0].isIntersecting) {
+      line.classList.add('drawn');
+      dots.forEach((dot, i) => {
+        setTimeout(() => dot.classList.add('visible'), delays[i]);
+      });
+      obs.disconnect();
+    }
+  }, { threshold: 0.2 });
+  obs.observe(line);
+})();
+
+// ══════════ 3. STATS — FLASH BTC AL TERMINAR CONTADOR ══════════
+const _origAnimateCounter = animateCounter;
+function animateCounter(el) {
+  if (el.dataset.animated) return;
+  el.dataset.animated = 'true';
+  const target = parseInt(el.dataset.target);
+  let current = 0;
+  const step = target / 60;
+  const iv = setInterval(() => {
+    current = Math.min(current + step, target);
+    el.textContent = Math.floor(current);
+    if (current >= target) {
+      clearInterval(iv);
+      el.classList.add('stat-boom');
+      setTimeout(() => el.classList.remove('stat-boom'), 700);
+    }
+  }, 20);
+}
+// Re-observar stats con la nueva función
+document.querySelectorAll('[data-target]').forEach(el => {
+  if (!el.dataset.animated) {
+    new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting) animateCounter(el);
+    }, { threshold: 0.5 }).observe(el);
+  }
+});
+
+// fin
